@@ -2,7 +2,7 @@ import React from 'react';
 
 function Header() {
 	return (
-		<div>
+		<div className='header'>
 			<h1>Megalink Earn</h1>
 		</div>
 	)

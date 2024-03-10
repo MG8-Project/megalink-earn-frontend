@@ -1,7 +1,12 @@
+import React from 'react';
+
 function Footer() {
 	return (
 		<footer>
-			<div></div>
+			<div className='footer'>
+				<hr />
+				Megalink Labs Limited. All RIGHTS RESERVED.
+			</div>
 		</footer>
 	)
 }

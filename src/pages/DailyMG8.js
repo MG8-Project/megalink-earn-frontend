@@ -8,7 +8,7 @@ function DailyMG8() {
   useEffect(() => {
     const fetchReceivedStatus = async () => {
       try {
-        const response = await API.get('/mega8/personal/myTotalLogin', userAccount);
+        const response = await API.get('/infiniteSpin/mega8/personal/myTotalLogin', userAccount);
         setReceivedStatus(response.data);
       } catch (error) {
         console.error('Error fetching received status:', error);
@@ -20,10 +20,10 @@ function DailyMG8() {
   }, []);
 
   return (
-    <div>
-      <h3>Daily dose of $MG8</h3>
+    <div className='title'>
+      <h1>Daily dose of $MG8</h1>
       <p>Login 7 days in a row, and your rewards will grow.</p>
-      <table>
+      <table className='mainTable mainDiv'>
         <thead>
           <tr>
             <th>Day 1</th>

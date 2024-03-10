@@ -2,9 +2,9 @@ import React from 'react';
 
 function Wallet () {
 	return (
-		<div>
-			<h3>Do you have one of these coins?</h3>
-			<button>Connect Wallet</button>
+		<div className='mainDiv'>
+			<h1>Do you have one of these coins?</h1>
+			<button className='button'>Connect Wallet</button>
 		</div>
   );
 }

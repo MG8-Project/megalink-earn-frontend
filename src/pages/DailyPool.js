@@ -15,7 +15,7 @@ function DailyPool() {
 
   async function fetchTotalTickets() {
     try {
-      const response = await API.get('/infiniteSpin/mega8/personal/myParticipationTicket');
+      const response = await API.get('/infiniteSpin/infiniteSpin/mega8/personal/myParticipationTicket');
       setTotalTickets(response.data.reduce((acc, curr) => acc + curr, 0));
     } catch (error) {
       console.error('Error fetching total tickets:', error);
@@ -45,18 +45,18 @@ function DailyPool() {
   }
 
   return (
-    <div>
+    <div className='title'>
       <div>
-        <h3>$MG8 Spin</h3>
+        <h1>$MG8 Spin</h1>
         <p>Rule: Turn the spin and earn rewards. The pool of rewards offered every day is limited.</p>
         <p>Hurry up. Please make a bet. Good luck to you.</p>
-        <button>Learn more</button>
+        <button className='button'>Learn more</button>
       </div>
-      <table>
+      <table className='mainTable'>
         <thead></thead>
         <tbody>
           <tr>
-            <td>
+            <td className='mainDiv2'>
               Daily Mission<br />
               {remainingTime.hours.toString().padStart(2, '0')}:
               {remainingTime.minutes.toString().padStart(2, '0')}:
@@ -64,18 +64,18 @@ function DailyPool() {
               <br />
               Participate twice a day for 12 hours
             </td>
-            <td rowSpan={3}>
+            <td rowSpan={3} className='mainDiv2'>
               Infinite Spin
             </td>
           </tr>
           <tr>
-            <td>
+            <td className='mainDiv2'>
               Your Ticket<br />
               {totalTickets}
             </td>
           </tr>
           <tr>
-            <td>
+            <td className='mainDiv2'>
               Daily Pool <br/>
               {}%<br />
               Daily Quota Available

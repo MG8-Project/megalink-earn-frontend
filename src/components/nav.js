@@ -6,7 +6,7 @@ function Nav () {
 	return (
 		<div className="navbar">
 			<Link className="navbarMenu" to={'/'}>Home</Link>
-			<Link className="navbarMenu" to={'/LeaderBoard'}>LeaderBoard</Link>
+			<Link className="navbarMenu" to={'/Leaderboard'}>LeaderBoard</Link>
 		</div>
 	)
 }

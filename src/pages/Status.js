@@ -9,17 +9,18 @@ function Status() {
 
   useEffect(() => {
     const fetchData = async () => {
+      const endpoint = '/infiniteSpin/status'
       try {
-        const newWalletsTodayResponse = await API.get('/status/newWalletsToday');
+        const newWalletsTodayResponse = await API.get(`${endpoint}/newWalletsToday`);
         setNewWalletsToday(newWalletsTodayResponse.data);
 
-        const totalWalletsResponse = await API.get('/status/totalWallets');
+        const totalWalletsResponse = await API.get(`${endpoint}/totalWallets`);
         setTotalWallets(totalWalletsResponse.data);
 
-        const spinCountResponse = await API.get('/status/spinCount');
+        const spinCountResponse = await API.get(`${endpoint}/spinCount`);
         setSpinCount(spinCountResponse.data);
 
-        const totalPointsResponse = await API.get('/status/totalPoints');
+        const totalPointsResponse = await API.get(`${endpoint}/totalPoints`);
         setTotalPoints(totalPointsResponse.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -30,9 +31,9 @@ function Status() {
   }, []);
 
   return (
-    <div>
-      <h3>Status</h3>
-      <table>
+    <div className='title'>
+      <h1>Status</h1>
+      <table className='mainDiv'>
         <tbody>
           <tr>
             <th>Total Transactions</th>

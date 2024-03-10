@@ -8,7 +8,7 @@ function Leaderboard () {
 	const teamCode = 'abcd'; // 고정된 teamCode
 	
 	const fetchData = useCallback(async () => {
-		let endpoint = option === 'individual' ? `/game/personalRnk?userId=${userId}` : `/game/teamRnk?teamCode=${teamCode}`;
+		let endpoint = option === 'individual' ? `/infiniteSpin/game/personalRnk?userId=${userId}` : `/infiniteSpin/game/teamRnk?teamCode=${teamCode}`;
 		try {
 			const response = await API.get(endpoint);
 			setLeaderboard(response.data);
@@ -26,8 +26,8 @@ function Leaderboard () {
 	};
 
 	return (
-		<div>
-			<h3>MG8 24h Leaderboard</h3>
+		<div className='title'>
+			<h1>MG8 24h Leaderboard</h1>
 			<p>Check the scores you have earned and compare them with the participants. The ranking changes every 24 hours.</p>
 			
 			<div>
@@ -36,7 +36,7 @@ function Leaderboard () {
 				<input type="radio" id="team" name="leaderboard" value="team" checked={option === 'team'} onChange={handleOptionChange} />
 				<label htmlFor="team">Team</label>
 			</div>
-			<table>
+			<table className='mainTable mainDiv'>
 			<thead>
 				<tr>
 				<th>Position</th>
@@ -48,16 +48,19 @@ function Leaderboard () {
 				</tr>
 			</thead>
 			<tbody>
-				{leaderboard.slice(0, option === 'individual' ? 50 : 10).map((item, index) => (
-				<tr key={index}>
-					<td>{item.ranking}</td>
-					<td>{option === 'individual' ? item.Name : item.TeamName}</td>
-					<td>{item.Nationality}</td>
-					{option === 'individual' && <td>{item.Level}</td>}
-					<td>{item.Booster}</td>
-					<td>{item.Total}</td>
-				</tr>
-				))}
+				{leaderboard.length > 0 ?
+					(leaderboard.slice(0, option === 'individual' ? 50 : 10).map((item, index) => (
+						<tr key={index}>
+						<td>{item.ranking}</td>
+						<td>{option === 'individual' ? item.Name : item.TeamName}</td>
+						<td>{item.Nationality}</td>
+						{option === 'individual' && <td>{item.Level}</td>}
+						<td>{item.Booster}</td>
+						<td>{item.Total}</td>
+					</tr>
+					))
+					):(<tr className='text-center'><td colSpan={option === 'individual' ? 6 : 5}>데이터가 없습니다.</td></tr>
+				)}
 			</tbody>
 			</table>
 		</div>
