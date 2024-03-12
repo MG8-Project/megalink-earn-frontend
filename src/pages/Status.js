@@ -9,7 +9,7 @@ function Status() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const endpoint = '/infiniteSpin/status'
+      const endpoint = '/infiniteSpin/mega8/status'
       try {
         const newWalletsTodayResponse = await API.get(`${endpoint}/newWalletsToday`);
         setNewWalletsToday(newWalletsTodayResponse.data);
