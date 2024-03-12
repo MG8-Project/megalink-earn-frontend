@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import API from '../services/api';
 
 function Status() {
+  const [totalTransactions, setTotalTransactions] = useState(null);
+  const [transactionsToday, setTransactionsToday] = useState(null);
   const [newWalletsToday, setNewWalletsToday] = useState(null);
   const [totalWallets, setTotalWallets] = useState(null);
   const [spinCount, setSpinCount] = useState(null);
@@ -11,6 +13,12 @@ function Status() {
     const fetchData = async () => {
       const endpoint = '/infiniteSpin/mega8/status'
       try {
+        const totalTransactionsResponse = await API.get(`${endpoint}/totalTransactions`);
+        setTotalTransactions(totalTransactionsResponse.data);
+
+        const transactionsTodayResponse = await API.get(`${endpoint}/totalTransactions`);
+        setTransactionsToday(transactionsTodayResponse.data);
+
         const newWalletsTodayResponse = await API.get(`${endpoint}/newWalletsToday`);
         setNewWalletsToday(newWalletsTodayResponse.data);
 
@@ -37,13 +45,13 @@ function Status() {
         <tbody>
           <tr>
             <th>Total Transactions</th>
-            <td>{}</td>
+            <td>{totalTransactions}</td>
             <th>Total Wallets</th>
             <td>{totalWallets}</td>
           </tr>
           <tr>
             <th>Transactions Today</th>
-            <td>{}</td>
+            <td>{transactionsToday}</td>
             <th>New Wallets Today</th>
             <td>{newWalletsToday}</td>
           </tr>
