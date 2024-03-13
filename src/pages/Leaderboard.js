@@ -8,9 +8,12 @@ function Leaderboard () {
 	const teamCode = 'abcd'; // 고정된 teamCode
 	
 	const fetchData = useCallback(async () => {
-		let endpoint = option === 'individual' ? `/infiniteSpin/game/personalRnk?userId=${userId}` : `/infiniteSpin/game/teamRnk?teamCode=${teamCode}`;
+		const req_user = {userId: userId};
+		const req_team = {teamCode: teamCode};
+		let endpoint = option === 'individual' ? '/infiniteSpin/game/personalRnk' : '/infiniteSpin/game/teamRnk';
+		let req = option === 'individual' ? req_user : req_team;
 		try {
-			const response = await API.get(endpoint);
+			const response = await API.get(endpoint, req, {headers: { 'Content-Type': 'application/json' }});
 			setLeaderboard(response.data);
 		} catch (error) {
 		  console.error('Error fetching data: ', error);

@@ -40,52 +40,52 @@ function Status() {
   }, []);
 
   return (
-    // <div class="bg-back font-sans leading-normal tracking-normal">
-    <div class="container mx-auto bg-back font-sans leading-normal tracking-normal">
-        <div class="py-8">
+    // <div className="bg-back font-sans leading-normal tracking-normal">
+    <div className="container mx-auto bg-back font-sans leading-normal tracking-normal">
+        <div className="py-8">
             <div>
-                <h2 class="text-3xl font-semibold leading-tight">Status</h2>
+                <h2 className="text-3xl font-semibold leading-tight">Status</h2>
             </div>
-            <div class="my-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="my-2 grid grid-cols-1 md:grid-cols-2 gap-4">
 
-                <div class="bg-white p-5 rounded-lg stat-card">
-                    <div class="text-gray-600">Total Transactions</div>
-                    <div class="text-xl font-bold">{totalTransactions}</div>
+                <div className="bg-white p-5 rounded-lg stat-card">
+                    <div className="text-gray-600">Total Transactions</div>
+                    <div className="text-xl font-bold">{totalTransactions}</div>
                 </div>
 
-                <div class="bg-white p-5 rounded-lg stat-card">
-                    <div class="text-gray-600">Total Wallets</div>
-                    <div class="text-xl font-bold">{totalWallets}</div>
+                <div className="bg-white p-5 rounded-lg stat-card">
+                    <div className="text-gray-600">Total Wallets</div>
+                    <div className="text-xl font-bold">{totalWallets}</div>
                 </div>
 
-                <div class="bg-white p-5 rounded-lg stat-card">
-                    <div class="text-gray-600">Transactions Today</div>
-                    <div class="text-xl font-bold">{transactionsToday}</div>
+                <div className="bg-white p-5 rounded-lg stat-card">
+                    <div className="text-gray-600">Transactions Today</div>
+                    <div className="text-xl font-bold">{transactionsToday}</div>
                 </div>
 
-                <div class="bg-white p-5 rounded-lg stat-card">
-                    <div class="text-gray-600">New Wallets Today</div>
-                    <div class="text-xl font-bold">{newWalletsToday}</div>
+                <div className="bg-white p-5 rounded-lg stat-card">
+                    <div className="text-gray-600">New Wallets Today</div>
+                    <div className="text-xl font-bold">{newWalletsToday}</div>
                 </div>
 
-                <div class="bg-white p-5 rounded-lg stat-card">
-                    <div class="text-gray-600">Spin Count</div>
-                    <div class="text-xl font-bold">{spinCount}</div>
+                <div className="bg-white p-5 rounded-lg stat-card">
+                    <div className="text-gray-600">Spin Count</div>
+                    <div className="text-xl font-bold">{spinCount}</div>
                 </div>
 
-                <div class="bg-white p-5 rounded-lg stat-card">
-                    <div class="text-gray-600">Total Points</div>
-                    <div class="text-xl font-bold">{totalPoints}</div>
+                <div className="bg-white p-5 rounded-lg stat-card">
+                    <div className="text-gray-600">Total Points</div>
+                    <div className="text-xl font-bold">{totalPoints}</div>
                 </div>
 
-                <div class="bg-white p-5 rounded-lg stat-card">
-                    <div class="text-gray-600">$MG8 Dropped</div>
-                    <div class="text-xl font-bold">678,901,234 MG8(예시)</div>
+                <div className="bg-white p-5 rounded-lg stat-card">
+                    <div className="text-gray-600">$MG8 Dropped</div>
+                    <div className="text-xl font-bold">678,901,234 MG8(예시)</div>
                 </div>
 
-                <div class="bg-white p-5 rounded-lg stat-card">
-                    <div class="text-gray-600">BNB Rewarded</div>
-                    <div class="text-xl font-bold">1,234(예시)</div>
+                <div className="bg-white p-5 rounded-lg stat-card">
+                    <div className="text-gray-600">BNB Rewarded</div>
+                    <div className="text-xl font-bold">1,234(예시)</div>
                 </div>
             </div>
         </div>

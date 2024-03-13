@@ -15,7 +15,8 @@ function DailyPool() {
 
   async function fetchTotalTickets() {
     try {
-      const response = await API.get('/infiniteSpin/infiniteSpin/mega8/personal/myParticipationTicket');
+      const response = await API.get('/infiniteSpin/mega8/personal/myParticipationTicket', {userAccount: 'dljfeasdfoiajefoij'}, 
+          {headers: { 'Content-Type': 'application/json' }});
       setTotalTickets(response.data.reduce((acc, curr) => acc + curr, 0));
     } catch (error) {
       console.error('Error fetching total tickets:', error);
@@ -23,8 +24,9 @@ function DailyPool() {
   }
   function getRemainingTime() {
     const now = new Date();
+    const nowUTC = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
     let targetTime = new Date();
-    const targetHour = now.getHours() < 9 ? 9 : 21; // 오전 9시를 지나면 21시로 변경
+    const targetHour = nowUTC.getHours() >= 0 ? 0 : 12; // 오전 9시를 지나면 21시로 변경
 
     targetTime.setHours(targetHour, 0, 0, 0);
 
