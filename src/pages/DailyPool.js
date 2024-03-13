@@ -24,9 +24,8 @@ function DailyPool() {
   }
   function getRemainingTime() {
     const now = new Date();
-    const nowUTC = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
     let targetTime = new Date();
-    const targetHour = nowUTC.getHours() >= 0 ? 0 : 12; // 오전 9시를 지나면 21시로 변경
+    const targetHour = (now.getHours() < 9 || now.getHours() > 21) ? 9 : 21; // 오전 9시를 지나면 21시로 변경
 
     targetTime.setHours(targetHour, 0, 0, 0);
 
