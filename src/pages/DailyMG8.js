@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import API from '../services/api';
 
 function DailyMG8() {
-  // const userAccount = "dljfeasdfoiajefoij";
+  const userAccount = "dljfeasdfoiajefoij";
   const [receivedStatus, setReceivedStatus] = useState([]);
 
   useEffect(() => {
     const fetchReceivedStatus = async () => {
       try {
-        const response = await API.get('/infiniteSpin/mega8/personal/myTotalLogin', {userAccount: 'dljfeasdfoiajefoij'}, 
+        const response = await API.get('/infiniteSpin/mega8/personal/myTotalLogin', {userAccount: userAccount}, 
           {headers: { 'Content-Type': 'application/json' }});
         setReceivedStatus(response.data);
       } catch (error) {
