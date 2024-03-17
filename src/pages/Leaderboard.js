@@ -1,28 +1,23 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import API from '../services/api';
+import leaderboardAPI from '../services/apiLeaderboard';
 
 function Leaderboard () {
 	const [option, setOption] = useState('individual');
 	const [leaderboard, setLeaderboard] = useState([]);
-	const userId = '1'; // 고정된 userId
-	const teamCode = 'abcd'; // 고정된 teamCode
+	const userAccount = 'abcd'; // 고정된 userAccount
 	
-	const fetchData = useCallback(async () => {
-		const req_user = {userId: userId};
-		const req_team = {teamCode: teamCode};
-		let endpoint = option === 'individual' ? '/infiniteSpin/game/personalRnk' : '/infiniteSpin/game/teamRnk';
-		let req = option === 'individual' ? req_user : req_team;
+	const fetchLeaderboard = useCallback(async () => {
 		try {
-			const response = await API.get(endpoint, req, {headers: { 'Content-Type': 'application/json' }});
+			const response = await leaderboardAPI.leaderboard(option, userAccount);
 			setLeaderboard(response.data);
 		} catch (error) {
-		  console.error('Error fetching data: ', error);
+		  console.error('Error fetching Leaderboard: ', error);
 		}
-	}, [userId, teamCode, option]);
+	}, [option]);
 
 	useEffect(() => {
-		fetchData();
-	}, [fetchData]);
+		fetchLeaderboard();
+	}, [fetchLeaderboard]);
 	
 	const handleOptionChange = (event) => {
 		setOption(event.target.value);

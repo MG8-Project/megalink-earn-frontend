@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useInterval } from 'react-use';
-import API from '../services/api';
+import dailyAPI from '../services/apiDaily';
 
 function DailyPool() {
+  const totalDailyPool = process.env.REACT_APP_DAILY_POOL;
   const [remainingTime, setRemainingTime] = useState(getRemainingTime());
-  const [totalTickets, setTotalTickets] = useState(null);
+  const [totalTickets, setTotalTickets] = useState("0");
+  const [dailyPool, setDailyPool] = useState("0");
 
   useEffect(() => {
     fetchTotalTickets();
+    fetchDailyPool();
   }, [])
   useInterval(() => {
     setRemainingTime(getRemainingTime());
@@ -15,11 +18,18 @@ function DailyPool() {
 
   async function fetchTotalTickets() {
     try {
-      const response = await API.get('/infiniteSpin/mega8/personal/myParticipationTicket', {userAccount: 'dljfeasdfoiajefoij'}, 
-          {headers: { 'Content-Type': 'application/json' }});
-      setTotalTickets(response.data.reduce((acc, curr) => acc + curr, 0));
+      const response = await dailyAPI.myParticipationTicket("dljfeasdfoiajefoij");
+      setTotalTickets(response);
     } catch (error) {
       console.error('Error fetching total tickets:', error);
+    }
+  }
+  async function fetchDailyPool() {
+    try {
+      const response = await dailyAPI.dailyPool();
+      setDailyPool(response);
+    } catch (error) {
+      console.error('Error fetching daily pool:', error);
     }
   }
   function getRemainingTime() {
@@ -72,13 +82,13 @@ function DailyPool() {
           <tr>
             <td className='mainDiv2'>
               Your Ticket<br />
-              {totalTickets}
+              {totalTickets === -1 ? ("-") : (totalTickets)}
             </td>
           </tr>
           <tr>
-            <td className='mainDiv2'>
+          <td className='mainDiv2'>
               Daily Pool <br/>
-              {}%<br />
+              {isNaN(dailyPool) || isNaN(totalDailyPool) ? 0 : (parseInt(dailyPool) / parseInt(totalDailyPool)) * 100}%<br />
               Daily Quota Available
             </td>
           </tr>
