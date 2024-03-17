@@ -1,10 +1,16 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import Nav from './nav';
 
 function Header() {
 	return (
-		<div className='header'>
-			<h1>Megalink Earn</h1>
-		</div>
+		<header className='header'>
+			<div className='header_contents'>
+				<Link className='header_title' to={'/'}>Megalink Earn</Link>
+				<Nav />
+				<button className='button'>Connect Wallet</button>
+			</div>
+		</header>
 	)
 }
 
