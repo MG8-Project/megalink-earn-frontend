@@ -35,8 +35,10 @@ const HeaderLogo = styled.img`
 
 const HeaderUl = styled.ul`
   display: flex;
+  width: 277px;
+  font-size: 18px;
+  justify-content: space-between;
   > li {
-    margin-right: 20px;
   }
 `;
 

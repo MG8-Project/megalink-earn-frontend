@@ -1,7 +1,13 @@
 import React from "react";
-
+import styled from "styled-components";
+import Wallet from "../Wallet";
 const Body = () => {
-  return <div>바디</div>;
+  return (
+    <BodyWrapper>
+      <Wallet />
+    </BodyWrapper>
+  );
 };
 
 export default Body;
+const BodyWrapper = styled.main``;
