@@ -1,24 +1,16 @@
-import React from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import { binance, ace, wemix } from "../../assets/images";
+import CoinCard from "./CoinCard";
 
 const coinImages = [binance, ace, wemix];
 
 const Wallet = () => {
   return (
     <WalletWrapper>
-      <WalltetContentBox>
-        <WalletTitle>Get $MG8 if you have one of these coins</WalletTitle>
-        <WalletBottomContainer>
-          <CoinImgBox>
-            {coinImages.map((coin, index) => (
-              <CoinImg key={index} src={coin} alt="" />
-            ))}
-          </CoinImgBox>
-          <WalletContainer>Connect Wallet</WalletContainer>
-        </WalletBottomContainer>
-      </WalltetContentBox>
+      <WalletTitle>Get $MG8 if you have one of these coins</WalletTitle>
+      <CoinCard />
+      <WalletContainer>Connect Wallet</WalletContainer>
     </WalletWrapper>
   );
 };
@@ -27,37 +19,23 @@ export default Wallet;
 
 const WalletWrapper = styled.div`
   width: 1200px;
-  height: 266px;
-  background-color: ${theme.colors.bg.box};
-  border-radius: 16px;
-  margin-top: 80px;
-  margin-bottom: 80px;
-`;
-const WalltetContentBox = styled.div`
-  padding: 48px 64px 68px 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 160px;
+  margin-bottom: 160px;
 `;
 
 const WalletTitle = styled.h3`
   font-size: 28px;
   font-weight: 600px;
-`;
-const CoinImgBox = styled.div`
-  display: flex;
-  gap: 48px;
+  margin-bottom: 56px;
 `;
 
-const CoinImg = styled.img`
-  width: 80px;
-`;
-const WalletBottomContainer = styled.div`
-  margin-top: 48px;
+const WalletContainer = styled.button`
+  margin-top: 40px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-const WalletContainer = styled.div`
-  display: flex;
-  font-weight: 600;
+  font-weight: 400;
   align-items: center;
   justify-content: center;
   text-align: center;
