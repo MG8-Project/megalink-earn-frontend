@@ -26,6 +26,7 @@ const HeaderWrapper = styled.div`
   align-items: center;
   width: 100%;
   background-color: #000000;
+  height: 80px;
 `;
 
 const HeaderLogo = styled.img`
@@ -42,12 +43,12 @@ const HeaderUl = styled.ul`
   }
 `;
 
-const WalletContainer = styled.div`
+const WalletContainer = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-weight: 600;
+  font-weight: 400;
   width: 140px;
   height: 40px;
   border: 1px solid #ffffff;
