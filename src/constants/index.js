@@ -25,3 +25,14 @@ export const FooterSns = [
     text: "Telegram",
   },
 ];
+
+export const statusList = [
+  { id: 1, title: "Total Transcations", content: "12,345,678,901,234" },
+  { id: 2, title: "Total Wallets", content: "12,345,678,901,234" },
+  { id: 3, title: "Transcations Today", content: "78,901" },
+  { id: 4, title: "New Wallets Today", content: "123,456,789" },
+  { id: 5, title: "Spin Count", content: "345,678,901,234" },
+  { id: 6, title: "Total Points", content: "345,678,901,234" },
+  { id: 7, title: "$MG8 Dropped", content: "678,901,234" },
+  { id: 8, title: "BNB Rewarded", content: "1,234" },
+];

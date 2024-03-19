@@ -47,6 +47,7 @@ const WalletContainer = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
+  font-weight: 600;
   width: 140px;
   height: 40px;
   border: 1px solid #ffffff;
