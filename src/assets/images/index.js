@@ -11,6 +11,8 @@ export { default as footerLogo } from "./Megalink_CI.png";
 export { default as binance } from "./binance.png";
 export { default as wemix } from "./wemix.png";
 export { default as ace } from "./ace.png";
+export { default as loading } from "./Loading.png";
+export { default as Share } from "./Share.png";
 
 // Daily
 export { default as mega8 } from "./mg8.png";
@@ -36,3 +38,7 @@ export { default as pre } from "./pre.png";
 export { default as preArrow } from "./prearrow.png";
 export { default as next } from "./next.png";
 export { default as nextArrow } from "./nextarrow.png";
+export { default as nextHover } from "./nextHover.png";
+export { default as nextArrowHover } from "./nextArrowHover.png";
+export { default as preArrowHover } from "./preArrowHover.png";
+export { default as preHover } from "./preHover.png";
