@@ -23,7 +23,7 @@ const Footer = () => {
             <ImgBoxWrapper>
               {FooterSns.map((sns) => (
                 <ImgBox>
-                  <a href={sns.linkUrl}>
+                  <a href={sns.linkUrl} target="_blank">
                     <CommunityImg src={sns.imgSrc} alt={sns.text} />
                   </a>
                 </ImgBox>
