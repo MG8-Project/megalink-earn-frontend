@@ -21,3 +21,18 @@ export { default as gift } from "./gift.png";
 export { default as ticket } from "./ticket.png";
 export { default as clock } from "./clock.png";
 export { default as spinFrame } from "./Frame_1707484677.png";
+
+// LeaderBoard
+
+export { default as first } from "./1.png";
+export { default as second } from "./2.png";
+export { default as third } from "./3.png";
+
+export { default as Gold } from "./Gold.png";
+export { default as Silver } from "./Silver.png";
+export { default as Bronze } from "./Bronze_Medal.png";
+
+export { default as pre } from "./pre.png";
+export { default as preArrow } from "./prearrow.png";
+export { default as next } from "./next.png";
+export { default as nextArrow } from "./nextarrow.png";
