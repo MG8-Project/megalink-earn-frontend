@@ -2,15 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import mockData from "../../mock";
-import {
-  first,
-  second,
-  third,
-  preArrow,
-  pre,
-  next,
-  nextArrow,
-} from "../../assets/images";
+import Pagination from "./Pagination";
+import { first, second, third } from "../../assets/images";
 
 export interface MockDataType {
   index: number;
@@ -19,6 +12,10 @@ export interface MockDataType {
   nation: string;
   level: string;
   totalpoints: string;
+}
+interface PaginationButtonProps {
+  active?: boolean;
+  disabled?: boolean;
 }
 
 export const tableTitle = [
@@ -41,7 +38,7 @@ const getRankImage = (rank: number): string => {
   }
 };
 
-const ITEMS_PER_PAGE = 20;
+const ITEMS_PER_PAGE = 4;
 const PAGES_PER_VIEW = 5;
 
 const IndividualList: React.FC = () => {
@@ -50,6 +47,19 @@ const IndividualList: React.FC = () => {
   const startIndex: number = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex: number = currentPage * ITEMS_PER_PAGE;
   const paginatedData: MockDataType[] = mockData.slice(startIndex, endIndex);
+
+  const totalPages = Math.ceil(mockData.length / ITEMS_PER_PAGE);
+  const maxPages = 5;
+
+  let startPage = Math.max(1, currentPage - Math.floor(maxPages / 2));
+  let endPage = Math.min(startPage + maxPages - 1, totalPages);
+
+  if (totalPages <= maxPages) {
+    startPage = 1;
+    endPage = totalPages;
+  } else if (endPage === totalPages) {
+    startPage = totalPages - maxPages + 1;
+  }
 
   return (
     <IndividualListWrapper>
@@ -91,43 +101,11 @@ const IndividualList: React.FC = () => {
           ))}
         </tbody>
       </TableStyle>
-      <Pagination>
-        <PaginationButton
-        // onClick={() => setCurrentPage(currentPage - 1)}
-        // disabled={currentPage === 1}
-        >
-          <ArrowImage src={preArrow} alt="" />
-        </PaginationButton>
-        <PaginationButton
-          onClick={() => setCurrentPage(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          <ArrowImage src={pre} alt="" />
-        </PaginationButton>
-        {Array.from({
-          length: Math.ceil(mockData.length / ITEMS_PER_PAGE),
-        }).map((_, index) => (
-          <PaginationButton
-            key={index}
-            onClick={() => setCurrentPage(index + 1)}
-            active={index + 1 === currentPage}
-          >
-            {index + 1}
-          </PaginationButton>
-        ))}
-        <PaginationButton
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={currentPage === Math.ceil(mockData.length / ITEMS_PER_PAGE)}
-        >
-          <ArrowImage src={next} alt="" />
-        </PaginationButton>
-        <PaginationButton
-        // onClick={() => setCurrentPage(currentPage + 1)}
-        // disabled={currentPage === Math.ceil(mockData.length / ITEMS_PER_PAGE)}
-        >
-          <ArrowImage src={nextArrow} alt="" />
-        </PaginationButton>
-      </Pagination>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        setCurrentPage={setCurrentPage}
+      />
     </IndividualListWrapper>
   );
 };
@@ -164,11 +142,19 @@ const StyledTd = styled.td`
   height: 28px;
   padding: 16px 0px 16px 0px;
 `;
+const StyledEnd = styled.td`
+  font-size: 16px;
+  font-weight: 400;
+  height: 28px;
+  padding: 16px 32px 16px 0px;
+  text-align: end;
+`;
 const StyledTh = styled.th`
   font-size: 16px;
   font-weight: 400;
   padding: 8px 32px;
 `;
+
 const UserStyledTr = styled.tr`
   background-image: linear-gradient(
     90deg,
@@ -205,41 +191,3 @@ const RankImg = styled.img`
   transform: translate(-50%, -70%);
 `;
 const Rank = styled.div``;
-
-const Pagination = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-`;
-
-interface PaginationButtonProps {
-  active?: boolean;
-}
-
-const PaginationButton = styled.button<PaginationButtonProps>`
-  color: ${theme.colors.textGray};
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none;
-
-  &:hover {
-    color: white;
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-  }
-  ${(props) =>
-    props.active &&
-    `
-    color:  white;
-  `}
-`;
-const ArrowImage = styled.img`
-  width: 16px;
-  height: 16px;
-  &:hover {
-    color: white;
-  }
-`;

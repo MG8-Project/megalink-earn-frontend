@@ -1,15 +1,8 @@
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import mockData from "../../mock";
-import {
-  Gold,
-  Silver,
-  Bronze,
-  preArrow,
-  pre,
-  next,
-  nextArrow,
-} from "../../assets/images";
+import Pagination from "./Pagination";
+import { Gold, Silver, Bronze } from "../../assets/images";
 import { useState } from "react";
 
 export interface MockDataType {
@@ -19,6 +12,9 @@ export interface MockDataType {
   nation: string;
   booster: string;
   totalpoints: string;
+}
+interface PaginationButtonProps {
+  active?: boolean;
 }
 
 export const tableTitle = [
@@ -41,22 +37,36 @@ const getRankImage = (rank: number) => {
   }
 };
 
-const ITEMS_PER_PAGE = 20;
+const ITEMS_PER_PAGE = 4;
 const PAGES_PER_VIEW = 5;
 
-const TeamList: React.FC = () => {
+const IndividualList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const startIndex: number = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex: number = currentPage * ITEMS_PER_PAGE;
   const paginatedData: MockDataType[] = mockData.slice(startIndex, endIndex);
+
+  const totalPages = Math.ceil(mockData.length / ITEMS_PER_PAGE);
+  const maxPages = 5;
+
+  let startPage = Math.max(1, currentPage - Math.floor(maxPages / 2));
+  let endPage = Math.min(startPage + maxPages - 1, totalPages);
+
+  if (totalPages <= maxPages) {
+    startPage = 1;
+    endPage = totalPages;
+  } else if (endPage === totalPages) {
+    startPage = totalPages - maxPages + 1;
+  }
+
   return (
     <TeamListWrapper>
       <TableStyle>
         <TheadStyle>
           <tr>
-            {tableTitle.map((item) => (
-              <StyledTh key={item.id}>{item.title}</StyledTh>
+            {tableTitle.map((column) => (
+              <StyledTh key={column.id}>{column.title}</StyledTh>
             ))}
           </tr>
         </TheadStyle>
@@ -65,9 +75,10 @@ const TeamList: React.FC = () => {
             <UserStyledLeftTd>95,365</UserStyledLeftTd>
             <td>Youuuuuuuuuu</td>
             <td>South Korea</td>
-            <td>99</td>
+            <td>25.25% </td>
             <UserStyledRightTd>123,456,123,456</UserStyledRightTd>
           </UserStyledTr>
+
           {paginatedData.map((item) => (
             <tr key={item.index}>
               <StyledTd>
@@ -89,48 +100,16 @@ const TeamList: React.FC = () => {
           ))}
         </tbody>
       </TableStyle>
-      <Pagination>
-        <PaginationButton
-        // onClick={() => setCurrentPage(currentPage - 1)}
-        // disabled={currentPage === 1}
-        >
-          <ArrowImage src={preArrow} alt="" />
-        </PaginationButton>
-        <PaginationButton
-          onClick={() => setCurrentPage(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          <ArrowImage src={pre} alt="" />
-        </PaginationButton>
-        {Array.from({
-          length: Math.ceil(mockData.length / ITEMS_PER_PAGE),
-        }).map((_, index) => (
-          <PaginationButton
-            key={index}
-            onClick={() => setCurrentPage(index + 1)}
-            active={index + 1 === currentPage}
-          >
-            {index + 1}
-          </PaginationButton>
-        ))}
-        <PaginationButton
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={currentPage === Math.ceil(mockData.length / ITEMS_PER_PAGE)}
-        >
-          <ArrowImage src={next} alt="" />
-        </PaginationButton>
-        <PaginationButton
-        // onClick={() => setCurrentPage(currentPage + 1)}
-        // disabled={currentPage === Math.ceil(mockData.length / ITEMS_PER_PAGE)}
-        >
-          <ArrowImage src={nextArrow} alt="" />
-        </PaginationButton>
-      </Pagination>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        setCurrentPage={setCurrentPage}
+      />
     </TeamListWrapper>
   );
 };
 
-export default TeamList;
+export default IndividualList;
 
 const TeamListWrapper = styled.div`
   margin-top: 32px;
@@ -145,6 +124,7 @@ const TeamListWrapper = styled.div`
   gap: 24px;
   text-align: center;
 `;
+
 const TableStyle = styled.table`
   width: 100%;
 `;
@@ -167,56 +147,6 @@ const StyledTh = styled.th`
   padding: 8px 32px;
 `;
 
-const RankContainer = styled.div`
-  position: relative;
-`;
-
-const RankImg = styled.img`
-  position: absolute;
-  width: 28px;
-  height: 28px;
-  left: 10%;
-  top: -30%;
-`;
-const Rank = styled.div``;
-
-const Pagination = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-`;
-
-interface PaginationButtonProps {
-  active?: boolean;
-}
-
-const PaginationButton = styled.button<PaginationButtonProps>`
-  color: ${theme.colors.textGray};
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none;
-
-  &:hover {
-    color: white;
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-  }
-  ${(props) =>
-    props.active &&
-    `
-    color:  white;
-  `}
-`;
-const ArrowImage = styled.img`
-  width: 16px;
-  height: 16px;
-  &:hover {
-    color: white;
-  }
-`;
 const UserStyledTr = styled.tr`
   background-image: linear-gradient(
     90deg,
@@ -239,3 +169,17 @@ const UserStyledRightTd = styled.td`
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 `;
+
+const RankContainer = styled.div`
+  position: relative;
+`;
+
+const RankImg = styled.img`
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -70%);
+`;
+const Rank = styled.div``;
