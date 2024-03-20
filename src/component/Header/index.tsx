@@ -13,6 +13,12 @@ const Header = () => {
     console.log("연결된 주소:", address);
     useAuthStore.getState().setUserAccount(address);
   };
+
+  const onWalletDisconnect = () => {
+    useAuthStore.getState().setUserAccount(null);
+    console.log("연결이 해제되었습니다.");
+  }
+
   return (
     <HeaderWrapper>
       <HeaderLogo src={headerLogo} alt="" />
@@ -25,7 +31,7 @@ const Header = () => {
       {!walletAddress ? (
         <WalletContainer onClick={onWalletConnect}>Connect Wallet</WalletContainer>
       ) : (
-        <WalletContainer>Connected</WalletContainer>
+        <WalletContainer onClick={onWalletDisconnect}>Connected</WalletContainer>
       )}
     </HeaderWrapper>
   );
