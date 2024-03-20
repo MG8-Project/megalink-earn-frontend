@@ -13,7 +13,6 @@
     "react-use": "^17.5.0",
     "styled-components": "^6.1.8",
     "styled-reset": "^4.5.2",
-    "typescript": "^5.4.2",
     "web-vitals": "^2.1.4",
     "web3": "^4.6.0",
     "zustand": "^4.5.2"
@@ -44,6 +43,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "typescript": "^5.4.2"
   }
 }

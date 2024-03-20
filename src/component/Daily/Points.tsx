@@ -2,14 +2,17 @@ import styled from "styled-components";
 import { useWallet } from '../../hooks/useWallet';
 import { useAuthStore } from '../../store/authStore'; 
 import ApiPoints from "../../apis/ApiPoints";
+import { useState } from "react";
 
 const Points = () => {
   const { connectWallet } = useWallet();
   const isLoggedIn = useAuthStore(state => state.isLoggedIn);
   const walletAddress = useAuthStore(state => state.userAccount);
   const userId = useAuthStore(state => state.userId);
+  const [loginAttemptFailed, setLoginAttemptFailed] = useState(false);
 
   const clickLogin = async () => {
+    setLoginAttemptFailed(false);
     let address: string = null;
     if (!walletAddress) {
       address = await connectWallet();
@@ -26,11 +29,11 @@ const Points = () => {
 
       const success = await ApiPoints.login(address);
       useAuthStore.getState().login(address, getUserId);
-
-      if (isLoggedIn) {
-        console.log("로그인 성공!", success);
+      if (success.resultCode === 1) {
+        console.log("로그인 성공!", success.resultCode);
       } else {
         console.error("로그인 실패.");
+        setLoginAttemptFailed(true);
       }
     } catch (error) {
       console.error("API 호출 중 에러 발생:", error);
@@ -42,7 +45,7 @@ const Points = () => {
         <div>My Total MG8 Points</div>
         <PointText>-P</PointText>
       </TextWrapper>
-      {!isLoggedIn && <LoginButton onClick={clickLogin}>Login</LoginButton>}
+      {(!isLoggedIn || loginAttemptFailed) && <LoginButton onClick={clickLogin}>Login</LoginButton>}
     </PointsWrapper>
   );
 };
