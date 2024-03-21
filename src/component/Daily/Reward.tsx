@@ -5,9 +5,6 @@ import {Contract, BrowserProvider, ethers,  toBeHex} from "ethers";
 import {ForwarderAbi} from "../../typechain-types/contracts/Forwarder";
 import {DailyAttendanceAbi} from "../../typechain-types/contracts/DailyAttendance";
 import API from "../../apis/Api";
-import ApiPoints from "../../apis/ApiPoints";
-import {useState} from "react";
-import JoinModal from "../Modal";
 
 export type Domain = {
     chainId: number;
@@ -30,10 +27,10 @@ const Reward = () => {
     const isLoggedIn = useAuthStore(state => state.isLoggedIn);
     const signTypedData = async () => {
         try {
-            if (!isLoggedIn) {
-                alert("Please login first.")
-                return;
-            }
+            // if (!isLoggedIn) {
+            //     alert("Please login first.")
+            //     return;
+            // }
             const currentTimestamp = Math.floor(new Date().getTime() / 1000);
             const oneWeekInSeconds = 60;
             const futureTimestamp = currentTimestamp + oneWeekInSeconds;
@@ -55,10 +52,10 @@ const Reward = () => {
             const message =  {
                 from: walletAddress,
                 to: process.env.REACT_APP_CONTRACT_DAILY_ATTENDANCE,
-                value: 0,
-                gas: 50000,
+                value: "0",
+                gas: "50000",
                 nonce: nonce.toString(),
-                deadline: uint48Value,
+                deadline: uint48Value.toString(),
                 data: dailyAttendance.interface.encodeFunctionData("checkIn", undefined),
             }
             const typedData = JSON.stringify({
@@ -96,12 +93,11 @@ const Reward = () => {
                 param,
             }, {
                 headers: {
-                    "Content-Type": "application/json",
+                    "Authorization": "application/json",
                 }
-
             });
 
-            // TODO: handle response
+            alert("Successfully checked in.\nYour transaction hash is " + res.data.txHash)
         } catch (error) {
             console.error(error)
         }
