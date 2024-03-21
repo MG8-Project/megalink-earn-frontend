@@ -1,14 +1,14 @@
 import styled from "styled-components";
-import { useWallet } from '../../hooks/useWallet';
-import { useAuthStore } from '../../store/authStore'; 
+import { useWallet } from "../../hooks/useWallet";
+import { useAuthStore } from "../../store/authStore";
 import ApiPoints from "../../apis/ApiPoints";
 import { useState } from "react";
 
 const Points = () => {
   const { connectWallet } = useWallet();
-  const isLoggedIn = useAuthStore(state => state.isLoggedIn);
-  const walletAddress = useAuthStore(state => state.userAccount);
-  const userId = useAuthStore(state => state.userId);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const walletAddress = useAuthStore((state) => state.userAccount);
+  const userId = useAuthStore((state) => state.userId);
   const [loginAttemptFailed, setLoginAttemptFailed] = useState(false);
 
   const clickLogin = async () => {
@@ -16,6 +16,10 @@ const Points = () => {
     let address: string = null;
     if (!walletAddress) {
       address = await connectWallet();
+      if (address === null) {
+        alert("메타 마스크를 설치해주세요.");
+        return;
+      }
       console.log("연결된 주소:", address);
       useAuthStore.getState().setUserAccount(address);
     }
@@ -45,7 +49,9 @@ const Points = () => {
         <div>My Total MG8 Points</div>
         <PointText>-P</PointText>
       </TextWrapper>
-      {(!isLoggedIn || loginAttemptFailed) && <LoginButton onClick={clickLogin}>Login</LoginButton>}
+      {(!isLoggedIn || loginAttemptFailed) && (
+        <LoginButton onClick={clickLogin}>Login</LoginButton>
+      )}
     </PointsWrapper>
   );
 };

@@ -2,34 +2,42 @@ import styled from "styled-components";
 // import { theme } from "../../styles/theme";
 // import { binance, ace, wemix } from "../../assets/images";
 import CoinCard from "./CoinCard";
-import { useWallet } from '../../hooks/useWallet';
-import { useAuthStore } from '../../store/authStore'; 
+import { useWallet } from "../../hooks/useWallet";
+import { useAuthStore } from "../../store/authStore";
 
 // const coinImages = [binance, ace, wemix];
 
 const Wallet = () => {
   const { connectWallet } = useWallet();
-  const walletAddress = useAuthStore(state => state.userAccount);
+  const walletAddress = useAuthStore((state) => state.userAccount);
 
   const onWalletConnect = async () => {
     const address = await connectWallet();
+    if (address === null) {
+      alert("메타 마스크를 설치해주세요.");
+      return;
+    }
     console.log("연결된 주소:", address);
     useAuthStore.getState().setUserAccount(address);
   };
 
   const onWalletDisconnect = () => {
     useAuthStore.getState().logout();
-    alert("연결이 해제되었습니다.")
-  }
+    alert("연결이 해제되었습니다.");
+  };
 
   return (
     <WalletWrapper>
       <WalletTitle>Get $MG8 if you have one of these coins</WalletTitle>
       <CoinCard />
       {!walletAddress ? (
-        <WalletContainer onClick={onWalletConnect}>Connect Wallet</WalletContainer>
+        <WalletContainer onClick={onWalletConnect}>
+          Connect Wallet
+        </WalletContainer>
       ) : (
-        <WalletContainer onClick={onWalletDisconnect}>Connected</WalletContainer>
+        <WalletContainer onClick={onWalletDisconnect}>
+          Connected
+        </WalletContainer>
       )}
     </WalletWrapper>
   );
