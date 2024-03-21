@@ -10,13 +10,14 @@ const colors = {
   bg: {
     main: "#101111",
     footer: "#000",
-    box: "#222",
+    box: "#1B1B1B",
     icon: "#333",
     iconHover: "#4B4B4B",
     dotsActive: "#379FFF",
   },
   text: "#fff",
   textGray: "#999",
+  footerText: "#A0A0A0",
   lines: {
     header: "#333",
     footer: "#333",
