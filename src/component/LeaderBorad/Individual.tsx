@@ -38,8 +38,7 @@ const getRankImage = (rank: number): string => {
   }
 };
 
-const ITEMS_PER_PAGE = 4;
-const PAGES_PER_VIEW = 5;
+const ITEMS_PER_PAGE = 20;
 
 const IndividualList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);

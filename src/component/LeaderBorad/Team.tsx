@@ -37,8 +37,7 @@ const getRankImage = (rank: number) => {
   }
 };
 
-const ITEMS_PER_PAGE = 4;
-const PAGES_PER_VIEW = 5;
+const ITEMS_PER_PAGE = 20;
 
 const IndividualList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -178,8 +177,7 @@ const RankImg = styled.img`
   position: absolute;
   width: 28px;
   height: 28px;
-  top: 70%;
-  left: 50%;
-  transform: translate(-50%, -70%);
+  left: 15%;
+  top: -40%;
 `;
 const Rank = styled.div``;
