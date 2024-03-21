@@ -1,33 +1,48 @@
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
-
-const time = new Date();
-const days = time.getDay();
-const hours = time.getHours();
-const minutes = time.getMinutes();
-const seconds = time.getSeconds();
-
-const timeUnits = [
-  { value: days, label: "Days" },
-  { value: hours, label: "Hours" },
-  { value: minutes, label: "Minutes" },
-  { value: seconds, label: "Seconds" },
-];
+import { useEffect, useState } from "react";
 
 const Remaining = () => {
+  const [time, setTime] = useState(172800); // 초로 전체시간을 줌
+  const days = Math.floor(time / (3600 * 24)); // day
+  const hours = Math.floor((time % (3600 * 24)) / 3600);
+  const minutes = Math.floor((time % 3600) / 60);
+  const seconds = time % 60;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime((prevTime) => prevTime - 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <RemainWrapper>
       <div>Remaining until Airdrop</div>
       <TimeContainer>
-        {timeUnits.map((unit, index) => (
-          <TimeBox key={index}>
-            <TimeText>
-              {unit.value}
-              {index !== timeUnits.length - 1 && <p>:</p>}
-            </TimeText>
-            <TimeUnit>{unit.label}</TimeUnit>
-          </TimeBox>
-        ))}
+        <TimeBox>
+          <TimeText>
+            {days} <p>:</p>
+          </TimeText>
+          <TimeUnit>Days</TimeUnit>
+        </TimeBox>
+        <TimeBox>
+          <TimeText>
+            {hours} <p>:</p>
+          </TimeText>
+          <TimeUnit>Hours</TimeUnit>
+        </TimeBox>
+        <TimeBox>
+          <TimeText>
+            {minutes} <p>:</p>
+          </TimeText>
+          <TimeUnit>Minutes</TimeUnit>
+        </TimeBox>
+        <TimeBox>
+          <TimeText>{seconds}</TimeText>
+          <TimeUnit>Seconds</TimeUnit>
+        </TimeBox>
       </TimeContainer>
     </RemainWrapper>
   );

@@ -1,63 +1,71 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import { clock } from "../../assets/images";
 
-// 12 hours  countdown
-
-const time = new Date();
-
-const hours = time.getHours();
-const minutes = time.getMinutes();
-const seconds = time.getSeconds();
-
-const timeUnits = [
-  { value: hours, label: "Hours" },
-  { value: minutes, label: "Minutes" },
-  { value: seconds, label: "Seconds" },
-];
-
 const MissionCard = () => {
+  const [time, setTime] = useState(43200); // 초로 12시간을 줌
+  const hours = Math.floor(time / 3600);
+  const minutes = Math.floor((time % 3600) / 60);
+  const seconds = time % 60;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime((prevTime) => prevTime - 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <CardContainer>
       <CardBox>
         <CardImage src={clock} alt="" />
         <CardTitle>Daily Mission</CardTitle>
         <TimeContainer>
-          {timeUnits.map((unit, index) => (
-            <TimeBox key={index}>
-              <TimeText>
-                {unit.value}
-                {index !== timeUnits.length - 1 && <p>:</p>}
-              </TimeText>
-              <TimeUnit>{unit.label}</TimeUnit>
-            </TimeBox>
-          ))}
+          <TimeBox>
+            <TimeText>
+              {hours} <p>:</p>
+            </TimeText>
+            <TimeUnit>Hours</TimeUnit>
+          </TimeBox>
+          <TimeBox>
+            <TimeText>
+              {minutes} <p>:</p>
+            </TimeText>
+            <TimeUnit>Minutes</TimeUnit>
+          </TimeBox>
+          <TimeBox>
+            <TimeText>{seconds}</TimeText>
+            <TimeUnit>Seconds</TimeUnit>
+          </TimeBox>
         </TimeContainer>
         <CardText>Participate twice a day for 12 hours</CardText>
       </CardBox>
     </CardContainer>
   );
 };
-
 export default MissionCard;
 
 const CardContainer = styled.div`
   width: 588px;
-
   background-color: ${theme.colors.bg.box};
   border-radius: 16px;
 `;
+
 const CardTitle = styled.div`
   font-weight: 600;
   font-size: 20px;
   margin-bottom: 48px;
 `;
+
 const CardBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 48px 0px 48px 0px;
 `;
+
 const CardImage = styled.img`
   margin-bottom: 16px;
 `;
