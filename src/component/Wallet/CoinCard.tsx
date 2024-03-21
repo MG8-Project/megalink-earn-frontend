@@ -2,15 +2,9 @@ import styled, { css } from "styled-components";
 import { theme } from "../../styles/theme";
 import { coinList } from "../../constants";
 
-interface CoinItem {
-  title: string;
-  image: string;
-  have: number;
-  count: number;
-}
-
 interface CountProps {
   have: number;
+  count: number;
 }
 
 const CoinCard = () => {
@@ -20,8 +14,8 @@ const CoinCard = () => {
         <CardBox key={index}>
           <CardBoxImg src={item.image} alt="" />
           <CoinTitle>{item.title}</CoinTitle>
-          <Count have={item.have}>
-            <CountText have={item.have}>
+          <Count have={item.have} count={item.count}>
+            <CountText have={item.have} count={item.count}>
               {item.have}/{item.count}
             </CountText>
           </Count>
@@ -77,7 +71,7 @@ const Count = styled.div<CountProps>`
   background-clip: padding-box, border-box;
 
   ${(props) =>
-    props.have === 0 &&
+    props.have < props.count &&
     css`
       border: 1px solid transparent;
       background-image: linear-gradient(#000000, #000000),
@@ -86,17 +80,12 @@ const Count = styled.div<CountProps>`
       background-clip: padding-box, border-box;
     `};
 `;
-
 const CountText = styled.div<CountProps>`
   color: #ffffff;
   font-size: 20px;
   ${(props) =>
-    props.have === 0 &&
+    props.have < props.count &&
     css`
       color: ${theme.colors.textGray};
     `};
-`;
-
-const WarningText = styled.div`
-  color: red;
 `;

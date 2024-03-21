@@ -13,9 +13,6 @@ export interface MockDataType {
   booster: string;
   totalpoints: string;
 }
-interface PaginationButtonProps {
-  active?: boolean;
-}
 
 export const tableTitle = [
   { id: 0, title: "Rank" },

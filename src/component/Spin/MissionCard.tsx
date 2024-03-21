@@ -1,65 +1,77 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import { clock } from "../../assets/images";
 
-// 12 hours  countdown
-
-const time = new Date();
-
-const hours = time.getHours();
-const minutes = time.getMinutes();
-const seconds = time.getSeconds();
-
-const timeUnits = [
-  { value: hours, label: "Hours" },
-  { value: minutes, label: "Minutes" },
-  { value: seconds, label: "Seconds" },
-];
-
 const MissionCard = () => {
+  const [time, setTime] = useState(43200); // 초로 12시간을 줌
+  const hours = Math.floor(time / 3600);
+  const minutes = Math.floor((time % 3600) / 60);
+  const seconds = time % 60;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime((prevTime) => prevTime - 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <CardContainer>
       <CardBox>
-        <CardImage src={clock} alt="" />
-        <CardTitle>Daily Mission</CardTitle>
-        <TimeContainer>
-          {timeUnits.map((unit, index) => (
-            <TimeBox key={index}>
+        <CardMiddleBox>
+          <CardImageBox>
+            <CardImage src={clock} alt="" />
+            <CardTitle>Daily Mission</CardTitle>
+          </CardImageBox>
+          <TimeContainer>
+            <TimeBox>
               <TimeText>
-                {unit.value}
-                {index !== timeUnits.length - 1 && <p>:</p>}
+                {hours} <p>:</p>
               </TimeText>
-              <TimeUnit>{unit.label}</TimeUnit>
+              <TimeUnit>Hours</TimeUnit>
             </TimeBox>
-          ))}
-        </TimeContainer>
+            <TimeBox>
+              <TimeText>
+                {minutes} <p>:</p>
+              </TimeText>
+              <TimeUnit>Minutes</TimeUnit>
+            </TimeBox>
+            <TimeBox>
+              <TimeText>{seconds}</TimeText>
+              <TimeUnit>Seconds</TimeUnit>
+            </TimeBox>
+          </TimeContainer>
+        </CardMiddleBox>
         <CardText>Participate twice a day for 12 hours</CardText>
       </CardBox>
     </CardContainer>
   );
 };
-
 export default MissionCard;
 
 const CardContainer = styled.div`
   width: 588px;
-
   background-color: ${theme.colors.bg.box};
   border-radius: 16px;
 `;
+
 const CardTitle = styled.div`
   font-weight: 600;
   font-size: 20px;
-  margin-bottom: 48px;
 `;
+
 const CardBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 48px 0px 48px 0px;
+  gap: 56px;
 `;
+
 const CardImage = styled.img`
-  margin-bottom: 16px;
+  width: 64px;
 `;
 
 const TimeText = styled.div`
@@ -101,7 +113,18 @@ const TimeUnit = styled.div`
 `;
 
 const CardText = styled.div`
-  margin-top: 56px;
   font-size: 18px;
   font-weight: 400;
+`;
+const CardImageBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+`;
+const CardMiddleBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
 `;

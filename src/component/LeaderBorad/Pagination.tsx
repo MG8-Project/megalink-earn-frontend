@@ -30,12 +30,12 @@ const Pagination: React.FC<PaginationProps> = ({
 }) => {
   const handlePrevClick = () => {
     // 한 번에 5개의 페이지씩 이동
-    setCurrentPage(Math.max(currentPage - 5, 1));
+    setCurrentPage(1);
   };
 
   const handleNextClick = () => {
     // 한 번에 5개의 페이지씩 이동
-    setCurrentPage(Math.min(currentPage + 5, totalPages));
+    setCurrentPage(totalPages);
   };
 
   const getPageNumbers = (): number[] => {
