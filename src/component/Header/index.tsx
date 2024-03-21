@@ -2,14 +2,22 @@ import React from "react";
 import styled from "styled-components";
 import { headerLogo } from "../../assets/images";
 
-const Header = () => {
+interface HeaderProps {
+  scrollToMain: () => void;
+  scrollToLeaderBoard: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({
+  scrollToMain,
+  scrollToLeaderBoard,
+}) => {
   return (
     <HeaderWrapper>
       <HeaderLogo src={headerLogo} alt="" />
       <div>
         <HeaderUl>
-          <li>Home</li>
-          <li>Leaderboard</li>
+          <li onClick={scrollToMain}>Home</li>
+          <li onClick={scrollToLeaderBoard}>Leaderboard</li>
         </HeaderUl>
       </div>
 
@@ -21,12 +29,14 @@ const Header = () => {
 export default Header;
 
 const HeaderWrapper = styled.div`
+  position: fixed;
   display: flex;
   justify-content: space-around;
   align-items: center;
   width: 100%;
   background-color: #000000;
   height: 80px;
+  z-index: 99;
 `;
 
 const HeaderLogo = styled.img`
@@ -40,6 +50,7 @@ const HeaderUl = styled.ul`
   font-size: 18px;
   justify-content: space-between;
   > li {
+    cursor: pointer;
   }
 `;
 

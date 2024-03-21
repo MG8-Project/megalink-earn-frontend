@@ -36,9 +36,9 @@ export const FooterSns = [
 ];
 
 export const coinList = [
-  { id: 1, image: binance, title: "BNB" },
-  { id: 2, image: ace, title: "ACE" },
-  { id: 3, image: wemix, title: "WEMIX" },
+  { id: 1, image: binance, title: "BNB", count: 1, have: 0 },
+  { id: 2, image: ace, title: "ACE", count: 30, have: 0 },
+  { id: 3, image: wemix, title: "WEMIX", count: 150, have: 0 },
 ];
 
 export const statusList = [

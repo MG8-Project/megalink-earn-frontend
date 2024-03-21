@@ -6,17 +6,27 @@ import Daily from "../Daily";
 import Spin from "../Spin";
 import LeaderBoard from "../LeaderBorad";
 
-const Body = () => {
+interface BodyProps {
+  mainRef: React.RefObject<HTMLDivElement>;
+  leaderBoardRef: React.RefObject<HTMLDivElement>;
+}
+
+const Body: React.FC<BodyProps> = ({ mainRef, leaderBoardRef }) => {
   return (
     <BodyWrapper>
-      <Wallet />
+      <div ref={mainRef}>
+        <Wallet />
+      </div>
       <Status />
       <Daily />
       <Spin />
-      <LeaderBoard />
+      <div ref={leaderBoardRef}>
+        <LeaderBoard />
+      </div>
     </BodyWrapper>
   );
 };
 
 export default Body;
+
 const BodyWrapper = styled.main``;
