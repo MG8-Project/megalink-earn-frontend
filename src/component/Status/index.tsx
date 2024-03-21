@@ -1,8 +1,47 @@
 import styled from "styled-components";
 import { statusList } from "../../constants";
 import { theme } from "../../styles/theme";
+import ApiStatus from "../../apis/ApiStatus";
+import { useEffect, useState } from "react";
+
+interface StatusState {
+  [key: number]: string;
+}
 
 const Status = () => {
+  const [status, setStatus] = useState<StatusState>({
+    1: '0', // Total Transactions
+    2: '0', // Total Wallets
+    3: '0', // Transactions Today
+    4: '0', // New Wallets Today
+    5: '0', // Spin Count
+    6: '0', // Total Points
+    7: '0', // $MG8 Dropped
+    8: '0'  // BNB Rewarded
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await ApiStatus.status();
+        setStatus(prevState => ({
+          ...prevState,
+          1: response.totalTransactions,
+          2: response.totalWallets,
+          3: response.transactionsToday,
+          4: response.newWalletsToday,
+          5: response.spinCount,
+          6: response.totalPoints,
+          7: response.MG8Dropped,
+          8: response.BNBRewarded
+        }));
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <StatusWrapper>
       <StatusTitle>Status</StatusTitle>
@@ -12,7 +51,7 @@ const Status = () => {
             <StatusListContentBox>
               <ListTitle>{item.title}</ListTitle>
               <ListContent>
-                {item.id === 7 ? `${item.content} MG8` : item.content}
+                {item.id >= 7 ? `${status[item.id]} MG8` : status[item.id]}
               </ListContent>
             </StatusListContentBox>
           </StatusListContainer>

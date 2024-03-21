@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import {DayRewordList} from "../../constants";
 import {useAuthStore} from "../../store/authStore";
-import {Contract, BrowserProvider, ethers, hexlify, toBeHex} from "ethers";
+import {Contract, BrowserProvider, ethers, toBeHex} from "ethers";
 import {ForwarderAbi} from "../../typechain-types/contracts/Forwarder";
-import wallet from "../Wallet";
+import { mega8, mg8gray} from "../../assets/images";
 import {DailyAttendanceAbi} from "../../typechain-types/contracts/DailyAttendance";
 import API from "../../apis/Api";
+import { useEffect, useState } from "react";
+import ApiDaily from "../../apis/ApiDaily";
 
 export type Domain = {
     chainId: number;
@@ -24,86 +26,109 @@ export const DOMAIN_SEPARATOR: Domain = {
 export type Message = {}
 
 const Reward = () => {
-
+    const isLoggedIn = useAuthStore(state => state.isLoggedIn);
     const walletAddress = useAuthStore(state => state.userAccount);
+    const currentDate = new Date();
+    const currentDay = currentDate.getDay();
+    const [receivedStatus, setReceivedStatus] = useState([0, 0, 0, 0, 0, 0, 0]);
+    const [attendanceClicked, setAttendanceClicked] = useState(false);
+    
+
     const signTypedData = async () => {
-        try {
-            const currentTimestamp = Math.floor(new Date().getTime() / 1000);
-            const oneWeekInSeconds = 60;
-            const futureTimestamp = currentTimestamp + oneWeekInSeconds;
-            const uint48Value = ethers.toNumber(futureTimestamp);
+        if (!attendanceClicked && receivedStatus[currentDay] === 0) { 
+            try {
+                const currentTimestamp = Math.floor(new Date().getTime() / 1000);
+                const oneWeekInSeconds = 60;
+                const futureTimestamp = currentTimestamp + oneWeekInSeconds;
+                const uint48Value = ethers.toNumber(futureTimestamp);
 
-            const chainId = await window.ethereum.request({method: "eth_chainId"});
+                const chainId = await window.ethereum.request({method: "eth_chainId"});
 
-            if (chainId.toString() !== DOMAIN_SEPARATOR.chainId.toString()) {
-                await window.ethereum.request({
-                    method: "wallet_switchEthereumChain",
-                    params: [{chainId: toBeHex(DOMAIN_SEPARATOR.chainId.toString()).toString()}]
-                })
-            }
-
-            const provider = new BrowserProvider(window.ethereum);
-            const forwarder = new Contract(process.env.REACT_APP_CONTRACT_FORWARDER, ForwarderAbi, provider);
-            const nonce = await forwarder.nonces(walletAddress);
-            const dailyAttendance = new Contract(process.env.REACT_APP_CONTRACT_DAILY_ATTENDANCE, DailyAttendanceAbi, provider);
-            const message =  {
-                from: walletAddress,
-                to: process.env.REACT_APP_CONTRACT_DAILY_ATTENDANCE,
-                value: 0,
-                gas: 50000,
-                nonce: nonce.toString(),
-                deadline: uint48Value,
-                data: dailyAttendance.interface.encodeFunctionData("checkIn", undefined),
-            }
-            const typedData = JSON.stringify({
-                domain: DOMAIN_SEPARATOR,
-                message: message,
-                primaryType: "ForwardRequest",
-                types: {
-                    EIP712Domain: [
-                        { name: "name", type: "string" },
-                        { name: "version", type: "string" },
-                        { name: "chainId", type: "uint256" },
-                        { name: "verifyingContract", type: "address" },
-                    ],
-                    ForwardRequest: [
-                        { name: "from", type: "address" },
-                        { name: "to", type: "address" },
-                        { name: "value", type: "uint256" },
-                        { name: "gas", type: "uint256" },
-                        { name: "nonce", type: "uint256" },
-                        { name: "deadline", type: "uint48" },
-                        { name: "data", type: "bytes" },
-                    ],
+                if (chainId.toString() !== DOMAIN_SEPARATOR.chainId.toString()) {
+                    await window.ethereum.request({
+                        method: "wallet_switchEthereumChain",
+                        params: [{chainId: toBeHex(DOMAIN_SEPARATOR.chainId.toString()).toString()}]
+                    })
                 }
-            })
-            const method = "eth_signTypedData_v4";
-            const params = [walletAddress, typedData]
-            const signature = await window.ethereum.request({method, params});
-            const param = {
-                signature,
-                ...message,
+
+                const provider = new BrowserProvider(window.ethereum);
+                const forwarder = new Contract(process.env.REACT_APP_CONTRACT_FORWARDER, ForwarderAbi, provider);
+                const nonce = await forwarder.nonces(walletAddress);
+                const dailyAttendance = new Contract(process.env.REACT_APP_CONTRACT_DAILY_ATTENDANCE, DailyAttendanceAbi, provider);
+                const message =  {
+                    from: walletAddress,
+                    to: process.env.REACT_APP_CONTRACT_DAILY_ATTENDANCE,
+                    value: 0,
+                    gas: 50000,
+                    nonce: nonce.toString(),
+                    deadline: uint48Value,
+                    data: dailyAttendance.interface.encodeFunctionData("checkIn", undefined),
+                }
+                const typedData = JSON.stringify({
+                    domain: DOMAIN_SEPARATOR,
+                    message: message,
+                    primaryType: "ForwardRequest",
+                    types: {
+                        EIP712Domain: [
+                            { name: "name", type: "string" },
+                            { name: "version", type: "string" },
+                            { name: "chainId", type: "uint256" },
+                            { name: "verifyingContract", type: "address" },
+                        ],
+                        ForwardRequest: [
+                            { name: "from", type: "address" },
+                            { name: "to", type: "address" },
+                            { name: "value", type: "uint256" },
+                            { name: "gas", type: "uint256" },
+                            { name: "nonce", type: "uint256" },
+                            { name: "deadline", type: "uint48" },
+                            { name: "data", type: "bytes" },
+                        ],
+                    }
+                })
+                const method = "eth_signTypedData_v4";
+                const params = [walletAddress, typedData]
+                const signature = await window.ethereum.request({method, params});
+                const param = {
+                    signature,
+                    ...message,
+                }
+
+                const res = await API.post(process.env.REACT_APP_API_PERSONAL_CHECK, {
+                    userAccount: walletAddress,
+                    param,
+                });
+
+                // TODO: handle response
+                setAttendanceClicked(true);
+            } catch (error) {
+                console.error(error)
             }
-
-            const res = await API.post(process.env.REACT_APP_API_PERSONAL_CHECK, {
-                userAccount: walletAddress,
-                param,
-            });
-
-            // TODO: handle response
-        } catch (error) {
-            console.error(error)
-        }
+    }
     };
-
+    useEffect(() => {
+        const fetchReceivedStatus = async () => {
+          try {
+            const response = await ApiDaily.myTotalLogin(walletAddress);
+            setReceivedStatus(response);
+          } catch (error) {
+            console.error('Error fetching received status:', error);
+          }
+        };
+        if (isLoggedIn) {
+          fetchReceivedStatus();
+        }
+        return () => {
+        };
+      }, [isLoggedIn, walletAddress]);
     return (
         <RewardWrapper>
             {DayRewordList.map((item, index) => (
-                <RewardContainer key={index}>
+                <RewardContainer key={item.id} onClick={() => index === currentDay && signTypedData()}>
                     <RewardTitle>{item.title}</RewardTitle>
-                    <RewardImage src={item.image} alt=""/>
+                    <RewardImage src={receivedStatus[index] === 1 ? mega8 : mg8gray} alt="" />
                     <RewardPrice>{item.point}</RewardPrice>
-                    <RewardRequest onClick={signTypedData}>Get</RewardRequest>
+                    {/* <RewardRequest onClick={signTypedData}>Get</RewardRequest> */}
                 </RewardContainer>
             ))}
         </RewardWrapper>
@@ -112,18 +137,18 @@ const Reward = () => {
 
 export default Reward;
 
-const RewardRequest = styled.button`
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-weight: 400;
-    height: 40px;
-    border-radius: 100px;
-    border: 0.5px solid #656262;
-    margin: auto;
-    padding: 0 16px;
-    font-size: 16px;
-`
+// const RewardRequest = styled.button`
+//     align-items: center;
+//     justify-content: center;
+//     text-align: center;
+//     font-weight: 400;
+//     height: 40px;
+//     border-radius: 100px;
+//     border: 0.5px solid #656262;
+//     margin: auto;
+//     padding: 0 16px;
+//     font-size: 16px;
+// `
 
 const RewardWrapper = styled.div`
     display: flex;

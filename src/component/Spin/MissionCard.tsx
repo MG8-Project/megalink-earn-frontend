@@ -2,20 +2,16 @@ import { useState, useEffect } from 'react';
 import { useInterval } from 'react-use';
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
-// import { spinFrame, gift, clock, ticket } from "../../assets/images";
 import { clock } from "../../assets/images";
 
 const MissionCard = () => {
   const [remainingTime, setRemainingTime] = useState(getRemainingTime());
-  
+
   useEffect(() => {
-    // fetchTotalTickets();
-    // fetchDailyPool();
   }, [])
   useInterval(() => {
     setRemainingTime(getRemainingTime());
   }, 1000);
-
   function getRemainingTime() {
     const now = new Date();
     let targetTime = new Date();
