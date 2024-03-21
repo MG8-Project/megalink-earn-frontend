@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { useWallet } from "../../hooks/useWallet";
 import { useAuthStore } from "../../store/authStore";
 import ApiPoints from "../../apis/ApiPoints";
@@ -80,27 +80,4 @@ const LoginButton = styled.button`
   border: 1px solid #ffffff;
   border-radius: 100px;
   font-size: 20px;
-`;
-
-const fadeIn = keyframes`
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-`;
-
-const JoinModalWrapper = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  animation: ${fadeIn} 0.3s ease-in-out forwards;
 `;

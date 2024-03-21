@@ -9,7 +9,26 @@ const JoinModal: React.FC = () => {
   const userAccount = window.ethereum?.selectedAddress;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [userName, setUserName] = useState("");
-  const [userNation, setUserNation] = useState(0);
+  const [userNation, setUserNation] = useState(1);
+  const nationList = [
+    { nation: "Korea", code: 1 },
+    { nation: "China", code: 2 },
+    { nation: "Japan", code: 3 },
+    { nation: "USA", code: 4 },
+    { nation: "Brazil", code: 5 },
+    { nation: "Singapore", code: 6 },
+    { nation: "Indonesia", code: 7 },
+    { nation: "India", code: 8 },
+    { nation: "Vietnam", code: 9 },
+    { nation: "Philippines", code: 10 },
+    { nation: "UAE", code: 11 },
+    { nation: "UK", code: 12 },
+    { nation: "France", code: 13 },
+    { nation: "Others", code: 14 },
+  ];
+  const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
+    setUserNation(Number(e.target.value));
+  };
   const resetInputFields = () => {
     setUserName("");
     setUserNation(0);
@@ -61,15 +80,13 @@ const JoinModal: React.FC = () => {
               setUserName(e.target.value)
             }
           />
-          <JoinModalInput
-            type="number"
-            name="country"
-            placeholder="country"
-            value={userNation}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setUserNation(Number(e.target.value))
-            }
-          />
+          <JoinModalSelect onChange={handleSelect}>
+            {nationList.map((data, index) => (
+              <option key={index} value={data.code}>
+                {data.nation}
+              </option>
+            ))}
+          </JoinModalSelect>
           <JoinModalAddress>{userAccount}</JoinModalAddress>
           <JoinModalButton type="submit" disabled={isSubmitting}>
             {isSubmitting ? "로딩..." : "회원가입"}
@@ -138,6 +155,16 @@ const JoinModalInput = styled.input`
   box-sizing: border-box;
 `;
 
+const JoinModalSelect = styled.select`
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  outline: none;
+`;
+
 const JoinModalAddress = styled.div`
   width: 100%;
   padding: 10px;
@@ -156,9 +183,4 @@ const JoinModalButton = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
-`;
-
-const JoinModalError = styled.div`
-  color: red;
-  margin-bottom: 10px;
 `;
