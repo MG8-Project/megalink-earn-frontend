@@ -142,7 +142,7 @@ const StyledTd = styled.td`
 `;
 const StyledTh = styled.th`
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 600;
   padding: 8px 32px;
 `;
 const StyledEnd = styled.td`
