@@ -95,7 +95,7 @@ const IndividualList: React.FC = () => {
               <StyledTd>{item.name}</StyledTd>
               <StyledTd>{item.nation}</StyledTd>
               <StyledTd>{item.level}</StyledTd>
-              <StyledTd>{item.totalpoints}</StyledTd>
+              <StyledEnd>{item.totalpoints}</StyledEnd>
             </tr>
           ))}
         </tbody>
@@ -150,7 +150,7 @@ const StyledEnd = styled.td`
 `;
 const StyledTh = styled.th`
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 600;
   padding: 8px 32px;
 `;
 
@@ -172,9 +172,10 @@ const UserStyledLeftTd = styled.td`
   border-bottom-left-radius: 10px;
 `;
 const UserStyledRightTd = styled.td`
-  padding: 16px 0px 16px 0px;
+  padding: 16px 32px 16px 0px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
+  text-align: end;
 `;
 
 const RankContainer = styled.div`

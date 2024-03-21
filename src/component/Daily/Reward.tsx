@@ -8,7 +8,7 @@ const Reward = () => {
         <RewardContainer key={index}>
           <RewardTitle>{item.title}</RewardTitle>
           <RewardImage src={item.image} alt="" />
-          <RewardPrice>{item.point}</RewardPrice>
+          <RewardPrice>+{item.point}P</RewardPrice>
         </RewardContainer>
       ))}
     </RewardWrapper>

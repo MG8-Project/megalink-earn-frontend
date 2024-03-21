@@ -10,8 +10,8 @@ import {
 } from "../assets/images";
 //footer
 export const FooterList = [
-  { title: "Megalink", content: "Website", link: "" },
-  { title: "Support", content: "Contact Us", link: "" },
+  { id: 1, title: "Megalink", content: "Website", link: "https://mega8.io/" },
+  { id: 2, title: "Support", content: "Contact Us", link: "" },
 ];
 
 export const FooterSns = [
@@ -53,11 +53,11 @@ export const statusList = [
 ];
 
 export const DayRewordList = [
-  { id: 1, title: "Day 1", image: mega8, point: "+100P" },
-  { id: 2, title: "Day 2", image: mg8gray, point: "+100P" },
-  { id: 3, title: "Day 3", image: mg8gray, point: "+100P" },
-  { id: 4, title: "Day 4", image: mg8gray, point: "+100P" },
-  { id: 5, title: "Day 5", image: mg8gray, point: "+100P" },
-  { id: 6, title: "Day 6", image: mg8gray, point: "+100P" },
-  { id: 7, title: "Day 7", image: mg8gray, point: "+100P" },
+  { id: 1, title: "Day 1", image: mega8, point: 100 },
+  { id: 2, title: "Day 2", image: mg8gray, point: 100 },
+  { id: 3, title: "Day 3", image: mg8gray, point: 100 },
+  { id: 4, title: "Day 4", image: mg8gray, point: 100 },
+  { id: 5, title: "Day 5", image: mg8gray, point: 100 },
+  { id: 6, title: "Day 6", image: mg8gray, point: 100 },
+  { id: 7, title: "Day 7", image: mg8gray, point: 100 },
 ];
