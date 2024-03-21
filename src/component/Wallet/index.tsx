@@ -17,6 +17,11 @@ const Wallet = () => {
     useAuthStore.getState().setUserAccount(address);
   };
 
+  const onWalletDisconnect = () => {
+    useAuthStore.getState().logout();
+    alert("연결이 해제되었습니다.")
+  }
+
   return (
     <WalletWrapper>
       <WalletTitle>Get $MG8 if you have one of these coins</WalletTitle>
@@ -24,7 +29,7 @@ const Wallet = () => {
       {!walletAddress ? (
         <WalletContainer onClick={onWalletConnect}>Connect Wallet</WalletContainer>
       ) : (
-        <WalletContainer>Connected</WalletContainer>
+        <WalletContainer onClick={onWalletDisconnect}>Connected</WalletContainer>
       )}
     </WalletWrapper>
   );
