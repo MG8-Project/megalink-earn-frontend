@@ -51,6 +51,8 @@ const HeaderUl = styled.ul`
   justify-content: space-between;
   > li {
     cursor: pointer;
+    font-weight: 600;
+    font-size: 18px;
   }
 `;
 

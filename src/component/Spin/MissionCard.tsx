@@ -20,26 +20,30 @@ const MissionCard = () => {
   return (
     <CardContainer>
       <CardBox>
-        <CardImage src={clock} alt="" />
-        <CardTitle>Daily Mission</CardTitle>
-        <TimeContainer>
-          <TimeBox>
-            <TimeText>
-              {hours} <p>:</p>
-            </TimeText>
-            <TimeUnit>Hours</TimeUnit>
-          </TimeBox>
-          <TimeBox>
-            <TimeText>
-              {minutes} <p>:</p>
-            </TimeText>
-            <TimeUnit>Minutes</TimeUnit>
-          </TimeBox>
-          <TimeBox>
-            <TimeText>{seconds}</TimeText>
-            <TimeUnit>Seconds</TimeUnit>
-          </TimeBox>
-        </TimeContainer>
+        <CardMiddleBox>
+          <CardImageBox>
+            <CardImage src={clock} alt="" />
+            <CardTitle>Daily Mission</CardTitle>
+          </CardImageBox>
+          <TimeContainer>
+            <TimeBox>
+              <TimeText>
+                {hours} <p>:</p>
+              </TimeText>
+              <TimeUnit>Hours</TimeUnit>
+            </TimeBox>
+            <TimeBox>
+              <TimeText>
+                {minutes} <p>:</p>
+              </TimeText>
+              <TimeUnit>Minutes</TimeUnit>
+            </TimeBox>
+            <TimeBox>
+              <TimeText>{seconds}</TimeText>
+              <TimeUnit>Seconds</TimeUnit>
+            </TimeBox>
+          </TimeContainer>
+        </CardMiddleBox>
         <CardText>Participate twice a day for 12 hours</CardText>
       </CardBox>
     </CardContainer>
@@ -56,7 +60,6 @@ const CardContainer = styled.div`
 const CardTitle = styled.div`
   font-weight: 600;
   font-size: 20px;
-  margin-bottom: 48px;
 `;
 
 const CardBox = styled.div`
@@ -64,10 +67,11 @@ const CardBox = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 48px 0px 48px 0px;
+  gap: 56px;
 `;
 
 const CardImage = styled.img`
-  margin-bottom: 16px;
+  width: 64px;
 `;
 
 const TimeText = styled.div`
@@ -109,7 +113,18 @@ const TimeUnit = styled.div`
 `;
 
 const CardText = styled.div`
-  margin-top: 56px;
   font-size: 18px;
   font-weight: 400;
+`;
+const CardImageBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+`;
+const CardMiddleBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
 `;
