@@ -10,8 +10,8 @@ import {
 } from "../assets/images";
 //footer
 export const FooterList = [
-  { title: "Megalink", content: "Website", link: "" },
-  { title: "Support", content: "Contact Us", link: "" },
+  { id: 1, title: "Megalink", content: "Website", link: "https://mega8.io/" },
+  { id: 2, title: "Support", content: "Contact Us", link: "" },
 ];
 
 export const FooterSns = [

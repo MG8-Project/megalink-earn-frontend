@@ -13,7 +13,15 @@ const Footer = () => {
             <FooterContentBox key={index}>
               <FooterBoldText>{item.title}</FooterBoldText>
               <a href={item.link}>
-                <FooterContentText>{item.content}</FooterContentText>
+                <FooterContentText
+                  style={
+                    item.content === "Website"
+                      ? { width: "55px", borderBottom: "1px solid #ffffff" }
+                      : {}
+                  }
+                >
+                  {item.content}
+                </FooterContentText>
               </a>
             </FooterContentBox>
           ))}
