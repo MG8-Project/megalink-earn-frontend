@@ -3,7 +3,11 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import API from "../../apis/Api";
 
-const JoinModal: React.FC = () => {
+interface JoinModalProps {
+  handleCloseModal: () => void;
+}
+const JoinModal = (props: JoinModalProps) => {
+  const { handleCloseModal } = props;
   const { handleSubmit } = useForm();
   const endpointUser = process.env.REACT_APP_API_USER;
   const userAccount = window.ethereum?.selectedAddress;
@@ -51,6 +55,7 @@ const JoinModal: React.FC = () => {
       if (res.data.resultCode !== "1") throw new Error(res.data.resultCode);
       alert("회원가입이 완료되었습니다.");
       resetInputFields();
+      handleCloseModal();
     } catch (err) {
       switch (err) {
         case "2":

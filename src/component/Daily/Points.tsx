@@ -48,7 +48,12 @@ const Points = () => {
       {(!isLoggedIn || loginAttemptFailed) && (
         <LoginButton onClick={clickLogin}>Login</LoginButton>
       )}
-      {isModalOpen ? <JoinModal /> : <> </>}
+      {/* FIXME:  add close modal */}
+      {isModalOpen ? (
+        <JoinModal handleCloseModal={() => setIsModalOpen(false)} />
+      ) : (
+        <> </>
+      )}
     </PointsWrapper>
   );
 };
