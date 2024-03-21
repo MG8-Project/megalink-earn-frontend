@@ -83,6 +83,7 @@ const FooterBottom = styled.div`
 
 const FooterBottomText = styled.div`
   color: ${theme.colors.footerText};
+  font-size: 14px;
 `;
 const FooterContentText = styled.p`
   font-size: 16px;
