@@ -32,6 +32,7 @@ const CardWrapper = styled.div`
 const MissionWrapper = styled.div`
   margin-top: 80px;
   width: 1200px;
+
   display: flex;
   gap: 24px;
 `;

@@ -5,10 +5,12 @@ const Points = () => {
     <PointsWrapper>
       <TextWrapper>
         <div>My Total MG8 Points</div>
-        <PointText>-P</PointText>
+        {/* <PointText>-P</PointText> */}
+        <PointText>123,456,789P</PointText>
       </TextWrapper>
-
-      <LoginButton>Login</LoginButton>
+      {/* 
+      <LoginButton>Login</LoginButton> */}
+      <EnableButton>Enable Claim</EnableButton>
     </PointsWrapper>
   );
 };
@@ -37,6 +39,16 @@ const LoginButton = styled.button`
   margin-top: 36px;
   font-weight: 600;
   width: 120px;
+  height: 56px;
+  border: 1px solid #ffffff;
+  border-radius: 100px;
+  font-size: 20px;
+`;
+
+const EnableButton = styled.button`
+  margin-top: 36px;
+  font-weight: 600;
+  width: 180px;
   height: 56px;
   border: 1px solid #ffffff;
   border-radius: 100px;
