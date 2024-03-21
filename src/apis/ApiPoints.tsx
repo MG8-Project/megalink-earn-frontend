@@ -4,36 +4,33 @@ import API from './Api';
 const endpointUser = process.env.REACT_APP_API_USER;
 
 const login = async (userAccount: string) => {
-  try {
-    const response = await API.post(`${endpointUser}/login`, { userAccount });
+        const response = await API.post(`${endpointUser}/login`, {userAccount});
     const data = response.data;
 
-    switch(data.resultCode) {
-      case "1":
-        console.log(data.msg);
-        return data;
-      case "2":
-        throw new Error(data.msg);
-      case "40":
-        throw new Error(data.msg);
-      default:
-        throw new Error("알 수 없는 에러가 발생하였습니다.");
-    }
-  } catch (error) {
-    console.error(`로그인 처리 중 에러가 발생하였습니다: ${error}`);
-    throw error;
-  }
+    switch (data.resultCode) {
+        case "1":
+            return data;
+        default:
+            throw new Error("Unknown error occurred. Please try again.");
+        }
 };
 
-const getUserId = async ( userAccount: string ) => {
-  return "10";
-  // return API
-  //   .post(endpointAdmin, { userAccount })
-  //   .then((res) => res.data.success);
+const getUserId = async (userAccount: string) => {
+    return "10";
+    // return API
+    //   .post(endpointAdmin, { userAccount })
+    //   .then((res) => res.data.success);
 };
+
+const join = async (userAccount: string) => {
+    return API.post(`${endpointUser}/join`, {userAccount})
+}
+
+
 const ApiPoints = {
-	login,
-  getUserId,
+    login,
+    getUserId,
+    join
 };
-  
+
 export default ApiPoints;

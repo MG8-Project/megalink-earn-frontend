@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import {DayRewordList} from "../../constants";
 import {useAuthStore} from "../../store/authStore";
-import {Contract, BrowserProvider, ethers, hexlify, toBeHex} from "ethers";
+import {Contract, BrowserProvider, ethers,  toBeHex} from "ethers";
 import {ForwarderAbi} from "../../typechain-types/contracts/Forwarder";
-import wallet from "../Wallet";
 import {DailyAttendanceAbi} from "../../typechain-types/contracts/DailyAttendance";
 import API from "../../apis/Api";
+import ApiPoints from "../../apis/ApiPoints";
+import {useState} from "react";
+import JoinModal from "../Modal";
 
 export type Domain = {
     chainId: number;
@@ -24,10 +26,14 @@ export const DOMAIN_SEPARATOR: Domain = {
 export type Message = {}
 
 const Reward = () => {
-
     const walletAddress = useAuthStore(state => state.userAccount);
+    const isLoggedIn = useAuthStore(state => state.isLoggedIn);
     const signTypedData = async () => {
         try {
+            if (!isLoggedIn) {
+                alert("Please login first.")
+                return;
+            }
             const currentTimestamp = Math.floor(new Date().getTime() / 1000);
             const oneWeekInSeconds = 60;
             const futureTimestamp = currentTimestamp + oneWeekInSeconds;
@@ -88,6 +94,11 @@ const Reward = () => {
             const res = await API.post(process.env.REACT_APP_API_PERSONAL_CHECK, {
                 userAccount: walletAddress,
                 param,
+            }, {
+                headers: {
+                    "Content-Type": "application/json",
+                }
+
             });
 
             // TODO: handle response
