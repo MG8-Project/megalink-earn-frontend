@@ -14,7 +14,7 @@ const Mission = () => {
         <PoolCard />
       </CardWrapper>
       <SpinContainer>
-        <SpinContainerImage src={spinFrame} alt="" />
+        <SpinPage src="/roulette" />
       </SpinContainer>
     </MissionWrapper>
   );
@@ -42,7 +42,7 @@ const SpinContainer = styled.div`
   height: 1112px;
   border-radius: 16px; */
 `;
-const SpinContainerImage = styled.img`
+const SpinPage = styled.iframe`
   width: 588px;
   height: 1112px;
   border-radius: 16px;
