@@ -14,10 +14,10 @@ const TicketCard = () => {
     try {
       if (isLoggedIn && userAccount) {
         const response = await ApiDaily.myParticipationTicket(userAccount);
-        setMyTickets(response);
+        setMyTickets(response >= 0 ? response : 0);
       } else {
         setMyTickets(0);
-      }
+    }
     } catch (error) {
       console.error("Error fetching my tickets:", error);
     }
