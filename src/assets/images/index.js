@@ -21,3 +21,7 @@ export { default as gift } from "./gift.png";
 export { default as ticket } from "./ticket.png";
 export { default as clock } from "./clock.png";
 export { default as spinFrame } from "./Frame_1707484677.png";
+
+// arrow
+export { default as prearrow } from "./prearrow.png";
+export { default as nextarrow } from "./nextarrow.png";

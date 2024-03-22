@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import API from "../../apis/Api";
 import { API_SUCCESS_CODE, nationList } from "../../constants";
 
+import { prearrow, nextarrow } from "../../assets/images";
+
 export const tableTitle = [
   { id: 0, title: "Rank" },
   { id: 1, title: "Name" },
@@ -103,17 +105,9 @@ const IndividualList = () => {
         </tbody>
       </TableStyle>
       <PaginationWrapper>
-        <PageButton
-          onClick={() => setCurrentPage(1)}
-          style={{
-            background:
-              currentPage === 1
-                ? theme.colors.bg.dotsActive
-                : theme.colors.footerText,
-          }}
-        >
-          First
-        </PageButton>
+        <ArrowButton onClick={() => setCurrentPage(1)}>
+          <ButtonImg src={prearrow} />
+        </ArrowButton>
         {visiblePages.map((data, index) => (
           <PageButton
             key={index}
@@ -131,17 +125,9 @@ const IndividualList = () => {
         {visiblePages.length < totalPage && (
           <PageButton disabled>...</PageButton>
         )}
-        <PageButton
-          onClick={() => setCurrentPage(totalPage)}
-          style={{
-            background:
-              currentPage === totalPage
-                ? theme.colors.bg.dotsActive
-                : theme.colors.footerText,
-          }}
-        >
-          End
-        </PageButton>
+        <ArrowButton onClick={() => setCurrentPage(totalPage)}>
+          <ButtonImg src={nextarrow} />
+        </ArrowButton>
       </PaginationWrapper>
     </IndividualListWrapper>
   );
@@ -188,7 +174,6 @@ export const PaginationWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 20px;
 `;
 
 export const PageButton = styled.button`
@@ -199,4 +184,20 @@ export const PageButton = styled.button`
   padding: 5px 10px;
   margin: 0 5px;
   border-radius: 5px;
+`;
+
+export const ArrowButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+  background: ${theme.colors.bg.main};
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin: 0 5px;
+  border-radius: 5px;
+`;
+export const ButtonImg = styled.img`
+  width: 20px;
 `;

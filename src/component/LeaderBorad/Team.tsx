@@ -3,7 +3,14 @@ import { theme } from "../../styles/theme";
 import { useEffect, useState } from "react";
 import API from "../../apis/Api";
 import { API_SUCCESS_CODE, nationList } from "../../constants";
-import { PaginationWrapper, PageButton } from "./Individual";
+import {
+  PaginationWrapper,
+  PageButton,
+  ArrowButton,
+  ButtonImg,
+} from "./Individual";
+
+import { prearrow, nextarrow } from "../../assets/images";
 
 export const tableTitle = [
   { id: 0, title: "Rank" },
@@ -105,7 +112,9 @@ const TeamList = () => {
         </tbody>
       </TableStyle>
       <PaginationWrapper>
-        <PageButton onClick={() => setCurrentPage(1)}>First</PageButton>
+        <ArrowButton onClick={() => setCurrentPage(1)}>
+          <ButtonImg src={prearrow} />
+        </ArrowButton>
         {visiblePages.map((data, index) => (
           <PageButton
             key={index}
@@ -123,7 +132,9 @@ const TeamList = () => {
         {visiblePages.length < totalPage && (
           <PageButton disabled>...</PageButton>
         )}
-        <PageButton onClick={() => setCurrentPage(totalPage)}>End</PageButton>
+        <ArrowButton onClick={() => setCurrentPage(totalPage)}>
+          <ButtonImg src={nextarrow} />
+        </ArrowButton>
       </PaginationWrapper>
     </TeamListWrapper>
   );
