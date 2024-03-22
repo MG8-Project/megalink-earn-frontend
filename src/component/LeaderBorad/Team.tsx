@@ -1,6 +1,16 @@
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
-import mockData from "../../mock";
+import { useEffect, useState } from "react";
+import API from "../../apis/Api";
+import { API_SUCCESS_CODE, nationList } from "../../constants";
+import {
+  PaginationWrapper,
+  PageButton,
+  ArrowButton,
+  ButtonImg,
+} from "./Individual";
+
+import { prearrow, nextarrow } from "../../assets/images";
 
 export const tableTitle = [
   { id: 0, title: "Rank" },
@@ -9,8 +19,76 @@ export const tableTitle = [
   { id: 3, title: "Booster" },
   { id: 4, title: "Total Points" },
 ];
-
+interface TeamListDataType {
+  name: string;
+  rank: number;
+  totalpoints: number;
+  booster: string;
+  nation: number;
+}
+interface TeamResponseType {
+  status: number;
+  data: {
+    totalSize: number;
+    teamRnkLst: Array<TeamListDataType>;
+  };
+}
 const TeamList = () => {
+  const [totalPage, setTotalPage] = useState(0);
+  const [visiblePages, setVisiblePages] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [teamListData, setTeamListData] = useState<Array<TeamListDataType>>([]);
+  const handleChangePage = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const convertNation = (nationCode: number) => {
+    if (nationCode === undefined || nationCode === 0) return "Others";
+    return nationList.filter((data) => data.code === nationCode)[0].nation;
+  };
+  const addComma = (point: string) => {
+    return point.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
+  const fetchTeamList = async (currentPage: number) => {
+    try {
+      const endPoint = `${process.env.REACT_APP_API_PERSONAL}/teamRnk?size=5&&page=${currentPage}`;
+      const res: TeamResponseType = await API.get(endPoint);
+      if (res.status !== API_SUCCESS_CODE) throw new Error(String(res.status));
+      setTeamListData(res.data.teamRnkLst);
+      setTotalPage(Math.ceil(res.data.totalSize / 5));
+    } catch (err) {
+      switch (err) {
+        default:
+          console.log("Fail to Load Team Rank Data");
+      }
+    }
+  };
+  useEffect(() => {
+    fetchTeamList(currentPage);
+  }, [currentPage]);
+  useEffect(() => {
+    const visiblePages = () => {
+      const visiblePageCount = 5;
+      const totalVisiblePageCount = Math.min(visiblePageCount, totalPage);
+      const offset = Math.floor(totalVisiblePageCount / 2);
+      let startPage = currentPage - offset;
+      let endPage = currentPage + offset;
+      if (startPage <= 0) {
+        startPage = 1;
+        endPage = Math.min(totalPage, visiblePageCount);
+      } else if (endPage > totalPage) {
+        endPage = totalPage;
+        startPage = Math.max(1, endPage - visiblePageCount + 1);
+      }
+      const pages: number[] = [];
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+      setVisiblePages(pages);
+    };
+    visiblePages();
+  }, [currentPage, totalPage]);
   return (
     <TeamListWrapper>
       <TableStyle>
@@ -22,17 +100,42 @@ const TeamList = () => {
           </tr>
         </TheadStyle>
         <tbody>
-          {mockData.map((item) => (
-            <tr key={item.index}>
+          {teamListData.map((item, index) => (
+            <tr key={index}>
               <StyledTd>{item.rank}</StyledTd>
               <StyledTd>{item.name}</StyledTd>
-              <StyledTd>{item.nation}</StyledTd>
+              <StyledTd>{convertNation(item.nation)}</StyledTd>
               <StyledTd>{item.booster}%</StyledTd>
-              <StyledTd>{item.totalpoints}</StyledTd>
+              <StyledTd>{addComma(String(item.totalpoints))}</StyledTd>
             </tr>
           ))}
         </tbody>
       </TableStyle>
+      <PaginationWrapper>
+        <ArrowButton onClick={() => setCurrentPage(1)}>
+          <ButtonImg src={prearrow} />
+        </ArrowButton>
+        {visiblePages.map((data, index) => (
+          <PageButton
+            key={index}
+            onClick={() => handleChangePage(data)}
+            style={{
+              background:
+                data === currentPage
+                  ? theme.colors.bg.dotsActive
+                  : theme.colors.bg.main,
+            }}
+          >
+            {data}
+          </PageButton>
+        ))}
+        {visiblePages.length < totalPage && (
+          <PageButton disabled>...</PageButton>
+        )}
+        <ArrowButton onClick={() => setCurrentPage(totalPage)}>
+          <ButtonImg src={nextarrow} />
+        </ArrowButton>
+      </PaginationWrapper>
     </TeamListWrapper>
   );
 };
@@ -45,6 +148,7 @@ const TeamListWrapper = styled.div`
   width: 1200px;
   border-radius: 16px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 24px;

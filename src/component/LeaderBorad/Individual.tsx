@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
-import mockData from "../../mock";
+import { useEffect, useState } from "react";
+import API from "../../apis/Api";
+import { API_SUCCESS_CODE, nationList } from "../../constants";
+
+import { prearrow, nextarrow } from "../../assets/images";
 
 export const tableTitle = [
   { id: 0, title: "Rank" },
@@ -10,7 +14,74 @@ export const tableTitle = [
   { id: 4, title: "Total Points" },
 ];
 
+interface PersonalListDataType {
+  userName: string;
+  rank: number;
+  nationCode: number;
+  point: number;
+  level: number;
+}
+interface IndividualResponseType {
+  status: number;
+  data: {
+    totalSize: number;
+    personalRnkLst: Array<PersonalListDataType>;
+  };
+}
 const IndividualList = () => {
+  const [totalPage, setTotalPage] = useState(0);
+  const [visiblePages, setVisiblePages] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [personalListData, setPersonalListData] = useState<
+    Array<PersonalListDataType>
+  >([]);
+
+  const handleChangePage = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+  const convertNation = (nationCode: number) => {
+    if (nationCode === undefined || nationCode === 0) return "Others";
+    return nationList.filter((data) => data.code === nationCode)[0].nation;
+  };
+
+  const fetchIndividualList = async (currentPage: number) => {
+    try {
+      const endPoint = `${process.env.REACT_APP_API_PERSONAL}/personalRnk?size=5&&page=${currentPage}`;
+      const res: IndividualResponseType = await API.get(endPoint);
+      if (res.status !== API_SUCCESS_CODE) throw new Error(String(res.status));
+      setPersonalListData(res.data.personalRnkLst);
+      setTotalPage(Math.ceil(res.data.totalSize / 5));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchIndividualList(currentPage);
+  }, [currentPage]);
+
+  useEffect(() => {
+    const visiblePages = () => {
+      const visiblePageCount = 5;
+      const totalVisiblePageCount = Math.min(visiblePageCount, totalPage);
+      const offset = Math.floor(totalVisiblePageCount / 2);
+      let startPage = currentPage - offset;
+      let endPage = currentPage + offset;
+      if (startPage <= 0) {
+        startPage = 1;
+        endPage = Math.min(totalPage, visiblePageCount);
+      } else if (endPage > totalPage) {
+        endPage = totalPage;
+        startPage = Math.max(1, endPage - visiblePageCount + 1);
+      }
+      const pages: number[] = [];
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+      setVisiblePages(pages);
+    };
+    visiblePages();
+  }, [currentPage, totalPage]);
   return (
     <IndividualListWrapper>
       <TableStyle>
@@ -22,17 +93,42 @@ const IndividualList = () => {
           </tr>
         </TheadStyle>
         <tbody>
-          {mockData.map((item) => (
-            <tr key={item.index}>
+          {personalListData.map((item, index) => (
+            <tr key={index}>
               <StyledTd>{item.rank}</StyledTd>
-              <StyledTd>{item.name}</StyledTd>
-              <StyledTd>{item.nation}</StyledTd>
+              <StyledTd>{item.userName}</StyledTd>
+              <StyledTd>{convertNation(item.nationCode)}</StyledTd>
               <StyledTd>{item.level}</StyledTd>
-              <StyledTd>{item.totalpoints}</StyledTd>
+              <StyledTd>{item.point}</StyledTd>
             </tr>
           ))}
         </tbody>
       </TableStyle>
+      <PaginationWrapper>
+        <ArrowButton onClick={() => setCurrentPage(1)}>
+          <ButtonImg src={prearrow} />
+        </ArrowButton>
+        {visiblePages.map((data, index) => (
+          <PageButton
+            key={index}
+            onClick={() => handleChangePage(data)}
+            style={{
+              background:
+                data === currentPage
+                  ? theme.colors.bg.dotsActive
+                  : theme.colors.bg.main,
+            }}
+          >
+            {data}
+          </PageButton>
+        ))}
+        {visiblePages.length < totalPage && (
+          <PageButton disabled>...</PageButton>
+        )}
+        <ArrowButton onClick={() => setCurrentPage(totalPage)}>
+          <ButtonImg src={nextarrow} />
+        </ArrowButton>
+      </PaginationWrapper>
     </IndividualListWrapper>
   );
 };
@@ -46,6 +142,7 @@ const IndividualListWrapper = styled.div`
   width: 1200px;
   border-radius: 16px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 24px;
@@ -71,4 +168,36 @@ const StyledTh = styled.th`
   font-size: 16px;
   font-weight: 400;
   padding: 8px 32px;
+`;
+
+export const PaginationWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
+export const PageButton = styled.button`
+  font-size: 1.7rem;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin: 0 5px;
+  border-radius: 5px;
+`;
+
+export const ArrowButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+  background: ${theme.colors.bg.main};
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin: 0 5px;
+  border-radius: 5px;
+`;
+export const ButtonImg = styled.img`
+  width: 20px;
 `;

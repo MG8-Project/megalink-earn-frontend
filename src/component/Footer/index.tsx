@@ -21,8 +21,8 @@ const Footer = () => {
           <FooterContentBox>
             <FooterBoldText>Community</FooterBoldText>
             <ImgBoxWrapper>
-              {FooterSns.map((sns) => (
-                <ImgBox>
+              {FooterSns.map((sns, index) => (
+                <ImgBox key={index}>
                   <a href={sns.linkUrl}>
                     <CommunityImg src={sns.imgSrc} alt={sns.text} />
                   </a>
