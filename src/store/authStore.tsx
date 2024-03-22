@@ -4,11 +4,9 @@ import { devtools, persist } from 'zustand/middleware'
 interface State {
   isLoggedIn: boolean,
   userAccount: string | null,
-  userId: string,
-  login: (userAccount: string, userId: string) => void,
+  login: (userAccount: string) => void,
   logout: () => void,
   setUserAccount: (address: string) => void,
-  setUserId: (userId: string) => void,
 };
 
 export const useAuthStore = create<State>()(
@@ -17,11 +15,9 @@ export const useAuthStore = create<State>()(
       (set) => ({
         isLoggedIn: false,
         userAccount: null,
-        userId: null,
-        login: (userAccount: string, userId: string) => set((state) => ({ isLoggedIn: true, userAccount, userId })),
-        logout: () => set((state) => ({ isLoggedIn: false, userAccount: null, userId: null })),
+        login: (userAccount: string) => set((state) => ({ isLoggedIn: true, userAccount })),
+        logout: () => set((state) => ({ isLoggedIn: false, userAccount: null })),
         setUserAccount: (address: string) => set((state) => ({ userAccount: address })),
-        setUserId: (userId: string) => set((state) => ({ userId: userId })),
       }),
       {
         name: "auth-storage",
@@ -30,4 +26,3 @@ export const useAuthStore = create<State>()(
     )
   )
 )
-

@@ -2,22 +2,22 @@ import API from './Api';
 
 const endpoint = process.env.REACT_APP_API_GAME;
 
-const personalRnk  = async (userId: string) => {
+const personalRnk  = async () => {
 	return API
-	.get(`${endpoint}/personalRnk`, {params: {userId: userId}})
+	.get(`${endpoint}/personalRnk`)
 	.then((res) => res.data);
 }
-const teamRnk = async (userId: string) => {
+const teamRnk = async () => {
 	return API
-	.get(`${endpoint}/teamRnk`, {params: {userId: userId}})
+	.get(`${endpoint}/teamRnk`)
 	.then((res) => res.data);
 }
-const leaderboard = async (type: string, userId: string) => {
+const leaderboard = async (type: string) => {
 
 	if (type === "individual") {
-		return personalRnk(userId);
+		return personalRnk();
 	} else if (type === "team") {
-		return teamRnk(userId);
+		return teamRnk();
 	}
 }
 

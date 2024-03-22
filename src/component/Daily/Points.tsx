@@ -2,47 +2,35 @@ import styled from "styled-components";
 import { useWallet } from "../../hooks/useWallet";
 import { useAuthStore } from "../../store/authStore";
 import ApiPoints from "../../apis/ApiPoints";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const Points = () => {
   const { connectWallet } = useWallet();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const walletAddress = useAuthStore((state) => state.userAccount);
-  const userId = useAuthStore((state) => state.userId);
   const [loginAttemptFailed, setLoginAttemptFailed] = useState(false);
 
   const clickLogin = async () => {
-    setLoginAttemptFailed(false);
-    let address: string = null;
-    if (!walletAddress) {
-      address = await connectWallet();
-      if (address === null) {
-        alert("메타 마스크를 설치해주세요.");
+    try {
+      let address = walletAddress || await connectWallet();
+      if (!address) {
+        alert("메타 마스크를 연결해주세요.");
         return;
       }
       console.log("연결된 주소:", address);
-      useAuthStore.getState().setUserAccount(address);
-    }
-    let getUserId: string = null;
-    if (!userId) {
-      getUserId = await ApiPoints.getUserId(address);
-    }
-    try {
-      address = address || walletAddress;
-      getUserId = userId || getUserId;
-
-      const success = await ApiPoints.login(address);
-      useAuthStore.getState().login(address, getUserId);
-      if (success.resultCode === 1) {
-        console.log("로그인 성공!", success.resultCode);
-      } else {
-        console.error("로그인 실패.");
-        setLoginAttemptFailed(true);
+      const loginResponse = await ApiPoints.login(address);
+      console.log(loginResponse,loginResponse.resultCode, loginResponse.resultCode !== '1');
+      if (loginResponse.resultCode !== '1') {
+        throw new Error("로그인 실패");
       }
+      console.log("로그인 성공!", loginResponse.resultCode);
+      useAuthStore.getState().login(address);
     } catch (error) {
-      console.error("API 호출 중 에러 발생:", error);
-    }
+      console.error("로그인 과정에서 에러가 발생했습니다:", error);
+      setLoginAttemptFailed(true);
+    } 
   };
+
   return (
     <PointsWrapper>
       <TextWrapper>

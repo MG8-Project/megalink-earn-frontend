@@ -25,14 +25,8 @@ const login = async (userAccount: string) => {
   }
 };
 
-const getUserId = async ( userAccount: string ) => {
-  return API
-    .post(endpointAdmin, { userAccount })
-    .then((res) => res.data.success);
-};
 const ApiPoints = {
 	login,
-  getUserId,
 };
   
 export default ApiPoints;
