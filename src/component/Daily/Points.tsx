@@ -3,14 +3,12 @@ import { useWallet } from "../../hooks/useWallet";
 import { useAuthStore } from "../../store/authStore";
 import ApiPoints from "../../apis/ApiPoints";
 import { useState } from "react";
-import JoinModal from "../Modal";
 
 const Points = () => {
   const { connectWallet } = useWallet();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const walletAddress = useAuthStore((state) => state.userAccount);
   const [loginAttemptFailed, setLoginAttemptFailed] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const clickLogin = async () => {
     try {
@@ -41,11 +39,6 @@ const Points = () => {
       </TextWrapper>
       {(!isLoggedIn || loginAttemptFailed) && (
         <LoginButton onClick={clickLogin}>Login</LoginButton>
-      )}
-      {isModalOpen ? (
-        <JoinModal handleCloseModal={() => setIsModalOpen(false)} />
-      ) : (
-        <> </>
       )}
     </PointsWrapper>
   );
