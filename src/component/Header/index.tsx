@@ -11,16 +11,18 @@ const Header = () => {
   const onWalletConnect = async () => {
     const address = await connectWallet();
     if (address === null) {
-      alert("메타 마스크를 설치해주세요.");
+      alert("Please install Metamask.");
       return;
     }
-    console.log("연결된 주소:", address);
+    // 아래 alert와 비슷한 역할을 하는것 같은데 우선 console.log로 작성되어있어 따로 alert로 변경하진 않았습니다.
+    console.log("Connected Address: ", address);
     useAuthStore.getState().setUserAccount(address);
   };
 
   const onWalletDisconnect = () => {
     useAuthStore.getState().setUserAccount(null);
-    console.log("연결이 해제되었습니다.");
+    // 같은 메서드인데 다른 컴포넌트에서는 alert여서 일단 alert로 통일 시켜놓았습니다.
+    alert("Disconnected.");
   };
 
   return (

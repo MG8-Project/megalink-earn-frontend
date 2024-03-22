@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import API from "../../apis/Api";
+import { JOIN_SUCCESS_CODE, nationList } from "../../constants";
 
 interface JoinModalProps {
   handleCloseModal: () => void;
@@ -14,22 +15,7 @@ const JoinModal = (props: JoinModalProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [userName, setUserName] = useState("");
   const [userNation, setUserNation] = useState(1);
-  const nationList = [
-    { nation: "Korea", code: 1 },
-    { nation: "China", code: 2 },
-    { nation: "Japan", code: 3 },
-    { nation: "USA", code: 4 },
-    { nation: "Brazil", code: 5 },
-    { nation: "Singapore", code: 6 },
-    { nation: "Indonesia", code: 7 },
-    { nation: "India", code: 8 },
-    { nation: "Vietnam", code: 9 },
-    { nation: "Philippines", code: 10 },
-    { nation: "UAE", code: 11 },
-    { nation: "UK", code: 12 },
-    { nation: "France", code: 13 },
-    { nation: "Others", code: 14 },
-  ];
+
   const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
     setUserNation(Number(e.target.value));
   };
@@ -39,35 +25,29 @@ const JoinModal = (props: JoinModalProps) => {
   };
   const fetchJoin = async () => {
     try {
-      const res = await API.post(
-        `${endpointUser}/join`,
-        {
-          userAccount: userAccount,
-          userName: userName,
-          userNation: userNation,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (res.data.resultCode !== "1") throw new Error(res.data.resultCode);
-      alert("회원가입이 완료되었습니다.");
+      const fetchProps = {
+        userAccount: userAccount,
+        userName: userName,
+        userNation: userNation,
+      };
+      const res = await API.post(`${endpointUser}/join`, fetchProps);
+      if (res.data.resultCode !== JOIN_SUCCESS_CODE)
+        throw new Error(res.data.resultCode);
+      alert("Successfully Join.");
       resetInputFields();
       handleCloseModal();
     } catch (err) {
       switch (err) {
         case "2":
-          alert("이미 가입된 사용자 정보입니다.");
+          alert("Already Registered.");
           return;
         default:
-          alert("가입에 실패했습니다.");
+          alert("Fail to Join. Please Retry.");
           return;
       }
     }
   };
-  const onSubmit = async (data: any) => {
+  const onSubmit = async () => {
     setIsSubmitting(true);
     fetchJoin();
     setIsSubmitting(false);
@@ -94,7 +74,7 @@ const JoinModal = (props: JoinModalProps) => {
           </JoinModalSelect>
           <JoinModalAddress>{userAccount}</JoinModalAddress>
           <JoinModalButton type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "로딩..." : "회원가입"}
+            {isSubmitting ? "Loading..." : "Join"}
           </JoinModalButton>
         </form>
       </JoinModalContent>
@@ -146,7 +126,7 @@ const JoinModalContent = styled.div`
 `;
 
 const JoinModalTitle = styled.h1`
-  font-size: 1.8rem; // Adjust based on your fontSizes.title
+  font-size: 1.8rem;
   font-weight: bold;
   margin-bottom: 10px;
 `;
@@ -183,8 +163,8 @@ const JoinModalAddress = styled.div`
 const JoinModalButton = styled.button`
   width: 100%;
   padding: 10px;
-  background-color: ${colors.bg.icon}; // Use a light gray color from your theme
-  color: ${colors.text}; // Use white text color
+  background-color: ${colors.bg.icon};
+  color: ${colors.text};
   border: none;
   border-radius: 5px;
   cursor: pointer;

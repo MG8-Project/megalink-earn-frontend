@@ -14,16 +14,16 @@ const Wallet = () => {
   const onWalletConnect = async () => {
     const address = await connectWallet();
     if (address === null) {
-      alert("메타 마스크를 설치해주세요.");
+      alert("Please install Metamask.");
       return;
     }
-    console.log("연결된 주소:", address);
+    console.log("Connected Address:", address);
     useAuthStore.getState().setUserAccount(address);
   };
 
   const onWalletDisconnect = () => {
     useAuthStore.getState().logout();
-    alert("연결이 해제되었습니다.");
+    alert("Disconnected.");
   };
 
   return (

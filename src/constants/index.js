@@ -61,3 +61,22 @@ export const DayRewordList = [
   { id: 6, title: "Day 6", image: mg8gray, point: "+100P" },
   { id: 7, title: "Day 7", image: mg8gray, point: "+100P" },
 ];
+
+// join modal
+export const JOIN_SUCCESS_CODE = "1";
+export const nationList = [
+  { nation: "South Korea", code: 1 },
+  { nation: "China", code: 2 },
+  { nation: "Japan", code: 3 },
+  { nation: "USA", code: 4 },
+  { nation: "Brazil", code: 5 },
+  { nation: "Singapore", code: 6 },
+  { nation: "Indonesia", code: 7 },
+  { nation: "India", code: 8 },
+  { nation: "Vietnam", code: 9 },
+  { nation: "Philippines", code: 10 },
+  { nation: "UAE", code: 11 },
+  { nation: "UK", code: 12 },
+  { nation: "France", code: 13 },
+  { nation: "Others", code: 14 },
+];
