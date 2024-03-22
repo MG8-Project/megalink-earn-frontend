@@ -1,38 +1,39 @@
-import { useState, useEffect, useCallback } from 'react'; 
+import { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import { ticket } from "../../assets/images";
-import { useAuthStore } from '../../store/authStore'; 
-import ApiDaily from '../../apis/ApiDaily';
+import { useAuthStore } from "../../store/authStore";
+import ApiDaily from "../../apis/ApiDaily";
 
 const TicketCard = () => {
   const [myTickets, setMyTickets] = useState(0);
-  const userAccount = useAuthStore(state => state.userAccount);
-  const isLoggedIn = useAuthStore(state => state.isLoggedIn);
+  const userAccount = useAuthStore((state) => state.userAccount);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const fetchMyTickets = useCallback(async () => {
     try {
       if (isLoggedIn && userAccount) {
         const response = await ApiDaily.myParticipationTicket(userAccount);
+        console.log(response);
         setMyTickets(response);
       } else {
         setMyTickets(0);
       }
     } catch (error) {
-      console.error('Error fetching my tickets:', error);
+      console.error("Error fetching my tickets:", error);
     }
   }, [isLoggedIn, userAccount]);
-  
+
   useEffect(() => {
     fetchMyTickets();
-  }, [fetchMyTickets]); 
+  }, [fetchMyTickets]);
 
   return (
     <CardContainer>
       <CardBox>
         <CardImage src={ticket} alt="" />
         <CardTitle>Your Ticket</CardTitle>
-        <CardText>{myTickets === -1 ? ("-") : (myTickets)}</CardText>
+        <CardText>{myTickets === -1 ? "-" : myTickets}</CardText>
       </CardBox>
     </CardContainer>
   );
