@@ -13,7 +13,7 @@ const myTotalLogin = async (userAccount: string) => {
   });
 }
 const myParticipationTicket = async (userAccount: string) => {
-  return API.post(`${endpoint}/myParticipationTicket?userAccount`, {
+  return API.post(`${endpoint}/myParticipationTicket`, {
     userAccount: userAccount,
   })
     .then((res) => res.data)
@@ -26,7 +26,7 @@ const dailyPool = async () => {
   const BNBAmount:string = process.env.REACT_APP_BNBAMOUNT;
 	return API
 	.get(`${statusEndpoint}/BNBRewarded`)
-	.then((res) => res.data / parseInt(BNBAmount));
+	.then((res) => parseInt(res.data) / parseInt(BNBAmount));
 }
 
 const ApiDaily = {
