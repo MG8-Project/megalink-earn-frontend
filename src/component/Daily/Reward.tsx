@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import {DayRewordList} from "../../constants";
 import {useAuthStore} from "../../store/authStore";
-import {Contract, BrowserProvider, ethers, toBeHex} from "ethers";
+import {Contract, BrowserProvider, ethers,  toBeHex} from "ethers";
 import {ForwarderAbi} from "../../typechain-types/contracts/Forwarder";
-import { mega8, mg8gray} from "../../assets/images";
 import {DailyAttendanceAbi} from "../../typechain-types/contracts/DailyAttendance";
 import API from "../../apis/Api";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import ApiDaily from "../../apis/ApiDaily";
+import {mega8, mg8gray} from "../../assets/images";
 
 export type Domain = {
     chainId: number;
@@ -26,8 +26,12 @@ export const DOMAIN_SEPARATOR: Domain = {
 export type Message = {}
 
 const Reward = () => {
-    const walletAddress = useAuthStore(state => state.userAccount);
     const isLoggedIn = useAuthStore(state => state.isLoggedIn);
+    const walletAddress = useAuthStore(state => state.userAccount);
+    const currentDate = new Date();
+    const currentDay = currentDate.getDay();
+    const [receivedStatus, setReceivedStatus] = useState([0, 0, 0, 0, 0, 0, 0]);
+
     const signTypedData = async () => {
         try {
             // if (!isLoggedIn) {
@@ -82,20 +86,28 @@ const Reward = () => {
                         { name: "data", type: "bytes" },
                     ],
                 }
-            const res = await API.post(process.env.REACT_APP_API_PERSONAL_CHECK, {
+            })
+            const method = "eth_signTypedData_v4";
+            const params = [walletAddress, typedData]
+            const signature = await window.ethereum.request({method, params});
+            const param = {
                 userAccount: walletAddress,
-                param,
-            }, {
+                signature,
+                ...message,
+            }
+
+            await API.post(process.env.REACT_APP_API_PERSONAL_CHECK, param, {
                 headers: {
                     "Authorization": "application/json",
                 }
             });
 
-            alert("Successfully checked in.\nYour transaction hash is " + res.data.txHash)
+            alert("Successfully checked in.")
         } catch (error) {
             console.error(error)
         }
     };
+
     useEffect(() => {
         const fetchReceivedStatus = async () => {
           try {
@@ -105,16 +117,16 @@ const Reward = () => {
             console.error('Error fetching received status:', error);
           }
         };
+
         if (isLoggedIn) {
           fetchReceivedStatus();
         }
-        return () => {
-        };
+        return () => {};
       }, [isLoggedIn, walletAddress]);
     return (
         <RewardWrapper>
             {DayRewordList.map((item, index) => (
-                <RewardContainer key={item.id} onClick={() => index === currentDay && signTypedData()}>
+                <RewardContainer key={item.id} onClick={() => signTypedData()}>
                     <RewardTitle>{item.title}</RewardTitle>
                     <RewardImage src={receivedStatus[index] === 1 ? mega8 : mg8gray} alt="" />
                     <RewardPrice>{item.point}</RewardPrice>
@@ -126,19 +138,6 @@ const Reward = () => {
 };
 
 export default Reward;
-
-const RewardRequest = styled.button`
-     align-items: center;
-     justify-content: center;
-     text-align: center;
-     font-weight: 400;
-     height: 40px;
-     border-radius: 100px;
-     border: 0.5px solid #656262;
-     margin: auto;
-     padding: 0 16px;
-     font-size: 16px;
-`;
 
 const RewardWrapper = styled.div`
     display: flex;
