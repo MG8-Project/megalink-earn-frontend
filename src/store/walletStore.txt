@@ -1,0 +1,11 @@
+import create from 'zustand';
+
+type State = {
+	walletAddress: string | null;
+	setWalletAddress: (address: string) => void;
+};
+  
+export const useStore = create<State>(set => ({
+  walletAddress: null,
+  setWalletAddress: (address: string) => set(() => ({ walletAddress: address }))
+}));
