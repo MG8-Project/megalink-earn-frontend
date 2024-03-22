@@ -1,7 +1,7 @@
 import API from './Api';
 
-// const endpointAdmin = process.env.REACT_APP_API_ADMIN;
 const endpointUser = process.env.REACT_APP_API_USER;
+const endpointAdmin = process.env.REACT_APP_API_ADMIN;
 
 const login = async (userAccount: string) => {
         const response = await API.post(`${endpointUser}/login`, {userAccount});

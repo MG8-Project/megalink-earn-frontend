@@ -21,28 +21,32 @@ export const useWallet = () => {
         return accounts[0];
       } catch (error) {
         console.error("메타마스크 연동 실패:", error);
+        alert("메타마스크 연동에 실패했습니다. 다시 시도해주세요.");
         return null;
       }
     } else {
+      alert("메타마스크를 설치해주세요.");
       return null;
     }
   }, [setWalletAddress]);
 
   useEffect(() => {
-    connectWallet();
+    if (window.ethereum) {
+      connectWallet();
 
-    const handleAccountsChanged = (accounts: string[]) => {
-      if (accounts.length === 0) {
-        logout();
-      } else if (currentAccount !== accounts[0]) {
-        logout();
-      }
-      setCurrentAccount(accounts[0]);
-    };
-    window.ethereum?.on("accountsChanged", handleAccountsChanged);
-    return () => {
-      window.ethereum?.removeListener("accountsChanged", handleAccountsChanged);
-    };
+      const handleAccountsChanged = (accounts: string[]) => {
+        if (accounts.length === 0) {
+          logout();
+        } else if (currentAccount !== accounts[0]) {
+          logout();
+        }
+        setCurrentAccount(accounts[0]);
+      };
+      window.ethereum?.on("accountsChanged", handleAccountsChanged);
+      return () => {
+        window.ethereum?.removeListener("accountsChanged", handleAccountsChanged);
+      };
+    }
   }, [connectWallet, setWalletAddress, logout, currentAccount]);
 
   return {

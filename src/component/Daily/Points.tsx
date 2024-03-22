@@ -9,36 +9,30 @@ const Points = () => {
   const { connectWallet } = useWallet();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const walletAddress = useAuthStore((state) => state.userAccount);
-  const userId = useAuthStore((state) => state.userId);
   const [loginAttemptFailed, setLoginAttemptFailed] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const clickLogin = async () => {
     try {
-      setLoginAttemptFailed(false);
-      let address: string = null;
-      if (!walletAddress) {
-        address = await connectWallet();
-        if (address === null) {
-          alert("Please install Metamask and connect your wallet.");
-          return;
-        }
-        useAuthStore.getState().setUserAccount(address);
+      let address = walletAddress || await connectWallet();
+      if (!address) {
+        alert("메타 마스크를 연결해주세요.");
+        return;
       }
-      let getUserId: string = null;
-      if (!userId) {
-        getUserId = await ApiPoints.getUserId(address);
+      console.log("연결된 주소:", address);
+      const loginResponse = await ApiPoints.login(address);
+      console.log(loginResponse,loginResponse.resultCode, loginResponse.resultCode !== '1');
+      if (loginResponse.resultCode !== '1') {
+        throw new Error("로그인 실패");
       }
-      address = address || walletAddress;
-      getUserId = userId || getUserId;
-
-      await ApiPoints.login(address);
-      useAuthStore.getState().login(address, getUserId);
-      alert("Successfully logged in.");
+      console.log("로그인 성공!", loginResponse.resultCode);
+      useAuthStore.getState().login(address);
     } catch (error) {
-      setIsModalOpen(true);
-    }
+      console.error("로그인 과정에서 에러가 발생했습니다:", error);
+      setLoginAttemptFailed(true);
+    } 
   };
+
   return (
     <PointsWrapper>
       <TextWrapper>
@@ -48,7 +42,6 @@ const Points = () => {
       {(!isLoggedIn || loginAttemptFailed) && (
         <LoginButton onClick={clickLogin}>Login</LoginButton>
       )}
-      {/* FIXME:  add close modal */}
       {isModalOpen ? (
         <JoinModal handleCloseModal={() => setIsModalOpen(false)} />
       ) : (
