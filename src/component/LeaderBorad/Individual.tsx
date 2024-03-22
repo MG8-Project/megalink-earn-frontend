@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import { useEffect, useState } from "react";
 import API from "../../apis/Api";
-import { API_SUCCESS_CODE, nationList } from "../../constants";
+import {API_SUCCESS_CODE, nationList, UNKNOWN} from "../../constants";
 
 import { prearrow, nextarrow } from "../../assets/images";
 
@@ -40,8 +40,11 @@ const IndividualList = () => {
     setCurrentPage(pageNumber);
   };
   const convertNation = (nationCode: number) => {
+    // 국가 코드가 지정된 배열에 없는 경우 처리
     if (nationCode === undefined || nationCode === 0) return "Others";
-    return nationList.filter((data) => data.code === nationCode)[0].nation;
+    const findObjectList = nationList.filter(data => data.code === nationCode)
+    if(findObjectList.length === 0) return UNKNOWN
+    return findObjectList[0].nation
   };
 
   const fetchIndividualList = async (currentPage: number) => {
@@ -97,7 +100,7 @@ const IndividualList = () => {
             <tr key={index}>
               <StyledTd>{item.rank}</StyledTd>
               <StyledTd>{item.userName}</StyledTd>
-              <StyledTd>{convertNation(item.nationCode)}</StyledTd>
+              <StyledTd style={{color : convertNation(item.nationCode) === UNKNOWN ? '#eba4a4': '#fff' }}>{convertNation(item.nationCode)}</StyledTd>
               <StyledTd>{item.level}</StyledTd>
               <StyledTd>{item.point}</StyledTd>
             </tr>
