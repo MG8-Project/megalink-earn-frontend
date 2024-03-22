@@ -80,3 +80,6 @@ export const nationList = [
   { nation: "France", code: 13 },
   { nation: "Others", code: 14 },
 ];
+
+// API CODE
+export const API_SUCCESS_CODE = 200;

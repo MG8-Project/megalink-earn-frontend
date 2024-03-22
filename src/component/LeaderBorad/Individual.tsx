@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
-import mockData from "../../mock";
+import { useEffect, useState } from "react";
+import API from "../../apis/Api";
+import { API_SUCCESS_CODE, nationList } from "../../constants";
 
 export const tableTitle = [
   { id: 0, title: "Rank" },
@@ -9,8 +11,41 @@ export const tableTitle = [
   { id: 3, title: "Level" },
   { id: 4, title: "Total Points" },
 ];
-
+interface PersonalListDataType {
+  userName: string;
+  rank: number;
+  nationCode: number;
+  point: number;
+}
+interface IndividualResponseType {
+  status: number;
+  data: {
+    personalRnkLst: Array<PersonalListDataType>;
+  };
+}
 const IndividualList = () => {
+  const [personalListData, setPersonalListData] = useState<
+    Array<PersonalListDataType>
+  >([]);
+  const fetchIndividualList = async () => {
+    try {
+      const endPoint = `${process.env.REACT_APP_API_PERSONAL}/personalRnk`;
+      const res: IndividualResponseType = await API.get(endPoint);
+      if (res.status !== API_SUCCESS_CODE) throw new Error(String(res.status));
+      setPersonalListData(res.data.personalRnkLst);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const convertNation = (nationCode: number) => {
+    if (nationCode === undefined || nationCode === 0) return "Others";
+    return nationList.filter((data) => data.code === nationCode)[0].nation;
+  };
+  useEffect(() => {
+    fetchIndividualList();
+  }, []);
+
   return (
     <IndividualListWrapper>
       <TableStyle>
@@ -22,13 +57,14 @@ const IndividualList = () => {
           </tr>
         </TheadStyle>
         <tbody>
-          {mockData.map((item) => (
-            <tr key={item.index}>
+          {personalListData.map((item, index) => (
+            <tr key={index}>
               <StyledTd>{item.rank}</StyledTd>
-              <StyledTd>{item.name}</StyledTd>
-              <StyledTd>{item.nation}</StyledTd>
-              <StyledTd>{item.level}</StyledTd>
-              <StyledTd>{item.totalpoints}</StyledTd>
+              <StyledTd>{item.userName}</StyledTd>
+              <StyledTd>{convertNation(item.nationCode)}</StyledTd>
+              {/* FIXME: column 추가되면 넣기 */}
+              <StyledTd>10</StyledTd>
+              <StyledTd>{item.point}</StyledTd>
             </tr>
           ))}
         </tbody>
