@@ -20,19 +20,19 @@ export const useWallet = () => {
 
         return accounts[0];
       } catch (error) {
-        console.error("메타마스크 연동 실패:", error);
-        alert("메타마스크 연동에 실패했습니다. 다시 시도해주세요.");
+        console.error("Metamask linkage failed:", error);
+        alert("Metamask linkage failed. Please try again.");
         return null;
       }
     } else {
-      alert("메타마스크를 설치해주세요.");
+      alert("Please install Metamask.");
       return null;
     }
   }, [setWalletAddress]);
 
   useEffect(() => {
     if (window.ethereum) {
-      connectWallet();
+      void connectWallet();
 
       const handleAccountsChanged = (accounts: string[]) => {
         if (accounts.length === 0) {
