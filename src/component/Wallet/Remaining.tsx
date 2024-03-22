@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 const Remaining = () => {
   const [time, setTime] = useState(172800); // 초로 전체시간을 줌
-  const days = Math.floor(time / (3600 * 24)); // day
+  const days = Math.floor(time / (3600 * 24));
   const hours = Math.floor((time % (3600 * 24)) / 3600);
   const minutes = Math.floor((time % 3600) / 60);
   const seconds = time % 60;
@@ -23,22 +23,23 @@ const Remaining = () => {
       <TimeContainer>
         <TimeBox>
           <TimeText>
-            {days} <p>:</p>
+            {days}
+            <TimeUnit>Days</TimeUnit>
           </TimeText>
-          <TimeUnit>Days</TimeUnit>
         </TimeBox>
+        <Colon>:</Colon>
         <TimeBox>
           <TimeText>
-            {hours} <p>:</p>
+            {hours} <TimeUnit>Hours</TimeUnit>
           </TimeText>
-          <TimeUnit>Hours</TimeUnit>
         </TimeBox>
+        <Colon>:</Colon>
         <TimeBox>
           <TimeText>
-            {minutes} <p>:</p>
+            {minutes} <TimeUnit>Minutes</TimeUnit>
           </TimeText>
-          <TimeUnit>Minutes</TimeUnit>
         </TimeBox>
+        <Colon>:</Colon>
         <TimeBox>
           <TimeText>{seconds}</TimeText>
           <TimeUnit>Seconds</TimeUnit>
@@ -60,16 +61,12 @@ const RemainWrapper = styled.div`
 
 const TimeText = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
-  > p {
-    color: ${theme.colors.textGray};
-    font-size: 28px;
-    font-weight: 600;
-    margin-left: 18px;
-  }
 `;
 
 const TimeContainer = styled.div`
+  position: relative;
   display: flex;
   gap: 20px;
   font-size: 48px;
@@ -94,6 +91,14 @@ const TimeBox = styled.div`
 const TimeUnit = styled.div`
   color: ${theme.colors.textGray};
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
   margin-top: 12px;
+`;
+
+const Colon = styled.p`
+  position: relative;
+  top: 10px;
+  color: ${theme.colors.textGray};
+  font-size: 28px;
+  font-weight: 600;
 `;

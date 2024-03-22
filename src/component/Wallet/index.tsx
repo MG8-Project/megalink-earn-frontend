@@ -23,9 +23,12 @@ const Wallet = () => {
         {allCoinsClaimed && (
           <WarningText>Deposit more coins above to claim</WarningText>
         )}
-        <Claim>Claim</Claim>
-      </ClaimContainer>
-      <DefaultClaim>Claim </DefaultClaim> */}
+        {allCoinsClaimed ? (
+          <NoClaim>Claim</NoClaim>
+        ) : (
+          <DefaultClaim>Claim </DefaultClaim>
+        )}
+      </ClaimContainer> */}
 
       {/* Claimed 버튼 */}
       {/* <ClaimedContainer>
@@ -45,8 +48,7 @@ const WalletWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 160px;
-  margin-bottom: 160px;
+  padding-top: 160px;
 `;
 
 const WalletTitle = styled.h3`
@@ -107,7 +109,7 @@ const DefaultClaim = styled.button`
   font-size: 20px;
 `;
 
-const Claim = styled.button`
+const NoClaim = styled.button`
   display: flex;
   font-weight: 600;
   align-items: center;

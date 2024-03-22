@@ -28,16 +28,16 @@ const MissionCard = () => {
           <TimeContainer>
             <TimeBox>
               <TimeText>
-                {hours} <p>:</p>
+                {hours} <TimeUnit>Hours</TimeUnit>
               </TimeText>
-              <TimeUnit>Hours</TimeUnit>
             </TimeBox>
+            <Colon>:</Colon>
             <TimeBox>
               <TimeText>
-                {minutes} <p>:</p>
+                {minutes} <TimeUnit>Minutes</TimeUnit>
               </TimeText>
-              <TimeUnit>Minutes</TimeUnit>
             </TimeBox>
+            <Colon>:</Colon>
             <TimeBox>
               <TimeText>{seconds}</TimeText>
               <TimeUnit>Seconds</TimeUnit>
@@ -76,13 +76,8 @@ const CardImage = styled.img`
 
 const TimeText = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
-  > p {
-    color: ${theme.colors.textGray};
-    font-size: 28px;
-    font-weight: 600;
-    margin-left: 18px;
-  }
 `;
 
 const TimeContainer = styled.div`
@@ -127,4 +122,11 @@ const CardMiddleBox = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 48px;
+`;
+const Colon = styled.p`
+  position: relative;
+  top: 10px;
+  color: ${theme.colors.textGray};
+  font-size: 28px;
+  font-weight: 600;
 `;

@@ -14,12 +14,9 @@ const Daily = () => {
       </TitleContainer>
       <ContentWrapper>
         <DayWrapper>
-          <RewardContainer>
-            <Reward />
-          </RewardContainer>
-          <PointsContainer>
-            <Points />
-          </PointsContainer>
+          <Reward />
+          <Line />
+          <Points />
         </DayWrapper>
         {/* <ButtonWrapper>
           <ButtonBox />
@@ -37,10 +34,9 @@ const DailyWrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin-bottom: 160px;
+  position: relative;
 `;
 const TitleContainer = styled.div`
-  margin-top: 160px;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -63,19 +59,18 @@ const DayWrapper = styled.div`
   height: 282px;
   background-color: ${theme.colors.bg.box};
   border-radius: 16px;
-
   padding: 48px 90px 48px 48px;
   display: flex;
   justify-content: space-between;
 `;
 
-const RewardContainer = styled.div``;
-
-const PointsContainer = styled.div``;
-
-const ButtonWrapper = styled.div`
+const Line = styled.div`
   position: absolute;
-  right: -22%;
+  right: 30%;
+  top: 30%;
+  width: 1px;
+  height: 80px;
+  border-left: 1px solid #333333;
 `;
 
 const ContentWrapper = styled.div`

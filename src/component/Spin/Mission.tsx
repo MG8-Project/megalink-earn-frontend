@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
-import { spinFrame, gift, clock, ticket } from "../../assets/images";
+import { spinFrame } from "../../assets/images";
 import MissionCard from "./MissionCard";
 import TicketCard from "./TicketCard";
 import PoolCard from "./PoolCard";
@@ -26,7 +26,6 @@ const CardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  margin-bottom: 160px;
 `;
 
 const MissionWrapper = styled.div`

@@ -12,10 +12,7 @@ const Spin = () => {
             Rule: Turn the spin and earn rewards. The pool of rewards offered
             every day is limited.
           </SecondTitle>
-          <SubTitle>
-            Rule: Turn the spin and earn rewards. The pool of rewards offered
-            every day is limited.
-          </SubTitle>
+          <SubTitle>Hurry up. Please make a bet. Good luck to you.</SubTitle>
         </SubTitleContainer>
         <LearnButton>Learn more</LearnButton>
       </TitleContainer>
@@ -34,7 +31,6 @@ const SpinWrapper = styled.div`
   flex-direction: column;
 `;
 const TitleContainer = styled.div`
-  margin-top: 160px;
   display: flex;
   align-items: center;
   flex-direction: column;
