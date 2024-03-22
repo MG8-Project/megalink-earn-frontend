@@ -56,7 +56,6 @@ const WalletWrapper = styled.div`
 
 const WalletTitle = styled.h3`
   font-size: 28px;
-  font-weight: 600px;
   margin-bottom: 56px;
 `;
 

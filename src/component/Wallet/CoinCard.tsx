@@ -24,7 +24,7 @@ const CardWrapper = styled.div`
 
 const CardBox = styled.div`
   width: 384px;
-  height: 250px;
+  height: 200px;
   border-radius: 16px;
   background-color: ${theme.colors.bg.box};
   display: flex;
