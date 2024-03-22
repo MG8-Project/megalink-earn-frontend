@@ -7,12 +7,6 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* <Route
-          path="error"
-          element={
-            <div style={{ fontSize: "16px" }}>404 없는 페이지입니다.</div>
-          }
-        /> */}
       </Routes>
     </BrowserRouter>
   );

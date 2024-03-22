@@ -29,12 +29,10 @@ const Pagination: React.FC<PaginationProps> = ({
   setCurrentPage,
 }) => {
   const handlePrevClick = () => {
-    // 한 번에 5개의 페이지씩 이동
     setCurrentPage(1);
   };
 
   const handleNextClick = () => {
-    // 한 번에 5개의 페이지씩 이동
     setCurrentPage(totalPages);
   };
 
@@ -58,7 +56,6 @@ const Pagination: React.FC<PaginationProps> = ({
 
   return (
     <PaginationWrapper>
-      {/* 이전 페이지로 이동하는 버튼 */}
       <PaginationButton onClick={handlePrevClick} disabled={currentPage === 1}>
         <ArrowImage src={currentPage === 1 ? preArrow : preArrowHover} alt="" />
       </PaginationButton>
