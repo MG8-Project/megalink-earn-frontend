@@ -83,3 +83,6 @@ export const nationList = [
 
 // API CODE
 export const API_SUCCESS_CODE = 200;
+
+// variables
+export const UNKNOWN ='Unknown'
