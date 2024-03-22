@@ -19,5 +19,6 @@
   },
   "extensions": [".js", ".jsx", ".ts", ".tsx"],
   "include": ["src", "src/assets", "public/images"],
-  "typeRoots": ["./node_modules/@types", "./src/common/types"]
+  "typeRoots": ["./node_modules/@types", "./src/common/types"],
+  "proxy": "http://localhost:8080/infiniteSpin/"
 }

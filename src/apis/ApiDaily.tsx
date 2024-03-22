@@ -1,6 +1,7 @@
 import API from './Api';
 
 const endpoint = process.env.REACT_APP_API_PERSONAL;
+const statusEndpoint = process.env.REACT_APP_API_STATUS;
 
 const myTotalLogin = async (userAccount: string) => {
 	return API
@@ -23,7 +24,7 @@ const myParticipationTicket = async (userAccount: string) => {
 const dailyPool = async () => {
   const BNBAmount:string = process.env.REACT_APP_BNBAMOUNT;
 	return API
-	.get(`${endpoint}/BNBRewarded`)
+	.get(`${statusEndpoint}/BNBRewarded`)
 	.then((res) => res.data / parseInt(BNBAmount));
 }
 
