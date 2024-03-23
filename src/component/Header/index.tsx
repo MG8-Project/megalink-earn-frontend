@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {headerLogo} from "../../assets/images";
 import {useWallet} from "../../hooks/useWallet";
 import {useAuthStore} from "../../store/authStore";
-import {DISCONNECTED, METAMASK_NOT_INSTALLED} from "../../constants";
+import {DISCONNECTED, METAMASK_LOCKED_OR_UNINSTALL} from "../../constants";
 
 const Header = () => {
     const {connectWallet} = useWallet();
@@ -12,7 +12,7 @@ const Header = () => {
     const onWalletConnect = async () => {
         const address = await connectWallet();
         if (address === null) {
-            alert(METAMASK_NOT_INSTALLED);
+            alert(METAMASK_LOCKED_OR_UNINSTALL);
             return;
         }
         // 아래 alert와 비슷한 역할을 하는것 같은데 우선 console.log로 작성되어있어 따로 alert로 변경하진 않았습니다.

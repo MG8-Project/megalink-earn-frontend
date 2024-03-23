@@ -2,7 +2,7 @@ import styled from "styled-components";
 import CoinCard from "./CoinCard";
 import {useWallet} from "../../hooks/useWallet";
 import {useAuthStore} from "../../store/authStore";
-import {DISCONNECTED, METAMASK_NOT_INSTALLED} from "../../constants";
+import {DISCONNECTED, METAMASK_LOCKED_OR_UNINSTALL} from "../../constants";
 
 const Wallet = () => {
     const {connectWallet} = useWallet();
@@ -11,7 +11,7 @@ const Wallet = () => {
     const onWalletConnect = async () => {
         const address = await connectWallet();
         if (address === null) {
-            alert(METAMASK_NOT_INSTALLED);
+            alert(METAMASK_LOCKED_OR_UNINSTALL);
             return;
         }
         useAuthStore.getState().setUserAccount(address);

@@ -23,21 +23,17 @@ export const DOMAIN_SEPARATOR: Domain = {
     version: "1"
 }
 
-// export type Message = {}
-
 const Reward = () => {
     const isLoggedIn = useAuthStore(state => state.isLoggedIn);
     const walletAddress = useAuthStore(state => state.userAccount);
-    // const currentDate = new Date();
-    // const currentDay = currentDate.getDay();
     const [receivedStatus, setReceivedStatus] = useState([0, 0, 0, 0, 0, 0, 0]);
 
     const signTypedData = async () => {
         try {
-            // if (!isLoggedIn) {
-            //     alert("Please login first.")
-            //     return;
-            // }
+            if (!isLoggedIn) {
+                alert("Please login first.")
+                return;
+            }
             const currentTimestamp = Math.floor(new Date().getTime() / 1000);
             const oneWeekInSeconds = 60;
             const futureTimestamp = currentTimestamp + oneWeekInSeconds;
@@ -129,6 +125,7 @@ const Reward = () => {
 
             alert("Successfully checked in.")
         } catch (error) {
+            alert("Something went wrong. Please try again later.")
             console.error(error)
         }
     };
@@ -153,9 +150,9 @@ const Reward = () => {
         <RewardWrapper>
             {DailyRewardList.map((item, index) => (
                 <RewardContainer key={item.id} onClick={() => {
-                    receivedStatus.reduce((a, b) => a + b) === index ? signTypedData() : alert("You can only get the reward of the previous day.")
+                    receivedStatus[index] === 1 ? signTypedData() : alert("You can only get the reward of the previous day.")
                 }} style={{
-                    border: isLoggedIn && receivedStatus.reduce((a, b) => a + b) === index ? "2px solid white" : "2px solid transparent",
+                    border: isLoggedIn && receivedStatus[index] === 1 ? "2px solid white" : "2px solid transparent",
                     padding: "10px",
                     borderRadius: "10px",
                 }}>
