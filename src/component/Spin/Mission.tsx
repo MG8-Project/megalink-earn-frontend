@@ -1,6 +1,4 @@
 import styled from "styled-components";
-// import { theme } from "../../styles/theme";
-// import { spinFrame, gift, clock, ticket } from "../../assets/images";
 import { spinFrame } from "../../assets/images";
 import MissionCard from "./MissionCard";
 import TicketCard from "./TicketCard";

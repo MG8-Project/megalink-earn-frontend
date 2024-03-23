@@ -1,7 +1,6 @@
 import API from './Api';
 
 const endpointUser = process.env.REACT_APP_API_USER;
-const endpointAdmin = process.env.REACT_APP_API_ADMIN;
 
 const login = async (userAccount: string) => {
     const response = await API.post(`${endpointUser}/login`, {userAccount});
@@ -21,7 +20,6 @@ const login = async (userAccount: string) => {
 const join = async (userAccount: string) => {
     return API.post(`${endpointUser}/join`, {userAccount})
 }
-
 
 const ApiPoints = {
     login,

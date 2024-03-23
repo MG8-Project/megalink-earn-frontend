@@ -1,23 +1,23 @@
 import API from './Api';
 
-const endpoint = process.env.REACT_APP_API_GAME;
+const endpoint = process.env.REACT_APP_API_PERSONAL;
 
-const personalRnk  = async () => {
+const personalRnk  = async (userAccount:string) => {
 	return API
-	.get(`${endpoint}/personalRnk`)
+	.post(`${endpoint}/personalRnk`, {userAccount: userAccount})
 	.then((res) => res.data);
 }
-const teamRnk = async () => {
+const teamRnk = async (userAccount: string) => {
 	return API
-	.get(`${endpoint}/teamRnk`)
+	.post(`${endpoint}/teamRnk`, {userAccount: userAccount})
 	.then((res) => res.data);
 }
-const leaderboard = async (type: string) => {
+const leaderboard = async (type: string, userAccount: string) => {
 
 	if (type === "individual") {
-		return personalRnk();
+		return personalRnk(userAccount);
 	} else if (type === "team") {
-		return teamRnk();
+		return teamRnk(userAccount);
 	}
 }
 
