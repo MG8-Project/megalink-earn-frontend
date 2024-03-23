@@ -49,7 +49,7 @@ const Status = () => {
             case 8:
                 return `${status.BNBRewarded} BNB`
             default:
-                return '1'
+                return '0'
         }
     }
 
