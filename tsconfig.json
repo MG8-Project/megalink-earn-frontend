@@ -20,5 +20,4 @@
   "extensions": [".js", ".jsx", ".ts", ".tsx"],
   "include": ["src", "src/assets", "public/images"],
   "typeRoots": ["./node_modules/@types", "./src/common/types"],
-  "proxy": "http://spin-api.mega8.io/infiniteSpin/"
 }

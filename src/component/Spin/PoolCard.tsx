@@ -5,13 +5,12 @@ import { useState, useEffect } from "react";
 import ApiDaily from "../../apis/ApiDaily";
 
 const PoolCard = () => {
-  const [dailyPool, setDailyPool] = useState('0');
+  const [dailyPool, setDailyPool] = useState(0);
 
   async function fetchDailyPool() {
     try {
       const response = await ApiDaily.dailyPool();
-      const poolPercentage = response * 100;
-      setDailyPool(poolPercentage.toFixed(2));
+      setDailyPool(response);
     } catch (error) {
       console.error('Error fetching daily pool:', error);
     }
