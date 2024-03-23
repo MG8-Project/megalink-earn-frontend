@@ -46,6 +46,31 @@ const Reward = () => {
             const chainId = await window.ethereum.request({method: "eth_chainId"});
 
             if (chainId.toString() !== DOMAIN_SEPARATOR.chainId.toString()) {
+            // FIXME: 추후 Mainnet 정보로 변경
+                await window.ethereum.request({
+                    "method": "wallet_addEthereumChain",
+                    "params": [
+                        {
+                            "chainId": toBeHex(DOMAIN_SEPARATOR.chainId.toString()).toString(),
+                            "chainName": "opBNB",
+                            "rpcUrls": [
+                                "https://opbnb-testnet-rpc.bnbchain.org"
+                            ],
+                            "iconUrls": [
+                                "https://docs.bnbchain.org/opbnb-docs/img/logo.svg",
+                            ],
+                            "nativeCurrency": {
+                                "name": "tBNB",
+                                "symbol": "tBNB",
+                                "decimals": 18
+                            },
+                            "blockExplorerUrls": [
+                                "https://testnet.opbnbscan.com/"
+                            ]
+                        }
+                    ]
+                });
+
                 await window.ethereum.request({
                     method: "wallet_switchEthereumChain",
                     params: [{chainId: toBeHex(DOMAIN_SEPARATOR.chainId.toString()).toString()}]
