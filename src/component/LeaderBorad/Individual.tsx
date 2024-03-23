@@ -60,7 +60,6 @@ const IndividualList = () => {
             setPersonalListData(res.data.personalRnkLst);
             setTotalPage(Math.ceil(res.data.totalSize / 5));
         } catch (err) {
-            console.log(err);
         }
     };
 

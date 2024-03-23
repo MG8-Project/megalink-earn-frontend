@@ -61,7 +61,6 @@ const TeamList = () => {
         } catch (err) {
             switch (err) {
                 default:
-                    console.log("Fail to Load Team Rank Data");
             }
         }
     };

@@ -1,12 +1,8 @@
 import styled from "styled-components";
-// import { theme } from "../../styles/theme";
-// import { binance, ace, wemix } from "../../assets/images";
 import CoinCard from "./CoinCard";
 import {useWallet} from "../../hooks/useWallet";
 import {useAuthStore} from "../../store/authStore";
 import {DISCONNECTED, METAMASK_NOT_INSTALLED} from "../../constants";
-
-// const coinImages = [binance, ace, wemix];
 
 const Wallet = () => {
     const {connectWallet} = useWallet();
@@ -18,7 +14,6 @@ const Wallet = () => {
             alert(METAMASK_NOT_INSTALLED);
             return;
         }
-        console.log("Connected Address:", address);
         useAuthStore.getState().setUserAccount(address);
     };
 

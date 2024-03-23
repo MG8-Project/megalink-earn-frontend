@@ -1,7 +1,6 @@
 import {useCallback, useEffect, useState} from "react";
 import Web3 from "web3";
 import {useAuthStore} from "../store/authStore";
-import {METAMASK_LINK_FAILED, METAMASK_NOT_INSTALLED} from "../constants";
 
 export const useWallet = () => {
     const currentUserAccount = useAuthStore((state) => state.userAccount);
@@ -21,12 +20,9 @@ export const useWallet = () => {
 
                 return accounts[0];
             } catch (error) {
-                console.error("Metamask linkage failed:", error);
-                alert(METAMASK_LINK_FAILED);
                 return null;
             }
         } else {
-            alert(METAMASK_NOT_INSTALLED);
             return null;
         }
     }, [setWalletAddress]);

@@ -6,9 +6,6 @@ const login = async (userAccount: string) => {
     const response = await API.post(`${endpointUser}/login`, {userAccount});
     const data = response.data;
 
-    console.log(`data.msg: ${data.msg}`)
-    console.log(`data.resultCode: ${data.resultCode}`)
-    console.log(`data.accessToken: ${data.accessToken}`)
     switch (data.resultCode) {
         case "1":
             return data;

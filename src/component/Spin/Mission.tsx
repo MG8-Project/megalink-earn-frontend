@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { spinFrame } from "../../assets/images";
 import MissionCard from "./MissionCard";
 import TicketCard from "./TicketCard";
 import PoolCard from "./PoolCard";
@@ -13,7 +12,7 @@ const Mission = () => {
         <PoolCard />
       </CardWrapper>
       <SpinContainer>
-        <SpinContainerImage src={spinFrame} alt="" />
+        <SpinContainerImage src="http://cv2.avivgame.com/game.html" />
       </SpinContainer>
     </MissionWrapper>
   );
@@ -40,7 +39,7 @@ const SpinContainer = styled.div`
   height: 1112px;
   border-radius: 16px; */
 `;
-const SpinContainerImage = styled.img`
+const SpinContainerImage = styled.iframe`
   width: 588px;
   height: 1112px;
   border-radius: 16px;

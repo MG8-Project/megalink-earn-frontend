@@ -3,7 +3,7 @@ import {useWallet} from "../../hooks/useWallet";
 import {useAuthStore} from "../../store/authStore";
 import ApiPoints from "../../apis/ApiPoints";
 import {useState} from "react";
-import {LOGIN_FAILED, LOGIN_SUCCESS, METAMASK_NOT_INSTALLED} from "../../constants";
+import {LOGIN_FAILED, METAMASK_LINK_FAILED} from "../../constants";
 
 // FIXME: LoginResponse 확인 후 프로퍼티 수정하기
 interface LoginResponse {
@@ -19,17 +19,14 @@ const Points = () => {
     const clickLogin = async () => {
         try {
             let address = walletAddress || await connectWallet();
-            if (!address) {
-                alert(METAMASK_NOT_INSTALLED);
+            if (address === null) {
+                alert(METAMASK_LINK_FAILED);
                 return;
             }
-            console.log("Connected Address:", address);
             const loginResponse: LoginResponse = await ApiPoints.login(address);
-            console.log(loginResponse, loginResponse.resultCode, loginResponse.resultCode !== '1');
             if (loginResponse.resultCode !== '1') {
                 throw new Error(LOGIN_FAILED);
             }
-            console.log(LOGIN_SUCCESS, loginResponse.resultCode);
             useAuthStore.getState().login(address);
         } catch (error) {
             console.error("An error occurred during login process:", error);

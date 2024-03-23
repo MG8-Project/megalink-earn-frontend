@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {DayRewordList} from "../../constants";
+import {DailyRewardList} from "../../constants";
 import {useAuthStore} from "../../store/authStore";
 import {BrowserProvider, Contract, ethers, toBeHex} from "ethers";
 import {ForwarderAbi} from "../../typechain-types/contracts/Forwarder";
@@ -126,8 +126,14 @@ const Reward = () => {
     }, [isLoggedIn, walletAddress]);
     return (
         <RewardWrapper>
-            {DayRewordList.map((item, index) => (
-                <RewardContainer key={item.id} onClick={() => signTypedData()}>
+            {DailyRewardList.map((item, index) => (
+                <RewardContainer key={item.id} onClick={() => {
+                    receivedStatus.reduce((a, b) => a + b) === index ? signTypedData() : alert("You can only get the reward of the previous day.")
+                }} style={{
+                    border: receivedStatus.reduce((a, b) => a + b) === index ? "2px solid white" : "none",
+                    padding: "10px",
+                    borderRadius: "10px",
+                }}>
                     <RewardTitle>{item.title}</RewardTitle>
                     <RewardImage src={receivedStatus[index] === 1 ? mega8 : mg8gray} alt=""/>
                     <RewardPrice>{item.point}</RewardPrice>

@@ -16,7 +16,6 @@ const Header = () => {
             return;
         }
         // 아래 alert와 비슷한 역할을 하는것 같은데 우선 console.log로 작성되어있어 따로 alert로 변경하진 않았습니다.
-        console.log("Connected Address: ", address);
         useAuthStore.getState().setUserAccount(address);
     };
 

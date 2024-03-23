@@ -43,7 +43,7 @@ export const statusList = [
     {id: 8, title: "BNB Rewarded", content: "1,234"},
 ];
 
-export const DayRewordList = [
+export const DailyRewardList = [
     {id: 1, title: "Day 1", image: mega8, point: "+100P"},
     {id: 2, title: "Day 2", image: mg8gray, point: "+100P"},
     {id: 3, title: "Day 3", image: mg8gray, point: "+100P"},
