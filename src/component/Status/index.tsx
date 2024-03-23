@@ -1,122 +1,142 @@
 import styled from "styled-components";
-import { statusList } from "../../constants";
-import { theme } from "../../styles/theme";
+import {statusList} from "../../constants";
+import {theme} from "../../styles/theme";
 import ApiStatus from "../../apis/ApiStatus";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 
+// StatusState 를 response 데이터의 타입에 활용하기 위해 좀 더 명시적으로 타입을 정의
+// 만약 이렇게 상세하게 명시해주지 않고 포괄적인 타입을 사용하고자 한다면 해당 interface 에 정의되어 있던 [key: string] : string 을 Record<string, string>으로 축약하여 사용 가능
 interface StatusState {
-  [key: string]: string;
+    totalTransactions: string,
+    totalWallets: string,
+    transactionsToday: string,
+    newWalletsToday: string,
+    spinCount: string,
+    totalPoints: string,
+    MG8Dropped: string,
+    BNBRewarded: string
 }
 
 const Status = () => {
-  const [status, setStatus] = useState<StatusState>({
-    totalTransactions: '0',
-    totalWallets: '0',
-    transactionsToday: '0',
-    newWalletsToday: '0',
-    spinCount: '0',
-    totalPoints: '0',
-    MG8Dropped: '0',
-    BNBRewarded: '0'
-  });
+    const [status, setStatus] = useState<StatusState>({
+        totalTransactions: '0',
+        totalWallets: '0',
+        transactionsToday: '0',
+        newWalletsToday: '0',
+        spinCount: '0',
+        totalPoints: '0',
+        MG8Dropped: '0',
+        BNBRewarded: '0'
+    });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await ApiStatus.status();
-        setStatus({
-          totalTransactions: response.totalTransactions,
-          totalWallets: response.totalWallets,
-          transactionsToday: response.transactionsToday,
-          newWalletsToday: response.newWalletsToday,
-          spinCount: response.spinCount,
-          totalPoints: response.totalPoints,
-          MG8Dropped: response.MG8Dropped,
-          BNBRewarded: response.BNBRewarded
-        });
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-    fetchData();
+    // 여러 depth 의 삼항연산자로 된 jsx 렌더링 부분을 따로 함수로 빼서 switch 문으로 변경
+    const renderListContent = (id: number, status: StatusState) => {
+        switch (id) {
+            case 1:
+                return status.totalTransactions
+            case 2:
+                return status.totalWallets
+            case 3:
+                return status.transactionsToday
+            case 4:
+                return status.newWalletsToday
+            case 5:
+                return status.spinCount
+            case 6:
+                return status.totalPoints
+            case 7:
+                return `${status.MG8Dropped} MG8`
+            case 8:
+                return `${status.BNBRewarded} BNB`
+            default:
+                return '0'
+        }
+    }
 
-    const intervalId = setInterval(fetchData, 5000);
+    useEffect(() => {
+        const fetchData = async () => {
+            // ApiStatus 요청실패에 따른 에러처리는 해당 훅의 메서드들이 수행해주기 때문에 여기 코드에서 필요없는 try catch 구문 제거
+            const response = await ApiStatus.status();
+            setStatus({
+                totalTransactions: response.totalTransactions,
+                totalWallets: response.totalWallets,
+                transactionsToday: response.transactionsToday,
+                newWalletsToday: response.newWalletsToday,
+                spinCount: response.spinCount,
+                totalPoints: response.totalPoints,
+                MG8Dropped: response.MG8Dropped,
+                BNBRewarded: response.BNBRewarded
+            });
+        };
+        void fetchData();
 
-    return () => clearInterval(intervalId);
-  }, []);
+        const intervalId = setInterval(fetchData, 5000);
 
-  return (
-    <StatusWrapper>
-      <StatusTitle>Status</StatusTitle>
-      <StatusListWrapper>
-        {statusList.map((item) => (
-          <StatusListContainer key={item.id}>
-            <StatusListContentBox>
-              <ListTitle>{item.title}</ListTitle>
-              <ListContent>
-              {
-                item.id === 1 ? status.totalTransactions :
-                item.id === 2 ? status.totalWallets :
-                item.id === 3 ? status.transactionsToday :
-                item.id === 4 ? status.newWalletsToday :
-                item.id === 5 ? status.spinCount :
-                item.id === 6 ? status.totalPoints :
-                item.id === 7 ? `${status.MG8Dropped} MG8` :
-                item.id === 8 ? `${status.BNBRewarded} BNB` :
-                "0"
-              }
-              </ListContent>
-            </StatusListContentBox>
-          </StatusListContainer>
-        ))}
-      </StatusListWrapper>
-    </StatusWrapper>
-  );
+        return () => clearInterval(intervalId);
+    }, []);
+
+    return (
+        <StatusWrapper>
+            <StatusTitle>Status</StatusTitle>
+            <StatusListWrapper>
+                {statusList.map((item) => (
+                    <StatusListContainer key={item.id}>
+                        <StatusListContentBox>
+                            <ListTitle>{item.title}</ListTitle>
+                            <ListContent>
+                                {renderListContent(item.id, status)}
+                            </ListContent>
+                        </StatusListContentBox>
+                    </StatusListContainer>
+                ))}
+            </StatusListWrapper>
+        </StatusWrapper>
+    );
 };
 
 export default Status;
 
 const StatusWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 160px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 160px;
 `;
 
 const StatusTitle = styled.h3`
-  font-weight: 600;
-  font-size: 48px;
+    font-weight: 600;
+    font-size: 48px;
 `;
 
 const StatusListWrapper = styled.div`
-  margin-top: 80px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
+    margin-top: 80px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
 `;
 const StatusListContainer = styled.div`
-  width: 588px;
-  height: 128px;
-  border-radius: 16px;
-  background-color: ${theme.colors.bg.box};
-  padding: 24px 32px 32px 24px;
+    width: 588px;
+    height: 128px;
+    border-radius: 16px;
+    background-color: ${theme.colors.bg.box};
+    padding: 24px 32px 32px 24px;
 `;
 
 const StatusListContentBox = styled.div`
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 `;
 
 const ListTitle = styled.div`
-  color: ${theme.colors.textGray};
-  font-weight: 400px;
-  font-size: 16px;
+    color: ${theme.colors.textGray};
+    font-weight: 400;
+    font-size: 16px;
 `;
 const ListContent = styled.div`
-  display: flex;
-  font-weight: 600;
-  font-size: 28px;
-  margin-top: 40px;
+    display: flex;
+    font-weight: 600;
+    font-size: 28px;
+    margin-top: 40px;
 `;
