@@ -49,9 +49,7 @@ const TeamList = () => {
         return point.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     };
 
-    const isListEmpty = () => {
-        return teamListData.length === 0
-    }
+    const isListEmpty = teamListData.length === 0
 
     const fetchTeamList = async (currentPage: number) => {
         try {
@@ -94,7 +92,7 @@ const TeamList = () => {
     }, [currentPage, totalPage]);
     return (
         <TeamListWrapper>
-            {isListEmpty() ? <RankingAlert text={'There is No Ranking Data Yet'}/>
+            {isListEmpty ? <RankingAlert text={'There is No Ranking Data Yet'}/>
                 :
                 <>
                     <TableStyle>

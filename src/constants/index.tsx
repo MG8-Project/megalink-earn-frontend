@@ -78,8 +78,10 @@ export const API_SUCCESS_CODE = 200;
 // variables
 export const UNKNOWN = 'Unknown'
 
+export const INDIVIDUAL = 'Individual'
+export const TEAM = 'Team'
 
-// MSG
+// Alert Message
 export const METAMASK_NOT_INSTALLED = "Please install Metamask.";
 export const METAMASK_LINK_FAILED = "Metamask linkage failed. Please try again.";
 export const LOGIN_FAILED = "Failed to login.";
