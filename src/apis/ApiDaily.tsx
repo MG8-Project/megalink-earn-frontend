@@ -27,8 +27,12 @@ const dailyPool = async () => {
         .then((res) => parseInt(res.data));
 }
 
-const myPoint = async (userId: string) => {
-    return API.post(`${endpoint}/totalPoints`, {userId: userId})
+const myPoint = async (userAccount: string) => {
+    return API.post(`${endpoint}/totalPoints`, {userAccount: userAccount})
+        .then(res => res.data)
+        .catch((error) => {
+            throw error;
+        })
 }
 
 const ApiDaily = {

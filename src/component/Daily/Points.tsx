@@ -2,12 +2,19 @@ import styled from "styled-components";
 import {useWallet} from "../../hooks/useWallet";
 import {useAuthStore} from "../../store/authStore";
 import ApiPoints from "../../apis/ApiPoints";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {LOGIN_FAILED, METAMASK_LINK_FAILED} from "../../constants";
+import ApiDaily from "../../apis/ApiDaily";
 
 // FIXME: LoginResponse 확인 후 프로퍼티 수정하기
 interface LoginResponse {
     resultCode: string;
+}
+
+interface MyPointsResponse {
+    totalPoints: number | null;
+    resultCode: string;
+    msg: string;
 }
 
 const Points = () => {
@@ -15,6 +22,7 @@ const Points = () => {
     const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
     const walletAddress = useAuthStore((state) => state.userAccount);
     const [loginAttemptFailed, setLoginAttemptFailed] = useState(false);
+    const [myPoints, setMyPoints] = useState(0);
 
     const clickLogin = async () => {
         try {
@@ -34,11 +42,26 @@ const Points = () => {
         }
     };
 
+    const fetchMyPoints = async () => {
+        try {
+            const res: MyPointsResponse = await ApiDaily.myPoint(walletAddress)
+            if (res.resultCode !== '1') {
+                return
+            }
+            setMyPoints(res.totalPoints);
+        } catch (error) {
+            console.error('Error fetching total points:', error);
+        }
+    }
+    useEffect(() => {
+        void fetchMyPoints();
+    }, [walletAddress]);
+
     return (
         <PointsWrapper>
             <TextWrapper>
                 <div>My Total MG8 Points</div>
-                <PointText>-P</PointText>
+                <PointText>{isLoggedIn ? myPoints : '-'} P</PointText>
             </TextWrapper>
             {(!isLoggedIn || loginAttemptFailed) && (
                 <LoginButton onClick={clickLogin}>Login</LoginButton>
