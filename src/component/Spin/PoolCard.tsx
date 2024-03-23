@@ -7,10 +7,6 @@ import ApiDaily from "../../apis/ApiDaily";
 const PoolCard = () => {
   const [dailyPool, setDailyPool] = useState(0);
 
-  useEffect(() => {
-    fetchDailyPool();
-  }, []);
-
   async function fetchDailyPool() {
     try {
       const response = await ApiDaily.dailyPool();
@@ -19,12 +15,19 @@ const PoolCard = () => {
       console.error('Error fetching daily pool:', error);
     }
   }
+  
+  useEffect(() => {
+    fetchDailyPool();
+    const interval = setInterval(fetchDailyPool, 5000);
+    return () => clearInterval(interval); 
+  }, []);
+
   return (
     <CardContainer>
       <CardBox>
         <CardImage src={gift} alt="" />
         <CardTitle>Daily Pool</CardTitle>
-        <PercentText>{isNaN(dailyPool) ? 0 : dailyPool * 100}%</PercentText>
+        <PercentText>{dailyPool}%</PercentText>
         <CardText>Daily Quota Available</CardText>
       </CardBox>
     </CardContainer>

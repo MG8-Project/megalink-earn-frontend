@@ -14,11 +14,10 @@ const TicketCard = () => {
     try {
       if (isLoggedIn && userAccount) {
         const response = await ApiDaily.myParticipationTicket(userAccount);
-        console.log(response);
-        setMyTickets(response);
+        setMyTickets(response >= 0 ? response : 0);
       } else {
         setMyTickets(0);
-      }
+    }
     } catch (error) {
       console.error("Error fetching my tickets:", error);
     }
@@ -33,7 +32,7 @@ const TicketCard = () => {
       <CardBox>
         <CardImage src={ticket} alt="" />
         <CardTitle>Your Ticket</CardTitle>
-        <CardText>{myTickets === -1 ? "-" : myTickets}</CardText>
+        <CardText>{myTickets}</CardText>
       </CardBox>
     </CardContainer>
   );
