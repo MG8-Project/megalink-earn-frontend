@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import {DayRewordList} from "../../constants";
 import {useAuthStore} from "../../store/authStore";
-import {Contract, BrowserProvider, ethers,  toBeHex} from "ethers";
+import {BrowserProvider, Contract, ethers, toBeHex} from "ethers";
 import {ForwarderAbi} from "../../typechain-types/contracts/Forwarder";
 import {DailyAttendanceAbi} from "../../typechain-types/contracts/DailyAttendance";
 import API from "../../apis/Api";
@@ -23,13 +23,13 @@ export const DOMAIN_SEPARATOR: Domain = {
     version: "1"
 }
 
-export type Message = {}
+// export type Message = {}
 
 const Reward = () => {
     const isLoggedIn = useAuthStore(state => state.isLoggedIn);
     const walletAddress = useAuthStore(state => state.userAccount);
-    const currentDate = new Date();
-    const currentDay = currentDate.getDay();
+    // const currentDate = new Date();
+    // const currentDay = currentDate.getDay();
     const [receivedStatus, setReceivedStatus] = useState([0, 0, 0, 0, 0, 0, 0]);
 
     const signTypedData = async () => {
@@ -56,7 +56,7 @@ const Reward = () => {
             const forwarder = new Contract(process.env.REACT_APP_CONTRACT_FORWARDER, ForwarderAbi, provider);
             const nonce = await forwarder.nonces(walletAddress);
             const dailyAttendance = new Contract(process.env.REACT_APP_CONTRACT_DAILY_ATTENDANCE, DailyAttendanceAbi, provider);
-            const message =  {
+            const message = {
                 from: walletAddress,
                 to: process.env.REACT_APP_CONTRACT_DAILY_ATTENDANCE,
                 value: "0",
@@ -71,19 +71,19 @@ const Reward = () => {
                 primaryType: "ForwardRequest",
                 types: {
                     EIP712Domain: [
-                        { name: "name", type: "string" },
-                        { name: "version", type: "string" },
-                        { name: "chainId", type: "uint256" },
-                        { name: "verifyingContract", type: "address" },
+                        {name: "name", type: "string"},
+                        {name: "version", type: "string"},
+                        {name: "chainId", type: "uint256"},
+                        {name: "verifyingContract", type: "address"},
                     ],
                     ForwardRequest: [
-                        { name: "from", type: "address" },
-                        { name: "to", type: "address" },
-                        { name: "value", type: "uint256" },
-                        { name: "gas", type: "uint256" },
-                        { name: "nonce", type: "uint256" },
-                        { name: "deadline", type: "uint48" },
-                        { name: "data", type: "bytes" },
+                        {name: "from", type: "address"},
+                        {name: "to", type: "address"},
+                        {name: "value", type: "uint256"},
+                        {name: "gas", type: "uint256"},
+                        {name: "nonce", type: "uint256"},
+                        {name: "deadline", type: "uint48"},
+                        {name: "data", type: "bytes"},
                     ],
                 }
             })
@@ -110,25 +110,26 @@ const Reward = () => {
 
     useEffect(() => {
         const fetchReceivedStatus = async () => {
-          try {
-            const response = await ApiDaily.myTotalLogin(walletAddress);
-            setReceivedStatus(response);
-          } catch (error) {
-            console.error('Error fetching received status:', error);
-          }
+            try {
+                const response = await ApiDaily.myTotalLogin(walletAddress);
+                setReceivedStatus(response);
+            } catch (error) {
+                console.error('Error fetching received status:', error);
+            }
         };
 
         if (isLoggedIn) {
-          fetchReceivedStatus();
+            void fetchReceivedStatus();
         }
-        return () => {};
-      }, [isLoggedIn, walletAddress]);
+        return () => {
+        };
+    }, [isLoggedIn, walletAddress]);
     return (
         <RewardWrapper>
             {DayRewordList.map((item, index) => (
                 <RewardContainer key={item.id} onClick={() => signTypedData()}>
                     <RewardTitle>{item.title}</RewardTitle>
-                    <RewardImage src={receivedStatus[index] === 1 ? mega8 : mg8gray} alt="" />
+                    <RewardImage src={receivedStatus[index] === 1 ? mega8 : mg8gray} alt=""/>
                     <RewardPrice>{item.point}</RewardPrice>
                     {/* <RewardRequest onClick={signTypedData}>Get</RewardRequest> */}
                 </RewardContainer>
