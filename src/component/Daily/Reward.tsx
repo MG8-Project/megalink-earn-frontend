@@ -130,7 +130,7 @@ const Reward = () => {
                 <RewardContainer key={item.id} onClick={() => {
                     receivedStatus.reduce((a, b) => a + b) === index ? signTypedData() : alert("You can only get the reward of the previous day.")
                 }} style={{
-                    border: receivedStatus.reduce((a, b) => a + b) === index ? "2px solid white" : "none",
+                    border: isLoggedIn && receivedStatus.reduce((a, b) => a + b) === index ? "2px solid white" : "2px solid transparent",
                     padding: "10px",
                     borderRadius: "10px",
                 }}>
