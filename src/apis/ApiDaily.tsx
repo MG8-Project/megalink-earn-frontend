@@ -25,8 +25,8 @@ const myParticipationTicket = async (userAccount: string) => {
 const dailyPool = async () => {
   const BNBAmount:string = process.env.REACT_APP_BNBAMOUNT;
 	return API
-	.get(`${statusEndpoint}/BNBRewarded`)
-	.then((res) => parseInt(res.data) / parseInt(BNBAmount));
+	.get(`${statusEndpoint}/dailyPool`)
+	.then((res) => parseInt(res.data));
 }
 
 const ApiDaily = {
