@@ -36,6 +36,9 @@ const Reward = () => {
     const walletAddress = useAuthStore(state => state.userAccount);
     const [receivedStatus, setReceivedStatus] = useState([0, 0, 0, 0, 0, 0, 0]);
 
+    const isTodayCheckAvailable = (totalCheck: number) => {
+        return totalCheck === receivedStatus.reduce((a, b) => a + b)
+    }
     const signTypedData = async () => {
         try {
             if (!isLoggedIn) {
@@ -85,7 +88,6 @@ const Reward = () => {
             const forwarder = new Contract(process.env.REACT_APP_CONTRACT_FORWARDER, ForwarderAbi, provider);
             const nonce = await forwarder.nonces(walletAddress);
             const dailyAttendance = new Contract(process.env.REACT_APP_CONTRACT_DAILY_ATTENDANCE, DailyAttendanceAbi, provider);
-
             const checkInAvailable = await dailyAttendance.checkedInToday(walletAddress)
             if (checkInAvailable) {
                 alert("You already checked in today.")
@@ -164,12 +166,13 @@ const Reward = () => {
     return (
         <RewardWrapper>
             {DailyRewardList.map((item, index) => (
-                <RewardContainer key={item.id} onClick={() => {
-                    index === receivedStatus.reduce((a, b) => a + b) ? signTypedData() : alert("You can't get this reward yet.")
-                }} style={{
-                    cursor: isLoggedIn && receivedStatus.reduce((a, b) => a + b) === index ? 'pointer' : 'default',
-                    border: isLoggedIn && receivedStatus.reduce((a, b) => a + b) === index ? "2px solid white" : "2px solid transparent",
-                }}>
+                <RewardContainer
+                    key={item.id}
+                    onClick={isLoggedIn && isTodayCheckAvailable(index) ? () => void signTypedData() : null}
+                    style={{
+                        cursor: isLoggedIn && isTodayCheckAvailable(index) ? 'pointer' : 'default',
+                        border: isLoggedIn && isTodayCheckAvailable((index)) ? "2px solid white" : "2px solid transparent",
+                    }}>
                     <RewardTitle>{item.title}</RewardTitle>
                     <RewardImage src={isLoggedIn && receivedStatus.reduce((a, b) => a + b) > index ? mega8 : mg8gray}
                                  alt=""/>
