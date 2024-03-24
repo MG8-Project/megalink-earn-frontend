@@ -35,6 +35,7 @@ const Reward = () => {
     const isLoggedIn = useAuthStore(state => state.isLoggedIn);
     const walletAddress = useAuthStore(state => state.userAccount);
     const [receivedStatus, setReceivedStatus] = useState([0, 0, 0, 0, 0, 0, 0]);
+    // FIXME: lastCheckIn 사용하는곳 찾아보고 추가하기
     const [lastCheckIn, setLastCheckIn] = useState(0);
     const provider = useMemo(() => {
         return new BrowserProvider(window.ethereum);

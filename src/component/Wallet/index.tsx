@@ -18,7 +18,9 @@ const Wallet = () => {
     };
 
     const onWalletDisconnect = () => {
+        //  Disconnect 시 logout
         useAuthStore.getState().logout();
+        useAuthStore.getState().setUserAccount(null);
         alert(DISCONNECTED);
     };
 
