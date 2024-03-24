@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from "react";
-import Web3 from "web3";
 import {useAuthStore} from "../store/authStore";
+import {ethers, getAddress} from "ethers";
 
 export const useWallet = () => {
     const currentUserAccount = useAuthStore((state) => state.userAccount);
@@ -13,12 +13,12 @@ export const useWallet = () => {
     const connectWallet = useCallback(async () => {
         if (window.ethereum) {
             try {
-                const web3 = new Web3(window.ethereum);
-                const accounts = await web3.eth.requestAccounts();
-                setWalletAddress(accounts[0]);
-                setCurrentAccount(accounts[0]);
+                const provider = new ethers.BrowserProvider(window.ethereum);
+                const accounts = await provider.getSigner(0);
+                setWalletAddress(getAddress(await accounts.getAddress()));
+                setCurrentAccount(getAddress(await accounts.getAddress()));
 
-                return accounts[0];
+                return getAddress(await accounts.getAddress());
             } catch (error) {
                 return null;
             }
