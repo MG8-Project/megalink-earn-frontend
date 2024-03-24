@@ -39,6 +39,7 @@ const Points = () => {
         } catch (error) {
             console.error("An error occurred during login process:", error);
             setLoginAttemptFailed(true);
+            alert(LOGIN_FAILED);
         }
     };
 

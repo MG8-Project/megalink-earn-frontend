@@ -84,6 +84,6 @@ export const TEAM = 'Team'
 // Alert Message
 export const METAMASK_LOCKED_OR_UNINSTALL = "Please install Metamask. If you already installed, please unlock it.";
 export const METAMASK_LINK_FAILED = "Metamask linkage failed. Please try again.";
-export const LOGIN_FAILED = "Failed to login.";
+export const LOGIN_FAILED = "Failed to login. You should join first.";
 export const LOGIN_SUCCESS = "Successfully logged in.";
 export const DISCONNECTED = "Disconnected"
