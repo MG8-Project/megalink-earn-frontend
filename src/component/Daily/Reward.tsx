@@ -11,7 +11,7 @@ import {BrowserProvider, Contract, ethers, toBeHex} from "ethers";
 import {ForwarderAbi} from "../../typechain-types/contracts/Forwarder";
 import {DailyAttendanceAbi} from "../../typechain-types/contracts/DailyAttendance";
 import API from "../../apis/Api";
-import {useCallback, useEffect, useMemo, useState} from "react";
+import { useEffect, useState} from "react";
 import ApiDaily from "../../apis/ApiDaily";
 import {mega8, mg8gray} from "../../assets/images";
 
@@ -42,39 +42,6 @@ const Reward = () => {
     const [receivedStatus, setReceivedStatus] = useState<ReceivedStatus>({
         attendedList: [],
     });
-    // FIXME: lastCheckIn 사용하는곳 찾아보고 추가하기
-    const [lastCheckIn, setLastCheckIn] = useState(0);
-    const provider = useMemo(() => {
-        return new BrowserProvider(window.ethereum);
-    }, []);
-
-    const dailyAttendance = useMemo(() => {
-        return new Contract(process.env.REACT_APP_CONTRACT_DAILY_ATTENDANCE, DailyAttendanceAbi, provider);
-    }, [provider]);
-    const forwarder = useMemo(() => {
-        return new Contract(process.env.REACT_APP_CONTRACT_FORWARDER, ForwarderAbi, provider);
-    }, [provider])
-
-
-    const getLastCheckIn = useCallback(async () => {
-        try {
-            const lastCheckedIn = await dailyAttendance.getLastCheckIn(walletAddress);
-            const date = new Date(Number(lastCheckedIn) * 1000);
-            setLastCheckIn(date.getTime());
-        } catch (error) {
-            // FIXME: handle error
-            console.error(error);
-        }
-    }, [walletAddress, dailyAttendance]);
-    void getLastCheckIn();
-
-    useEffect(() => {
-        if (isLoggedIn) {
-            void getLastCheckIn();
-        }
-        return () => {
-        };
-    }, [isLoggedIn, getLastCheckIn]);
 
 
     const isTodayCheckAvailable = (index: number) => {
@@ -87,6 +54,9 @@ const Reward = () => {
                 return;
             }
 
+            const provider = new BrowserProvider(window.ethereum);
+            const dailyAttendance = new Contract(process.env.REACT_APP_CONTRACT_DAILY_ATTENDANCE, DailyAttendanceAbi, provider);
+            const forwarder = new Contract(process.env.REACT_APP_CONTRACT_FORWARDER, ForwarderAbi, provider);
             const currentTimestamp = Math.floor(new Date().getTime() / 1000);
             const oneWeekInSeconds = 60;
             const futureTimestamp = currentTimestamp + oneWeekInSeconds;
