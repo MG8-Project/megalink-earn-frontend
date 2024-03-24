@@ -22,6 +22,13 @@ export type Domain = {
     version: string;
 }
 
+interface MyTotalLoginsResponse {
+    resultCode: string;
+    msg: string;
+    todayIndex: number;
+    attendedList: number[]
+}
+
 export const DOMAIN_SEPARATOR: Domain = {
     chainId: 5611,
     name: "Forwarder",
@@ -39,8 +46,9 @@ type ReceivedStatus = {
 const Reward = () => {
     const isLoggedIn = useAuthStore(state => state.isLoggedIn);
     const walletAddress = useAuthStore(state => state.userAccount);
-    const [receivedStatus, setReceivedStatus] = useState<ReceivedStatus>({
-        attendedList: [],
+    const [receivedStatus, setReceivedStatus] = useState<{ todayIndex: number, attendedList: number[] }>({
+        todayIndex: 0,
+        attendedList: [0, 0, 0, 0, 0, 0, 0]
     });
     // FIXME: lastCheckIn 사용하는곳 찾아보고 추가하기
     const [lastCheckIn, setLastCheckIn] = useState(0);
@@ -78,7 +86,7 @@ const Reward = () => {
 
 
     const isTodayCheckAvailable = (index: number) => {
-        return index === receivedStatus?.todayIndex
+        return index === receivedStatus.todayIndex
     }
     const signTypedData = async () => {
         try {
@@ -189,13 +197,16 @@ const Reward = () => {
     useEffect(() => {
         const fetchReceivedStatus = async () => {
             try {
-                const response = await ApiDaily.myTotalLogin(walletAddress);
-                setReceivedStatus(response);
+                const response: MyTotalLoginsResponse = await ApiDaily.myTotalLogin(walletAddress);
+                const data = {
+                    todayIndex: response.todayIndex,
+                    attendedList: response.attendedList
+                }
+                setReceivedStatus(data);
             } catch (error) {
                 console.error('Error fetching received status:', error);
             }
         };
-
         if (isLoggedIn) {
             void fetchReceivedStatus();
         }
@@ -214,8 +225,9 @@ const Reward = () => {
                         border: isLoggedIn && isTodayCheckAvailable((index)) ? "2px solid white" : "2px solid transparent",
                     }}>
                     <RewardTitle>{item.title}</RewardTitle>
-                    <RewardImage src={isLoggedIn && receivedStatus?.attendedList?.length !== 0 && receivedStatus?.attendedList[index] !== 0 ? mega8 : mg8gray}
-                                 alt=""/>
+                    <RewardImage
+                        src={isLoggedIn && receivedStatus.attendedList[index] !== 0 ? mega8 : mg8gray}
+                        alt=""/>
                     <RewardPrice>{item.point}</RewardPrice>
                     {/* <RewardRequest onClick={signTypedData}>Get</RewardRequest> */}
                 </RewardContainer>
