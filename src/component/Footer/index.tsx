@@ -13,15 +13,7 @@ const Footer = () => {
             <FooterContentBox key={index}>
               <FooterBoldText>{item.title}</FooterBoldText>
               <a href={item.link}>
-                <FooterContentText
-                  style={
-                    item.content === "Website"
-                      ? { width: "55px", borderBottom: "1px solid #ffffff" }
-                      : {}
-                  }
-                >
-                  {item.content}
-                </FooterContentText>
+                <FooterContentText>{item.content}</FooterContentText>
               </a>
             </FooterContentBox>
           ))}
@@ -29,9 +21,9 @@ const Footer = () => {
           <FooterContentBox>
             <FooterBoldText>Community</FooterBoldText>
             <ImgBoxWrapper>
-              {FooterSns.map((sns) => (
-                <ImgBox>
-                  <a href={sns.linkUrl} target="_blank">
+              {FooterSns.map((sns, index) => (
+                <ImgBox key={index}>
+                  <a href={sns.linkUrl}>
                     <CommunityImg src={sns.imgSrc} alt={sns.text} />
                   </a>
                 </ImgBox>
@@ -83,7 +75,6 @@ const FooterBottom = styled.div`
 
 const FooterBottomText = styled.div`
   color: ${theme.colors.footerText};
-  font-size: 14px;
 `;
 const FooterContentText = styled.p`
   font-size: 16px;
