@@ -42,6 +42,7 @@ const Reward = () => {
     const [receivedStatus, setReceivedStatus] = useState<ReceivedStatus>({
         attendedList: [],
     });
+    // FIXME: lastCheckIn 사용하는곳 찾아보고 추가하기
     const [lastCheckIn, setLastCheckIn] = useState(0);
     const provider = useMemo(() => {
         return new BrowserProvider(window.ethereum);
