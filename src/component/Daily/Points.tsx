@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {useWallet} from "../../hooks/useWallet";
 import {useAuthStore} from "../../store/authStore";
 import ApiPoints from "../../apis/ApiPoints";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {LOGIN_FAILED, METAMASK_LINK_FAILED} from "../../constants";
 import ApiDaily from "../../apis/ApiDaily";
 
@@ -42,8 +42,7 @@ const Points = () => {
             alert(LOGIN_FAILED);
         }
     };
-
-    const fetchMyPoints = async () => {
+    const fetchMyPoints = useCallback(async () => {
         try {
             const res: MyPointsResponse = await ApiDaily.myPoint(walletAddress)
             if (res.resultCode !== '1') {
@@ -53,10 +52,11 @@ const Points = () => {
         } catch (error) {
             console.error('Error fetching total points:', error);
         }
-    }
+    }, [walletAddress]);
+
     useEffect(() => {
         void fetchMyPoints();
-    }, [walletAddress]);
+    }, [walletAddress, fetchMyPoints]);
 
     return (
         <PointsWrapper>
