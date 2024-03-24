@@ -1,3 +1,9 @@
+/* FIXME:
+1. 출석체크시 오늘 체크 가능 여부
+2. 지갑 잠그고 로그인 => alert 문구 변경
+3. 지갑 바꾸고 로그인
+* */
+
 import styled from "styled-components";
 import {DailyRewardList} from "../../constants";
 import {useAuthStore} from "../../store/authStore";
@@ -63,6 +69,9 @@ const Reward = () => {
     }, [isLoggedIn, getLastCheckIn]);
 
 
+    const isTodayCheckAvailable = (totalCheck: number) => {
+        return totalCheck === receivedStatus.reduce((a, b) => a + b)
+    }
     const signTypedData = async () => {
         try {
             if (!isLoggedIn) {
@@ -77,7 +86,7 @@ const Reward = () => {
             const chainId = await window.ethereum.request({method: "eth_chainId"});
 
             if (chainId.toString() !== DOMAIN_SEPARATOR.chainId.toString()) {
-            // FIXME: 추후 Mainnet 정보로 변경
+                // FIXME: 추후 Mainnet 정보로 변경
                 await window.ethereum.request({
                     "method": "wallet_addEthereumChain",
                     "params": [
@@ -109,6 +118,7 @@ const Reward = () => {
             }
 
             const nonce = await forwarder.nonces(walletAddress);
+
             const checkInAvailable = await dailyAttendance.checkedInToday(walletAddress)
             if (!checkInAvailable) {
                 alert("You already checked in today.")
@@ -187,15 +197,16 @@ const Reward = () => {
     return (
         <RewardWrapper>
             {DailyRewardList.map((item, index) => (
-                <RewardContainer key={item.id} onClick={() => {
-                    index === receivedStatus.reduce((a, b) => a + b) ? signTypedData(): alert("You can't get this reward yet.")
-                }} style={{
-                    border: isLoggedIn && receivedStatus.reduce((a, b) => a + b) === index ? "2px solid white" : "2px solid transparent",
-                    padding: "10px",
-                    borderRadius: "10px",
-                }}>
+                <RewardContainer
+                    key={item.id}
+                    onClick={isLoggedIn && isTodayCheckAvailable(index) ? () => void signTypedData() : null}
+                    style={{
+                        cursor: isLoggedIn && isTodayCheckAvailable(index) ? 'pointer' : 'default',
+                        border: isLoggedIn && isTodayCheckAvailable((index)) ? "2px solid white" : "2px solid transparent",
+                    }}>
                     <RewardTitle>{item.title}</RewardTitle>
-                    <RewardImage src={receivedStatus.reduce((a, b) => a + b) > index ? mega8 : mg8gray} alt=""/>
+                    <RewardImage src={isLoggedIn && receivedStatus.reduce((a, b) => a + b) > index ? mega8 : mg8gray}
+                                 alt=""/>
                     <RewardPrice>{item.point}</RewardPrice>
                     {/* <RewardRequest onClick={signTypedData}>Get</RewardRequest> */}
                 </RewardContainer>
@@ -217,6 +228,8 @@ const RewardContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 10px;
+    border-radius: 10px;
 `;
 
 const RewardTitle = styled.div`
