@@ -75,6 +75,7 @@ const Status = () => {
         return () => clearInterval(intervalId);
     }, []);
 
+
     return (
         <StatusWrapper>
             <StatusTitle>Status</StatusTitle>
