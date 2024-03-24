@@ -29,12 +29,20 @@ export const DOMAIN_SEPARATOR: Domain = {
     version: "1"
 }
 
-// export type Message = {}
+type ReceivedStatus = {
+    resultCode?: number | string;
+    attendedList?: number[];
+    todayIndex?: number | string
+    msg?: string;
+}
 
 const Reward = () => {
     const isLoggedIn = useAuthStore(state => state.isLoggedIn);
     const walletAddress = useAuthStore(state => state.userAccount);
-    const [receivedStatus, setReceivedStatus] = useState([0, 0, 0, 0, 0, 0, 0]);
+    const [receivedStatus, setReceivedStatus] = useState<ReceivedStatus>({
+        attendedList: [],
+    });
+    // FIXME: lastCheckIn 사용하는곳 찾아보고 추가하기
     const [lastCheckIn, setLastCheckIn] = useState(0);
     const provider = useMemo(() => {
         return new BrowserProvider(window.ethereum);
@@ -69,8 +77,8 @@ const Reward = () => {
     }, [isLoggedIn, getLastCheckIn]);
 
 
-    const isTodayCheckAvailable = (totalCheck: number) => {
-        return totalCheck === receivedStatus.reduce((a, b) => a + b)
+    const isTodayCheckAvailable = (index: number) => {
+        return index === receivedStatus?.todayIndex
     }
     const signTypedData = async () => {
         try {
@@ -78,6 +86,7 @@ const Reward = () => {
                 alert("Please login first.")
                 return;
             }
+
             const currentTimestamp = Math.floor(new Date().getTime() / 1000);
             const oneWeekInSeconds = 60;
             const futureTimestamp = currentTimestamp + oneWeekInSeconds;
@@ -205,7 +214,7 @@ const Reward = () => {
                         border: isLoggedIn && isTodayCheckAvailable((index)) ? "2px solid white" : "2px solid transparent",
                     }}>
                     <RewardTitle>{item.title}</RewardTitle>
-                    <RewardImage src={isLoggedIn && receivedStatus.reduce((a, b) => a + b) > index ? mega8 : mg8gray}
+                    <RewardImage src={isLoggedIn && receivedStatus?.attendedList?.length !== 0 && receivedStatus?.attendedList[index] !== 0 ? mega8 : mg8gray}
                                  alt=""/>
                     <RewardPrice>{item.point}</RewardPrice>
                     {/* <RewardRequest onClick={signTypedData}>Get</RewardRequest> */}

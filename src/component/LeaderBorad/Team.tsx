@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import API from "../../apis/Api";
 import {API_SUCCESS_CODE, nationList} from "../../constants";
 import {ArrowButton, ButtonImg, PageButton, PaginationWrapper,} from "./Individual";
+
 import {nextArrow, preArrow} from "../../assets/images";
 import RankingAlert from "./RankingAlert";
 
@@ -18,7 +19,7 @@ export const tableTitle = [
 interface TeamListDataType {
     name: string;
     rank: number;
-    totalPoints: number;
+    totalpoints: number;
     booster: string;
     nation: number;
 }
@@ -108,7 +109,7 @@ const TeamList = () => {
                                 <StyledTd>{item.name}</StyledTd>
                                 <StyledTd>{convertNation(item.nation)}</StyledTd>
                                 <StyledTd>{item.booster}%</StyledTd>
-                                <StyledTd>{addComma(String(item.totalPoints))}</StyledTd>
+                                <StyledTd>{addComma(String(item.totalpoints))}</StyledTd>
                             </tr>
                         ))}
                         </tbody>
