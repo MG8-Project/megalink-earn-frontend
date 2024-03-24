@@ -19,7 +19,7 @@ export const tableTitle = [
 interface TeamListDataType {
     name: string;
     rank: number;
-    totalPoints: number;
+    totalpoints: number;
     booster: string;
     nation: number;
 }
@@ -109,7 +109,7 @@ const TeamList = () => {
                                 <StyledTd>{item.name}</StyledTd>
                                 <StyledTd>{convertNation(item.nation)}</StyledTd>
                                 <StyledTd>{item.booster}%</StyledTd>
-                                <StyledTd>{addComma(String(item.totalPoints))}</StyledTd>
+                                <StyledTd>{addComma(String(item.totalpoints))}</StyledTd>
                             </tr>
                         ))}
                         </tbody>
