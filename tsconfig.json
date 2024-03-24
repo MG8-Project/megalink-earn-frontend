@@ -14,8 +14,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "strictNullChecks": false
   },
   "extensions": [".js", ".jsx", ".ts", ".tsx"],
-  "include": ["src", "src/assets", "public/images"]
+  "include": ["src", "src/assets", "public/images"],
+  "typeRoots": ["./node_modules/@types", "./src/common/types"],
 }
