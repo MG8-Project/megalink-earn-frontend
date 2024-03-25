@@ -12,7 +12,12 @@ const Mission = () => {
         <PoolCard />
       </CardWrapper>
       <SpinContainer>
-        {<SpinContainerImage src="https://cv2.avivgame.com/game.html" />}
+        {
+          <SpinContainerImage 
+            src="https://cv2.avivgame.com/game.html"
+            sandbox="allow-scripts allow-same-origin allow-storage-access-by-user-activation" 
+          />
+        }
       </SpinContainer>
     </MissionWrapper>
   );
