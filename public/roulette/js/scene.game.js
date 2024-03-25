@@ -1976,7 +1976,7 @@ function closeBoxPop(){
           scale: { min: 0.7, max: 1.3 },
           frequency: 300000,
           lifespan: 3000,
-          quantity: amount*3,
+          quantity: 8,//amount*3,
           emitting:false
   
         });

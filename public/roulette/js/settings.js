@@ -3,7 +3,7 @@
 let scale = 0.5;//1080/1080;
 
 
-let API_BASE = "http://infinite-spin-alb-1402681150.ap-northeast-3.elb.amazonaws.com";
+let API_BASE = "https://spin-api.mega8.io";
 let IMG_BASE = location.href;
 
 var GameOptions = function (options){
