@@ -48,7 +48,7 @@ const LeaderBoardWrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding-bottom: 160px;
+  padding: 160px 0px;
 `;
 
 const TitleContainer = styled.div`

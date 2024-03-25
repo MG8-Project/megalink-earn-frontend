@@ -29,6 +29,7 @@ const SpinWrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  padding: 160px 0px;
 `;
 const TitleContainer = styled.div`
   display: flex;

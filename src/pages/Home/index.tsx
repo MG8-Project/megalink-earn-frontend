@@ -17,7 +17,10 @@ const Home = () => {
 
   const scrollToLeaderBoard = () => {
     if (leaderBoardRef.current) {
-      leaderBoardRef.current.scrollIntoView({ behavior: "smooth" });
+      leaderBoardRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }
   };
 

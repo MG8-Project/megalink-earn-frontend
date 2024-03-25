@@ -48,7 +48,7 @@ const WalletWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 160px;
+  padding: 160px 0px;
 `;
 
 const WalletTitle = styled.h3`

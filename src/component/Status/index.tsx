@@ -30,6 +30,7 @@ const StatusWrapper = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  padding: 160px 0px;
 `;
 
 const StatusTitle = styled.h3`

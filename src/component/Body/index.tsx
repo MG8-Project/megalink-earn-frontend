@@ -29,9 +29,4 @@ const Body: React.FC<BodyProps> = ({ mainRef, leaderBoardRef }) => {
 
 export default Body;
 
-const BodyWrapper = styled.main`
-  display: flex;
-  flex-direction: column;
-  gap: 320px;
-  padding-top: 80px;
-`;
+const BodyWrapper = styled.main``;

@@ -35,6 +35,7 @@ const DailyWrapper = styled.div`
   justify-content: center;
   flex-direction: column;
   position: relative;
+  padding: 160px 0px;
 `;
 const TitleContainer = styled.div`
   display: flex;
