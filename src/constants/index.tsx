@@ -25,11 +25,10 @@ export const FooterSns = [
         text: "Telegram",
     },
 ];
-
 export const coinList = [
-    {id: 1, image: binance, title: "BNB"},
-    {id: 2, image: ace, title: "ACE"},
-    {id: 3, image: wemix, title: "WEMIX"},
+    {id: 1, image: binance, amount:1, url: "https://bsc-dataseed.binance.org/", chainId: 56, balance:'0', title: "BNB"},
+    {id: 2, image: ace, amount:30, url: "https://rpc-endurance.fusionist.io", chainId: 648, balance:'0', title: "ACE"},
+    {id: 3, image: wemix, amount:150, url: "https://api.wemix.com/", chainId: 1111, balance:'0', title: "WEMIX"},
 ];
 
 export const statusList = [
