@@ -15,9 +15,9 @@ const Body = () => {
     <BodyWrapper>
       <Spin onLearnMoreClick={scrollToWallet}/>
       <Daily />
+      <LeaderBoard />
       <div ref={walletRef}><Wallet /></div>
       <Status />
-      <LeaderBoard />
     </BodyWrapper>
   );
 };
