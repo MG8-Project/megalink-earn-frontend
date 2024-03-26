@@ -56,7 +56,11 @@ const Points = () => {
 
     useEffect(() => {
         void fetchMyPoints();
-    }, [walletAddress, fetchMyPoints]);
+        if (isLoggedIn) {
+            const interval = setInterval(fetchMyPoints, 5000);
+            return () => clearInterval(interval);
+        }
+    }, [walletAddress, fetchMyPoints, isLoggedIn]);
 
     return (
         <PointsWrapper>

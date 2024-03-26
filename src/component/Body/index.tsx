@@ -9,10 +9,10 @@ import LeaderBoard from "../LeaderBorad";
 const Body = () => {
   return (
     <BodyWrapper>
+      <Spin />
+      <Daily />
       <Wallet />
       <Status />
-      <Daily />
-      <Spin />
       <LeaderBoard />
     </BodyWrapper>
   );

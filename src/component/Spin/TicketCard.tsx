@@ -25,7 +25,12 @@ const TicketCard = () => {
 
   useEffect(() => {
     fetchMyTickets();
-  }, [fetchMyTickets]);
+    if (isLoggedIn) {
+
+      const interval = setInterval(fetchMyTickets, 5000);
+      return () => clearInterval(interval); 
+    }
+  }, [fetchMyTickets, isLoggedIn]);
 
   return (
     <CardContainer>
