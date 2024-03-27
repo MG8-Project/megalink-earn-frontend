@@ -22,7 +22,7 @@ const Header = () => {
     const onWalletDisconnect = () => {
         //  Disconnect 시 logout
         useAuthStore.getState().logout();
-        useAuthStore.getState().setUserAccount(null);
+        // useAuthStore.getState().setUserAccount(null);
         // 같은 메서드인데 다른 컴포넌트에서는 alert여서 일단 alert로 통일 시켜놓았습니다.
         alert(DISCONNECTED);
     };
