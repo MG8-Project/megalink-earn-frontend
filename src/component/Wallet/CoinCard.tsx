@@ -12,6 +12,10 @@ const CoinCard = () => {
   const [coins, setCoins] = useState(coinList);
 
   const fetchBalances = useCallback(async () => {
+    if (!userAddress) {
+      return;
+    }
+  
     const updatedCoins = await Promise.all(
       coins.map(async (item) => {
         const provider = new ethers.JsonRpcProvider(item.url, item.chainId);
