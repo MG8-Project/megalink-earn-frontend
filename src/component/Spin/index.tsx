@@ -2,10 +2,10 @@ import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import Mission from "./Mission";
 
-interface SpinProps {
-  onLearnMoreClick: () => void;
-}
-const Spin = ({ onLearnMoreClick }: SpinProps) => {
+const Spin = () => {
+  const handleClick = () => {
+    window.open(process.env.REACT_APP_URL, '_blank');
+  };
   return (
     <SpinWrapper>
       <TitleContainer>
@@ -20,7 +20,7 @@ const Spin = ({ onLearnMoreClick }: SpinProps) => {
             every day is limited.
           </SubTitle>
         </SubTitleContainer>
-        <LearnButton onClick={onLearnMoreClick}>Learn more</LearnButton>
+        <LearnButton onClick={handleClick}>Learn more</LearnButton>
       </TitleContainer>
       <Mission />
     </SpinWrapper>
