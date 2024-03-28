@@ -2,9 +2,10 @@ import styled from "styled-components";
 import {useWallet} from "../../hooks/useWallet";
 import {useAuthStore} from "../../store/authStore";
 import ApiPoints from "../../apis/ApiPoints";
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {LOGIN_FAILED, METAMASK_LINK_FAILED} from "../../constants";
 import ApiDaily from "../../apis/ApiDaily";
+import ClaimDialog from "./dialog/ClaimDialog";
 
 // FIXME: LoginResponse 확인 후 프로퍼티 수정하기
 interface LoginResponse {
@@ -19,11 +20,21 @@ interface MyPointsResponse {
 
 const Points = () => {
     const {connectWallet} = useWallet();
+    const dialogRef = useRef<HTMLDialogElement | null>(null)
     const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
     const walletAddress = useAuthStore((state) => state.userAccount);
     const [loginAttemptFailed, setLoginAttemptFailed] = useState(false);
     const [myPoints, setMyPoints] = useState(0);
 
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const handleOpenModal = () => {
+        setIsDialogOpen(true)
+        dialogRef.current?.showModal()
+    }
+    const handleCloseDialog = () => {
+        setIsDialogOpen(false)
+        dialogRef.current?.close()
+    }
     const clickLogin = async () => {
         try {
             let address = walletAddress || await connectWallet();
@@ -58,15 +69,29 @@ const Points = () => {
         void fetchMyPoints();
     }, [walletAddress, fetchMyPoints]);
 
+    useEffect(() => {
+        if (isDialogOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isDialogOpen]);
     return (
         <PointsWrapper>
             <TextWrapper>
                 <div>My Total MG8 Points</div>
                 <PointText>{isLoggedIn ? myPoints : '-'} P</PointText>
             </TextWrapper>
-            {(!isLoggedIn || loginAttemptFailed) && (
+            {(!isLoggedIn || loginAttemptFailed) ? (
                 <LoginButton onClick={clickLogin}>Login</LoginButton>
-            )}
+            ) : <ClaimButton onClick={handleOpenModal}>Activate Claim</ClaimButton>}
+            {isDialogOpen ?
+                <ClaimDialog ref={dialogRef} handleCloseDialog={handleCloseDialog}/>
+                : null}
         </PointsWrapper>
     );
 };
@@ -99,3 +124,17 @@ const LoginButton = styled.button`
     border-radius: 100px;
     font-size: 20px;
 `;
+
+const ClaimButton = styled.button`
+    margin-top: 36px;
+    font-weight: 600;
+    border: 1px solid #ffffff;
+    border-radius: 100px;
+    font-size: 20px;
+    padding: 12px 30px 12px 30px;
+`
+
+const StyledDialog = styled.dialog`
+    background: darkblue;
+    width: 100vw;
+`
