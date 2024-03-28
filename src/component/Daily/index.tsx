@@ -46,7 +46,6 @@ const Daily = () => {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`
                 }
             })
-            console.log(res)
             setCurrentPoint(res.data.currentPoints)
             setCurrentMG8(res.data.mg8Amount)
             setExchangeRatio(res.data.exchangeRatio)
@@ -83,7 +82,7 @@ const Daily = () => {
                         currentPoint={currentPoint}/>
                 </ContentWrapper>
                 {isAvailableClaim ? <ContentAlertText>
-                        You can claim up to
+                        *CLAIM NOTICE : You can claim up to
                         <strong style={{fontWeight: 'bold'}}> {addCommas(maxAmount)}p</strong> at once.
                     </ContentAlertText> :
                     <ContentAlertText style={{color: '#b81414'}}>Insufficient POINT to claim.</ContentAlertText>

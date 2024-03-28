@@ -122,7 +122,7 @@ const Points = (props: PointsProps) => {
             {(!isLoggedIn || loginAttemptFailed) ? (
                     <LoginButton onClick={clickLogin}>Login</LoginButton>
                 ) :
-                <ClaimButton onClick={!isClaimable ? handleOpenModal : null}
+                <ClaimButton onClick={isClaimable ? handleOpenModal : null}
                              style={{color: isClaimable ? '#fff' : theme.colors.bg.icon}}>
                     {isClaimable ? 'Activate Claim' : 'Claim All'}
                 </ClaimButton>}
