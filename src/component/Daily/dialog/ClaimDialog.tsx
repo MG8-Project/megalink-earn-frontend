@@ -92,6 +92,7 @@ const DialogContent = styled.section`
     width: 400px;
     height: auto;
     background: ${theme.colors.bg.main};
+    border: 3px solid ${theme.colors.bg.icon};
     border-radius: 20px;
     display: grid;
     grid-template-areas:
