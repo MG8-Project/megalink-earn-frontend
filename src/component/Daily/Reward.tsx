@@ -11,7 +11,7 @@ import {BrowserProvider, Contract, ethers, toBeHex} from "ethers";
 import {ForwarderAbi} from "../../typechain-types/contracts/Forwarder";
 import {DailyAttendanceAbi} from "../../typechain-types/contracts/DailyAttendance";
 import API from "../../apis/Api";
-import { useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import ApiDaily from "../../apis/ApiDaily";
 import {mega8, mg8gray} from "../../assets/images";
 
@@ -36,22 +36,14 @@ export const DOMAIN_SEPARATOR: Domain = {
     version: "1"
 }
 
-type ReceivedStatus = {
-    resultCode?: number | string;
-    attendedList?: number[];
-    todayIndex?: number | string
-    msg?: string;
-}
-
 const Reward = () => {
     const isLoggedIn = useAuthStore(state => state.isLoggedIn);
+    const [isFetch, setIsFetch] = useState(false);
     const walletAddress = useAuthStore(state => state.userAccount);
     const [receivedStatus, setReceivedStatus] = useState<{ todayIndex: number, attendedList: number[] }>({
         todayIndex: 0,
         attendedList: [0, 0, 0, 0, 0, 0, 0]
     });
-
-
     const isTodayCheckAvailable = (index: number) => {
         return index === receivedStatus.todayIndex
     }
@@ -107,7 +99,8 @@ const Reward = () => {
             const nonce = await forwarder.nonces(walletAddress);
 
             const checkInAvailable = await dailyAttendance.checkedInToday(walletAddress)
-            if (!checkInAvailable) {
+            // FIXME: 지난번에 !checkInAvailable 로 로직 변경했는데 바꾸기 전 로직이 정상작동됨 확인 필요
+            if (checkInAvailable) {
                 alert("You already checked in today.")
                 return;
             }
@@ -157,8 +150,8 @@ const Reward = () => {
                     "Authorization": "application/json",
                 }
             });
-
             alert("Successfully checked in.")
+            setIsFetch(!isFetch);
         } catch (error) {
             console.error(error)
         }
@@ -182,7 +175,7 @@ const Reward = () => {
         }
         return () => {
         };
-    }, [isLoggedIn, walletAddress]);
+    }, [isLoggedIn, walletAddress, isFetch]);
 
     return (
         <RewardWrapper>
