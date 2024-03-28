@@ -25,7 +25,7 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
         }
         // handleCloseDialog();
         const provider = new BrowserProvider(window.ethereum);
-        const vault: Vault = new Contract('0x772e21A0A7A37E4641b4fa08Cc38bEB685BD6F9E', VaultAbi, provider) as unknown as Vault
+        const vault: Vault = new Contract(process.env.REACT_APP_CONTRACT_VAULT, VaultAbi, provider) as unknown as Vault
         // console.log('provider sign : ', await provider.getSigner(0))
         const signer = await provider.getSigner(0)
         // console.log('signer address : ', await signer.getAddress())
