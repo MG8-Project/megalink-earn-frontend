@@ -34,10 +34,11 @@ interface PointsProps {
     exchangeRatio: number;
     currentPoint: number;
     currentMG8: number;
+    minAmount: number;
 }
 
 const Points = (props: PointsProps) => {
-    const {exchangeRatio, currentPoint, currentMG8} = props;
+    const {minAmount, exchangeRatio, currentPoint, currentMG8} = props;
     const {connectWallet} = useWallet();
     const [isClaimable, setIsClaimable] = useState<boolean>(false);
     const dialogRef = useRef<HTMLDialogElement | null>(null)
@@ -122,7 +123,7 @@ const Points = (props: PointsProps) => {
             {(!isLoggedIn || loginAttemptFailed) ? (
                     <LoginButton onClick={clickLogin}>Login</LoginButton>
                 ) :
-                <ClaimButton onClick={isClaimable ? handleOpenModal : null}
+                <ClaimButton onClick={!isClaimable ? handleOpenModal : null}
                              style={{color: isClaimable ? '#fff' : theme.colors.bg.icon}}>
                     {isClaimable ? 'Activate Claim' : 'Claim All'}
                 </ClaimButton>}
@@ -131,6 +132,7 @@ const Points = (props: PointsProps) => {
                              currentMG8={currentMG8}
                              exchangeRatio={exchangeRatio}
                              currentPoint={currentPoint}
+                             minAmount={minAmount}
                              handleCloseDialog={handleCloseDialog}/>
                 : null}
         </PointsWrapper>

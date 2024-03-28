@@ -79,6 +79,7 @@ const Daily = () => {
                     <Points
                         currentMG8={currentMG8}
                         exchangeRatio={exchangeRatio}
+                        minAmount={minAmount}
                         currentPoint={currentPoint}/>
                 </ContentWrapper>
                 {isAvailableClaim ? <ContentAlertText>

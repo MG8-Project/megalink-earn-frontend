@@ -8,13 +8,23 @@ interface ClaimDialogProps {
     exchangeRatio: number;
     currentPoint: number;
     currentMG8: number
+    minAmount: number
 }
 
 const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
-    const {handleCloseDialog, exchangeRatio, currentPoint, currentMG8} = props;
+    const {minAmount, handleCloseDialog, exchangeRatio, currentPoint, currentMG8} = props;
     const addCommas = (num: number) => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
+    const isButtonActive = minAmount <= currentMG8;
+    const handleClick = () => {
+        if (!isButtonActive) {
+            return;
+        }
+        // handleCloseDialog();
+    }
+    // claimMg8 -> req는 point로 보내기
+    
     return (
         <DialogWrapper ref={ref}>
             <DialogContent>
@@ -55,7 +65,13 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
                         <DialogProgressStatusTextRight>Claim</DialogProgressStatusTextRight>
                     </DialogProgressbar>
                 </DialogProgressWrapper>
-                <DialogButtonWrapper><DialogButton>Active Claim</DialogButton> </DialogButtonWrapper>
+                <DialogButtonWrapper>
+                    <DialogButton
+                        onClick={handleClick}
+                        style={{color: isButtonActive ? '#fff' : theme.colors.bg.icon}}>
+                        Active Claim
+                    </DialogButton>
+                </DialogButtonWrapper>
             </DialogContent>
         </DialogWrapper>
     )
