@@ -26,41 +26,64 @@ import type {
 export interface VaultInterface extends Interface {
   getFunction(
     nameOrSignature:
-      | "DOMAIN_SEPARATOR"
       | "MG8"
+      | "UPGRADE_INTERFACE_VERSION"
+      | "claimAirdrop"
       | "claimBNB"
       | "claimMG8"
       | "claimableAmount"
       | "convertPointToMG8"
+      | "convertPointToMG8Ratio"
       | "decreaseBNB"
       | "decreaseMG8"
       | "distributeAll"
+      | "dropBNB"
+      | "dropMG8"
       | "increaseBNB"
       | "increaseMG8"
+      | "initialize"
+      | "maxClaimAmount"
+      | "maxClaimAmountForAsset"
+      | "minAssetAmountForAirdrop"
+      | "minClaimAmount"
       | "owner"
+      | "partnerContract"
       | "pause"
       | "paused"
-      | "ratio"
+      | "proxiableUUID"
+      | "registerContract"
       | "renounceOwnership"
+      | "setMaxClaimAmount"
+      | "setMaxClaimAmountForAsset"
+      | "setMinAmountForPartner"
+      | "setMinClaimAmount"
       | "setRatio"
       | "transferOwnership"
       | "unpause"
+      | "unregisterContract"
+      | "upgradeToAndCall"
   ): FunctionFragment;
 
   getEvent(
     nameOrSignatureOrTopic:
       | "ClaimBNB"
       | "ClaimMG8"
+      | "Initialized"
       | "OwnershipTransferred"
       | "Paused"
       | "Unpaused"
+      | "Upgraded"
   ): EventFragment;
 
+  encodeFunctionData(functionFragment: "MG8", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "DOMAIN_SEPARATOR",
+    functionFragment: "UPGRADE_INTERFACE_VERSION",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "MG8", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "claimAirdrop",
+    values: [AddressLike, AddressLike, BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "claimBNB",
     values: [BigNumberish]
@@ -78,6 +101,10 @@ export interface VaultInterface extends Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "convertPointToMG8Ratio",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "decreaseBNB",
     values: [AddressLike, BigNumberish]
   ): string;
@@ -90,6 +117,14 @@ export interface VaultInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "dropBNB",
+    values: [AddressLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "dropMG8",
+    values: [AddressLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "increaseBNB",
     values: [AddressLike, BigNumberish]
   ): string;
@@ -97,13 +132,67 @@ export interface VaultInterface extends Interface {
     functionFragment: "increaseMG8",
     values: [AddressLike, BigNumberish]
   ): string;
+  encodeFunctionData(
+    functionFragment: "initialize",
+    values: [
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      AddressLike,
+      AddressLike,
+      boolean
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "maxClaimAmount",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "maxClaimAmountForAsset",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "minAssetAmountForAirdrop",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "minClaimAmount",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "partnerContract",
+    values: [AddressLike]
+  ): string;
   encodeFunctionData(functionFragment: "pause", values?: undefined): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
-  encodeFunctionData(functionFragment: "ratio", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "proxiableUUID",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "registerContract",
+    values: [AddressLike, BigNumberish, BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setMaxClaimAmount",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setMaxClaimAmountForAsset",
+    values: [AddressLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setMinAmountForPartner",
+    values: [AddressLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setMinClaimAmount",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "setRatio",
@@ -114,12 +203,24 @@ export interface VaultInterface extends Interface {
     values: [AddressLike]
   ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "unregisterContract",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "upgradeToAndCall",
+    values: [AddressLike, BytesLike]
+  ): string;
 
+  decodeFunctionResult(functionFragment: "MG8", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "DOMAIN_SEPARATOR",
+    functionFragment: "UPGRADE_INTERFACE_VERSION",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "MG8", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "claimAirdrop",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "claimBNB", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "claimMG8", data: BytesLike): Result;
   decodeFunctionResult(
@@ -131,6 +232,10 @@ export interface VaultInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "convertPointToMG8Ratio",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "decreaseBNB",
     data: BytesLike
   ): Result;
@@ -142,6 +247,8 @@ export interface VaultInterface extends Interface {
     functionFragment: "distributeAll",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "dropBNB", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "dropMG8", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "increaseBNB",
     data: BytesLike
@@ -150,12 +257,56 @@ export interface VaultInterface extends Interface {
     functionFragment: "increaseMG8",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "maxClaimAmount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "maxClaimAmountForAsset",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "minAssetAmountForAirdrop",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "minClaimAmount",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "partnerContract",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "ratio", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "proxiableUUID",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "registerContract",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setMaxClaimAmount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setMaxClaimAmountForAsset",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setMinAmountForPartner",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setMinClaimAmount",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "setRatio", data: BytesLike): Result;
@@ -164,14 +315,37 @@ export interface VaultInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "unregisterContract",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "upgradeToAndCall",
+    data: BytesLike
+  ): Result;
 }
 
 export namespace ClaimBNBEvent {
-  export type InputTuple = [user: AddressLike, amount: BigNumberish];
-  export type OutputTuple = [user: string, amount: bigint];
+  export type InputTuple = [
+    user: AddressLike,
+    beforeAmount: BigNumberish,
+    afterAmount: BigNumberish,
+    amount: BigNumberish,
+    timestamp: BigNumberish
+  ];
+  export type OutputTuple = [
+    user: string,
+    beforeAmount: bigint,
+    afterAmount: bigint,
+    amount: bigint,
+    timestamp: bigint
+  ];
   export interface OutputObject {
     user: string;
+    beforeAmount: bigint;
+    afterAmount: bigint;
     amount: bigint;
+    timestamp: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -180,11 +354,38 @@ export namespace ClaimBNBEvent {
 }
 
 export namespace ClaimMG8Event {
-  export type InputTuple = [user: AddressLike, amount: BigNumberish];
-  export type OutputTuple = [user: string, amount: bigint];
+  export type InputTuple = [
+    user: AddressLike,
+    beforeAmount: BigNumberish,
+    afterAmount: BigNumberish,
+    amount: BigNumberish,
+    timestamp: BigNumberish
+  ];
+  export type OutputTuple = [
+    user: string,
+    beforeAmount: bigint,
+    afterAmount: bigint,
+    amount: bigint,
+    timestamp: bigint
+  ];
   export interface OutputObject {
     user: string;
+    beforeAmount: bigint;
+    afterAmount: bigint;
     amount: bigint;
+    timestamp: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace InitializedEvent {
+  export type InputTuple = [version: BigNumberish];
+  export type OutputTuple = [version: bigint];
+  export interface OutputObject {
+    version: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -222,6 +423,18 @@ export namespace UnpausedEvent {
   export type OutputTuple = [account: string];
   export interface OutputObject {
     account: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace UpgradedEvent {
+  export type InputTuple = [implementation: AddressLike];
+  export type OutputTuple = [implementation: string];
+  export interface OutputObject {
+    implementation: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -272,9 +485,15 @@ export interface Vault extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  DOMAIN_SEPARATOR: TypedContractMethod<[], [string], "view">;
-
   MG8: TypedContractMethod<[], [string], "view">;
+
+  UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
+
+  claimAirdrop: TypedContractMethod<
+    [assetAddr: AddressLike, _user: AddressLike, _amount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
 
   claimBNB: TypedContractMethod<[amount: BigNumberish], [void], "payable">;
 
@@ -292,6 +511,8 @@ export interface Vault extends BaseContract {
     "view"
   >;
 
+  convertPointToMG8Ratio: TypedContractMethod<[], [bigint], "view">;
+
   decreaseBNB: TypedContractMethod<
     [user: AddressLike, amount: BigNumberish],
     [void],
@@ -306,6 +527,18 @@ export interface Vault extends BaseContract {
 
   distributeAll: TypedContractMethod<[], [void], "nonpayable">;
 
+  dropBNB: TypedContractMethod<
+    [user: AddressLike, amount: BigNumberish],
+    [void],
+    "payable"
+  >;
+
+  dropMG8: TypedContractMethod<
+    [user: AddressLike, amount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+
   increaseBNB: TypedContractMethod<
     [user: AddressLike, amount: BigNumberish],
     [void],
@@ -318,15 +551,80 @@ export interface Vault extends BaseContract {
     "nonpayable"
   >;
 
+  initialize: TypedContractMethod<
+    [
+      _convertPointToMG8Ratio: BigNumberish,
+      _minClaimAmount: BigNumberish,
+      _maxClaimAmount: BigNumberish,
+      initialOwner: AddressLike,
+      mg8: AddressLike,
+      _paused: boolean
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  maxClaimAmount: TypedContractMethod<[], [bigint], "view">;
+
+  maxClaimAmountForAsset: TypedContractMethod<
+    [arg0: AddressLike],
+    [bigint],
+    "view"
+  >;
+
+  minAssetAmountForAirdrop: TypedContractMethod<
+    [arg0: AddressLike],
+    [bigint],
+    "view"
+  >;
+
+  minClaimAmount: TypedContractMethod<[], [bigint], "view">;
+
   owner: TypedContractMethod<[], [string], "view">;
+
+  partnerContract: TypedContractMethod<[arg0: AddressLike], [boolean], "view">;
 
   pause: TypedContractMethod<[], [void], "nonpayable">;
 
   paused: TypedContractMethod<[], [boolean], "view">;
 
-  ratio: TypedContractMethod<[], [bigint], "view">;
+  proxiableUUID: TypedContractMethod<[], [string], "view">;
+
+  registerContract: TypedContractMethod<
+    [
+      _contract: AddressLike,
+      _minAmount: BigNumberish,
+      _maxClaimAmount: BigNumberish
+    ],
+    [void],
+    "nonpayable"
+  >;
 
   renounceOwnership: TypedContractMethod<[], [void], "nonpayable">;
+
+  setMaxClaimAmount: TypedContractMethod<
+    [_maxClaimAmount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+
+  setMaxClaimAmountForAsset: TypedContractMethod<
+    [_contract: AddressLike, _maxAmount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+
+  setMinAmountForPartner: TypedContractMethod<
+    [_contract: AddressLike, _minAmount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+
+  setMinClaimAmount: TypedContractMethod<
+    [_minClaimAmount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
 
   setRatio: TypedContractMethod<[_ratio: BigNumberish], [void], "nonpayable">;
 
@@ -338,16 +636,35 @@ export interface Vault extends BaseContract {
 
   unpause: TypedContractMethod<[], [void], "nonpayable">;
 
+  unregisterContract: TypedContractMethod<
+    [_contract: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
+  upgradeToAndCall: TypedContractMethod<
+    [newImplementation: AddressLike, data: BytesLike],
+    [void],
+    "payable"
+  >;
+
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
 
   getFunction(
-    nameOrSignature: "DOMAIN_SEPARATOR"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
     nameOrSignature: "MG8"
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "UPGRADE_INTERFACE_VERSION"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "claimAirdrop"
+  ): TypedContractMethod<
+    [assetAddr: AddressLike, _user: AddressLike, _amount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "claimBNB"
   ): TypedContractMethod<[amount: BigNumberish], [void], "payable">;
@@ -364,6 +681,9 @@ export interface Vault extends BaseContract {
   getFunction(
     nameOrSignature: "convertPointToMG8"
   ): TypedContractMethod<[amount: BigNumberish], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "convertPointToMG8Ratio"
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "decreaseBNB"
   ): TypedContractMethod<
@@ -382,6 +702,20 @@ export interface Vault extends BaseContract {
     nameOrSignature: "distributeAll"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
+    nameOrSignature: "dropBNB"
+  ): TypedContractMethod<
+    [user: AddressLike, amount: BigNumberish],
+    [void],
+    "payable"
+  >;
+  getFunction(
+    nameOrSignature: "dropMG8"
+  ): TypedContractMethod<
+    [user: AddressLike, amount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
     nameOrSignature: "increaseBNB"
   ): TypedContractMethod<
     [user: AddressLike, amount: BigNumberish],
@@ -396,8 +730,37 @@ export interface Vault extends BaseContract {
     "nonpayable"
   >;
   getFunction(
+    nameOrSignature: "initialize"
+  ): TypedContractMethod<
+    [
+      _convertPointToMG8Ratio: BigNumberish,
+      _minClaimAmount: BigNumberish,
+      _maxClaimAmount: BigNumberish,
+      initialOwner: AddressLike,
+      mg8: AddressLike,
+      _paused: boolean
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "maxClaimAmount"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "maxClaimAmountForAsset"
+  ): TypedContractMethod<[arg0: AddressLike], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "minAssetAmountForAirdrop"
+  ): TypedContractMethod<[arg0: AddressLike], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "minClaimAmount"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
     nameOrSignature: "owner"
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "partnerContract"
+  ): TypedContractMethod<[arg0: AddressLike], [boolean], "view">;
   getFunction(
     nameOrSignature: "pause"
   ): TypedContractMethod<[], [void], "nonpayable">;
@@ -405,11 +768,42 @@ export interface Vault extends BaseContract {
     nameOrSignature: "paused"
   ): TypedContractMethod<[], [boolean], "view">;
   getFunction(
-    nameOrSignature: "ratio"
-  ): TypedContractMethod<[], [bigint], "view">;
+    nameOrSignature: "proxiableUUID"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "registerContract"
+  ): TypedContractMethod<
+    [
+      _contract: AddressLike,
+      _minAmount: BigNumberish,
+      _maxClaimAmount: BigNumberish
+    ],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "renounceOwnership"
   ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "setMaxClaimAmount"
+  ): TypedContractMethod<[_maxClaimAmount: BigNumberish], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "setMaxClaimAmountForAsset"
+  ): TypedContractMethod<
+    [_contract: AddressLike, _maxAmount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "setMinAmountForPartner"
+  ): TypedContractMethod<
+    [_contract: AddressLike, _minAmount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "setMinClaimAmount"
+  ): TypedContractMethod<[_minClaimAmount: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "setRatio"
   ): TypedContractMethod<[_ratio: BigNumberish], [void], "nonpayable">;
@@ -419,6 +813,16 @@ export interface Vault extends BaseContract {
   getFunction(
     nameOrSignature: "unpause"
   ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "unregisterContract"
+  ): TypedContractMethod<[_contract: AddressLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "upgradeToAndCall"
+  ): TypedContractMethod<
+    [newImplementation: AddressLike, data: BytesLike],
+    [void],
+    "payable"
+  >;
 
   getEvent(
     key: "ClaimBNB"
@@ -433,6 +837,13 @@ export interface Vault extends BaseContract {
     ClaimMG8Event.InputTuple,
     ClaimMG8Event.OutputTuple,
     ClaimMG8Event.OutputObject
+  >;
+  getEvent(
+    key: "Initialized"
+  ): TypedContractEvent<
+    InitializedEvent.InputTuple,
+    InitializedEvent.OutputTuple,
+    InitializedEvent.OutputObject
   >;
   getEvent(
     key: "OwnershipTransferred"
@@ -455,9 +866,16 @@ export interface Vault extends BaseContract {
     UnpausedEvent.OutputTuple,
     UnpausedEvent.OutputObject
   >;
+  getEvent(
+    key: "Upgraded"
+  ): TypedContractEvent<
+    UpgradedEvent.InputTuple,
+    UpgradedEvent.OutputTuple,
+    UpgradedEvent.OutputObject
+  >;
 
   filters: {
-    "ClaimBNB(address,uint256)": TypedContractEvent<
+    "ClaimBNB(address,uint256,uint256,uint256,uint256)": TypedContractEvent<
       ClaimBNBEvent.InputTuple,
       ClaimBNBEvent.OutputTuple,
       ClaimBNBEvent.OutputObject
@@ -468,7 +886,7 @@ export interface Vault extends BaseContract {
       ClaimBNBEvent.OutputObject
     >;
 
-    "ClaimMG8(address,uint256)": TypedContractEvent<
+    "ClaimMG8(address,uint256,uint256,uint256,uint256)": TypedContractEvent<
       ClaimMG8Event.InputTuple,
       ClaimMG8Event.OutputTuple,
       ClaimMG8Event.OutputObject
@@ -477,6 +895,17 @@ export interface Vault extends BaseContract {
       ClaimMG8Event.InputTuple,
       ClaimMG8Event.OutputTuple,
       ClaimMG8Event.OutputObject
+    >;
+
+    "Initialized(uint64)": TypedContractEvent<
+      InitializedEvent.InputTuple,
+      InitializedEvent.OutputTuple,
+      InitializedEvent.OutputObject
+    >;
+    Initialized: TypedContractEvent<
+      InitializedEvent.InputTuple,
+      InitializedEvent.OutputTuple,
+      InitializedEvent.OutputObject
     >;
 
     "OwnershipTransferred(address,address)": TypedContractEvent<
@@ -510,6 +939,17 @@ export interface Vault extends BaseContract {
       UnpausedEvent.InputTuple,
       UnpausedEvent.OutputTuple,
       UnpausedEvent.OutputObject
+    >;
+
+    "Upgraded(address)": TypedContractEvent<
+      UpgradedEvent.InputTuple,
+      UpgradedEvent.OutputTuple,
+      UpgradedEvent.OutputObject
+    >;
+    Upgraded: TypedContractEvent<
+      UpgradedEvent.InputTuple,
+      UpgradedEvent.OutputTuple,
+      UpgradedEvent.OutputObject
     >;
   };
 }
