@@ -2,34 +2,72 @@ import styled from "styled-components";
 import {theme} from "../../styles/theme";
 import Reward from "./Reward";
 import Points from "./Points";
-import API from "../../apis/Api";
 import {useEffect, useState} from "react";
+import API from "../../apis/Api";
 
-interface Response {
+
+interface CurrentClaimResponse {
     status: number;
     data: {
         resultCode: string,
         msg: string,
-        claimable: boolean
+        exchangeRatio: number,
+        currentPoints: number,
+        mg8Amount: number
+    }
+}
+
+interface MinClaimResponse {
+    status: number;
+    data: {
+        resultCode: string,
+        msg: string,
+        minAmount: number,
+        maxAmount: number
     }
 }
 
 const Daily = () => {
-    const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/claim/available`;
-    const [isFetch, setIsFetch] = useState<boolean>(false);
-    const [isClaimable, setIsClaimable] = useState<boolean>(false);
-    useEffect(() => {
-        const fetchIsClaimAvailable = async () => {
-            try {
-                const res: Response = await API.get(API_ENDPOINT)
-                setIsClaimable(res.data.claimable)
-                setIsFetch(!isFetch)
-            } catch (err) {
-                console.error(err);
-            }
+    const [currentMG8, setCurrentMG8] = useState(0);
+    const [currentPoint, setCurrentPoint] = useState(0);
+    const [exchangeRatio, setExchangeRatio] = useState(0);
+    const [minAmount, setMinAmount] = useState(0);
+    const [maxAmount, setMaxAmount] = useState(0)
+
+    const isAvailableClaim = currentMG8 >= minAmount
+    const addCommas = (num: number) => {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    const fetchCurrentClaim = async () => {
+        try {
+            const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/claim/info`
+            const res: CurrentClaimResponse = await API.get(API_ENDPOINT, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+                }
+            })
+            console.log(res)
+            setCurrentPoint(res.data.currentPoints)
+            setCurrentMG8(res.data.mg8Amount)
+            setExchangeRatio(res.data.exchangeRatio)
+        } catch (error) {
+            console.error(error)
         }
-        void fetchIsClaimAvailable()
-    }, [API_ENDPOINT, isFetch])
+    }
+    const fetchMinClaim = async () => {
+        try {
+            const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/claim/minMaxAmount`
+            const res: MinClaimResponse = await API.get(API_ENDPOINT)
+            setMinAmount(res.data.minAmount)
+            setMaxAmount(res.data.maxAmount)
+        } catch (err) {
+            console.error(err)
+        }
+    }
+    useEffect(() => {
+        void fetchCurrentClaim()
+        void fetchMinClaim()
+    }, [])
     return (
         <DailyWrapper>
             <TitleContainer>
@@ -39,14 +77,17 @@ const Daily = () => {
             <DayWrapper>
                 <ContentWrapper>
                     <Reward/>
-                    <Points isClaimable={isClaimable}/>
+                    <Points
+                        currentMG8={currentMG8}
+                        exchangeRatio={exchangeRatio}
+                        currentPoint={currentPoint}/>
                 </ContentWrapper>
-                {isClaimable ?
-                    <ContentAlertText>
+                {isAvailableClaim ? <ContentAlertText>
                         You can claim up to
-                        <strong style={{fontWeight: 'bold'}}> 50,000p</strong> at once.
+                        <strong style={{fontWeight: 'bold'}}> {addCommas(maxAmount)}p</strong> at once.
                     </ContentAlertText> :
-                    <ContentAlertText style={{color: '#b81414'}}>Insufficient POINT to claim.</ContentAlertText>}
+                    <ContentAlertText style={{color: '#b81414'}}>Insufficient POINT to claim.</ContentAlertText>
+                }
             </DayWrapper>
             <ContentAlertText>You can claim your points after the events ends.</ContentAlertText>
         </DailyWrapper>

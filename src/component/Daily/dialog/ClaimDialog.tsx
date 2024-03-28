@@ -1,16 +1,20 @@
-import {forwardRef, useEffect} from "react";
+import {forwardRef} from "react";
 import styled from "styled-components";
 import {theme} from "../../../styles/theme";
 import {close} from "../../../assets/images"
 
 interface ClaimDialogProps {
     handleCloseDialog: () => void;
+    exchangeRatio: number;
+    currentPoint: number;
+    currentMG8: number
 }
 
 const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
-    const {handleCloseDialog} = props;
-    useEffect(() => {
-    }, []);
+    const {handleCloseDialog, exchangeRatio, currentPoint, currentMG8} = props;
+    const addCommas = (num: number) => {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
     return (
         <DialogWrapper ref={ref}>
             <DialogContent>
@@ -24,16 +28,16 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
                 <DialogContentWrapper>
                     <DialogContentInfo>
                         <p>MG8 Point Convert Info</p>
-                        <p>1p = 0.3MG8</p>
+                        <p>1p = {exchangeRatio}MG8</p>
                     </DialogContentInfo>
                     <DialogContentCurrentStatus>
                         <DialogContentInfo>
                             <p style={{fontSize: "1.5rem", fontWeight: 'normal'}}>Your Current Point</p>
-                            <p style={{fontSize: "1.8rem", fontWeight: 'bold'}}> 234,567,890 p</p>
+                            <p style={{fontSize: "1.8rem", fontWeight: 'bold'}}> {addCommas(currentPoint)} p</p>
                         </DialogContentInfo>
                         <DialogContentInfo>
                             <p style={{fontSize: "1.5rem", fontWeight: 'normal'}}>Your Will Received</p>
-                            <p style={{fontSize: "1.8rem", fontWeight: 'bold'}}> 12,345,678 MG8</p>
+                            <p style={{fontSize: "1.8rem", fontWeight: 'bold'}}> {addCommas(currentMG8)} MG8</p>
                         </DialogContentInfo>
                     </DialogContentCurrentStatus>
                 </DialogContentWrapper>

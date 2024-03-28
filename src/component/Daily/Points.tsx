@@ -7,6 +7,7 @@ import {LOGIN_FAILED, METAMASK_LINK_FAILED} from "../../constants";
 import ApiDaily from "../../apis/ApiDaily";
 import ClaimDialog from "./dialog/ClaimDialog";
 import {theme} from "../../styles/theme";
+import API from "../../apis/Api";
 
 // FIXME: LoginResponse 확인 후 프로퍼티 수정하기
 interface LoginResponse {
@@ -19,13 +20,26 @@ interface MyPointsResponse {
     msg: string;
 }
 
+
+interface IsClaimAvailableResponse {
+    status: number;
+    data: {
+        resultCode: string,
+        msg: string,
+        claimable: boolean
+    }
+}
+
 interface PointsProps {
-    isClaimable: boolean;
+    exchangeRatio: number;
+    currentPoint: number;
+    currentMG8: number;
 }
 
 const Points = (props: PointsProps) => {
-    const {isClaimable} = props;
+    const {exchangeRatio, currentPoint, currentMG8} = props;
     const {connectWallet} = useWallet();
+    const [isClaimable, setIsClaimable] = useState<boolean>(false);
     const dialogRef = useRef<HTMLDialogElement | null>(null)
     const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
     const walletAddress = useAuthStore((state) => state.userAccount);
@@ -86,6 +100,19 @@ const Points = (props: PointsProps) => {
             document.body.style.overflow = 'unset';
         };
     }, [isDialogOpen]);
+
+    useEffect(() => {
+        const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/claim/available`;
+        const fetchIsClaimAvailable = async () => {
+            try {
+                const res: IsClaimAvailableResponse = await API.get(API_ENDPOINT)
+                setIsClaimable(res.data.claimable)
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        void fetchIsClaimAvailable()
+    }, [])
     return (
         <PointsWrapper>
             <TextWrapper>
@@ -95,12 +122,16 @@ const Points = (props: PointsProps) => {
             {(!isLoggedIn || loginAttemptFailed) ? (
                     <LoginButton onClick={clickLogin}>Login</LoginButton>
                 ) :
-                <ClaimButton onClick={isClaimable ? handleOpenModal : null}
+                <ClaimButton onClick={!isClaimable ? handleOpenModal : null}
                              style={{color: isClaimable ? '#fff' : theme.colors.bg.icon}}>
                     {isClaimable ? 'Activate Claim' : 'Claim All'}
                 </ClaimButton>}
             {isDialogOpen ?
-                <ClaimDialog ref={dialogRef} handleCloseDialog={handleCloseDialog}/>
+                <ClaimDialog ref={dialogRef}
+                             currentMG8={currentMG8}
+                             exchangeRatio={exchangeRatio}
+                             currentPoint={currentPoint}
+                             handleCloseDialog={handleCloseDialog}/>
                 : null}
         </PointsWrapper>
     );
