@@ -6,6 +6,7 @@ import {useCallback, useEffect, useRef, useState} from "react";
 import {LOGIN_FAILED, METAMASK_LINK_FAILED} from "../../constants";
 import ApiDaily from "../../apis/ApiDaily";
 import ClaimDialog from "./dialog/ClaimDialog";
+import {theme} from "../../styles/theme";
 
 // FIXME: LoginResponse 확인 후 프로퍼티 수정하기
 interface LoginResponse {
@@ -18,7 +19,12 @@ interface MyPointsResponse {
     msg: string;
 }
 
-const Points = () => {
+interface PointsProps {
+    isClaimable: boolean;
+}
+
+const Points = (props: PointsProps) => {
+    const {isClaimable} = props;
     const {connectWallet} = useWallet();
     const dialogRef = useRef<HTMLDialogElement | null>(null)
     const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -87,8 +93,12 @@ const Points = () => {
                 <PointText>{isLoggedIn ? myPoints : '-'} P</PointText>
             </TextWrapper>
             {(!isLoggedIn || loginAttemptFailed) ? (
-                <LoginButton onClick={clickLogin}>Login</LoginButton>
-            ) : <ClaimButton onClick={handleOpenModal}>Activate Claim</ClaimButton>}
+                    <LoginButton onClick={clickLogin}>Login</LoginButton>
+                ) :
+                <ClaimButton onClick={isClaimable ? handleOpenModal : null}
+                             style={{color: isClaimable ? '#fff' : theme.colors.bg.icon}}>
+                    {isClaimable ? 'Activate Claim' : 'Claim All'}
+                </ClaimButton>}
             {isDialogOpen ?
                 <ClaimDialog ref={dialogRef} handleCloseDialog={handleCloseDialog}/>
                 : null}

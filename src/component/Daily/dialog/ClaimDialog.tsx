@@ -51,7 +51,7 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
                         <DialogProgressStatusTextRight>Claim</DialogProgressStatusTextRight>
                     </DialogProgressbar>
                 </DialogProgressWrapper>
-                <DialogButtonWrapper><DialogButton>Claim</DialogButton> </DialogButtonWrapper>
+                <DialogButtonWrapper><DialogButton>Active Claim</DialogButton> </DialogButtonWrapper>
             </DialogContent>
         </DialogWrapper>
     )
