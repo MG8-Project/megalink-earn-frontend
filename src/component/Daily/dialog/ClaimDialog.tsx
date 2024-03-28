@@ -2,6 +2,8 @@ import {forwardRef} from "react";
 import styled from "styled-components";
 import {theme} from "../../../styles/theme";
 import {close} from "../../../assets/images"
+import {BrowserProvider, Contract} from "ethers";
+import {Vault, VaultAbi} from "../../../typechain-types/contracts/Vault";
 
 interface ClaimDialogProps {
     handleCloseDialog: () => void;
@@ -17,14 +19,24 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
     const isButtonActive = minAmount <= currentMG8;
-    const handleClick = () => {
+    const handleClick = async () => {
         if (!isButtonActive) {
             return;
         }
         // handleCloseDialog();
+        const provider = new BrowserProvider(window.ethereum);
+        const vault: Vault = new Contract('0x772e21A0A7A37E4641b4fa08Cc38bEB685BD6F9E', VaultAbi, provider) as unknown as Vault
+        // console.log('provider sign : ', await provider.getSigner(0))
+        const signer = await provider.getSigner(0)
+        // console.log('signer address : ', await signer.getAddress())
+        const res: any = await vault.claimableAmount(await signer.getAddress())
+        console.log('bnbamount: ', res._bnbAmount)
+        console.log('dd', res._mg8Amount)
+        // console.log('contract? : ', await vault.claimableAmount(await signer.getAddress()))
+        // await vault.claimMG8(currentPoint);
     }
     // claimMg8 -> req는 point로 보내기
-    
+
     return (
         <DialogWrapper ref={ref}>
             <DialogContent>

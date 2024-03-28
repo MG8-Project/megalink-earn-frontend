@@ -2,1770 +2,1864 @@
 /* tslint:disable */
 /* eslint-disable */
 import type {
+  AddressLike,
   BaseContract,
   BigNumberish,
   BytesLike,
-  FunctionFragment,
-  Result,
-  Interface,
-  EventFragment,
-  AddressLike,
-  ContractRunner,
   ContractMethod,
+  ContractRunner,
+  EventFragment,
+  FunctionFragment,
+  Interface,
   Listener,
+  Result,
 } from "ethers";
 import type {
   TypedContractEvent,
+  TypedContractMethod,
   TypedDeferredTopicFilter,
   TypedEventLog,
-  TypedLogDescription,
   TypedListener,
-  TypedContractMethod,
+  TypedLogDescription,
 } from "../common";
 
 export const VaultAbi = [
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "target",
-        "type": "address"
-      }
-    ],
-    "name": "AddressEmptyCode",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "implementation",
-        "type": "address"
-      }
-    ],
-    "name": "ERC1967InvalidImplementation",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ERC1967NonPayable",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "EnforcedPause",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ExpectedPause",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "FailedInnerCall",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidInitialization",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NotInitializing",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "target",
+                "type": "address"
+            }
+        ],
+        "name": "AddressEmptyCode",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "implementation",
+                "type": "address"
+            }
+        ],
+        "name": "ERC1967InvalidImplementation",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ERC1967NonPayable",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "EnforcedPause",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ExpectedPause",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "FailedInnerCall",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "InvalidInitialization",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "NotInitializing",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnableInvalidOwner",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "OwnableUnauthorizedAccount",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ReentrancyGuardReentrantCall",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "UUPSUnauthorizedCallContext",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "slot",
+                "type": "bytes32"
+            }
+        ],
+        "name": "UUPSUnsupportedProxiableUUID",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "beforeAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "afterAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "timestamp",
+                "type": "uint256"
+            }
+        ],
+        "name": "ClaimBNB",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "beforeAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "afterAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "timestamp",
+                "type": "uint256"
+            }
+        ],
+        "name": "ClaimMG8",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "version",
+                "type": "uint64"
+            }
+        ],
+        "name": "Initialized",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "Paused",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "Unpaused",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "implementation",
+                "type": "address"
+            }
+        ],
+        "name": "Upgraded",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "MG8",
+        "outputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "UPGRADE_INTERFACE_VERSION",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "assetAddr",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_user",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "claimAirdrop",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "claimBNB",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "claimMG8",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            }
+        ],
+        "name": "claimableAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "_bnbAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_mg8Amount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "convertPointToMG8",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "convertPointToMG8Ratio",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "decreaseBNB",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "decreaseMG8",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "distributeAll",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "dropBNB",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "dropMG8",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "increaseBNB",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "increaseMG8",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_convertPointToMG8Ratio",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_minClaimAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_maxClaimAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "initialOwner",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "mg8",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_paused",
+                "type": "bool"
+            }
+        ],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "maxClaimAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "maxClaimAmountForAsset",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "minAssetAmountForAirdrop",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "minClaimAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
         "name": "owner",
-        "type": "address"
-      }
-    ],
-    "name": "OwnableInvalidOwner",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "OwnableUnauthorizedAccount",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ReentrancyGuardReentrantCall",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "UUPSUnauthorizedCallContext",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "slot",
-        "type": "bytes32"
-      }
-    ],
-    "name": "UUPSUnsupportedProxiableUUID",
-    "type": "error"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "beforeAmount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "afterAmount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "ClaimBNB",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "beforeAmount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "afterAmount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "ClaimMG8",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint64",
-        "name": "version",
-        "type": "uint64"
-      }
-    ],
-    "name": "Initialized",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "previousOwner",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
-      }
-    ],
-    "name": "OwnershipTransferred",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "Paused",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "Unpaused",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "implementation",
-        "type": "address"
-      }
-    ],
-    "name": "Upgraded",
-    "type": "event"
-  },
-  {
-    "inputs": [],
-    "name": "MG8",
-    "outputs": [
-      {
-        "internalType": "contract IERC20",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "UPGRADE_INTERFACE_VERSION",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "assetAddr",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "claimAirdrop",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "claimBNB",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "claimMG8",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
-    ],
-    "name": "claimableAmount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "_bnbAmount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_mg8Amount",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "convertPointToMG8",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "convertPointToMG8Ratio",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "decreaseBNB",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "decreaseMG8",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "distributeAll",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "dropBNB",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "dropMG8",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "increaseBNB",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "increaseMG8",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_convertPointToMG8Ratio",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_minClaimAmount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_maxClaimAmount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "initialOwner",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "mg8",
-        "type": "address"
-      },
-      {
-        "internalType": "bool",
-        "name": "_paused",
-        "type": "bool"
-      }
-    ],
-    "name": "initialize",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "maxClaimAmount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "maxClaimAmountForAsset",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "minAssetAmountForAirdrop",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "minClaimAmount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "owner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "partnerContract",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "pause",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "paused",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "proxiableUUID",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_contract",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_minAmount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_maxClaimAmount",
-        "type": "uint256"
-      }
-    ],
-    "name": "registerContract",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "renounceOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_maxClaimAmount",
-        "type": "uint256"
-      }
-    ],
-    "name": "setMaxClaimAmount",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_contract",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_maxAmount",
-        "type": "uint256"
-      }
-    ],
-    "name": "setMaxClaimAmountForAsset",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_contract",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_minAmount",
-        "type": "uint256"
-      }
-    ],
-    "name": "setMinAmountForPartner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_minClaimAmount",
-        "type": "uint256"
-      }
-    ],
-    "name": "setMinClaimAmount",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_ratio",
-        "type": "uint256"
-      }
-    ],
-    "name": "setRatio",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
-      }
-    ],
-    "name": "transferOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "unpause",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_contract",
-        "type": "address"
-      }
-    ],
-    "name": "unregisterContract",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newImplementation",
-        "type": "address"
-      },
-      {
-        "internalType": "bytes",
-        "name": "data",
-        "type": "bytes"
-      }
-    ],
-    "name": "upgradeToAndCall",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "stateMutability": "payable",
-    "type": "receive"
-  }
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "partnerContract",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "pause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "paused",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "proxiableUUID",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_contract",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_minAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_maxClaimAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "registerContract",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_maxClaimAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "setMaxClaimAmount",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_contract",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_maxAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "setMaxClaimAmountForAsset",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_contract",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_minAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "setMinAmountForPartner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_minClaimAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "setMinClaimAmount",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_ratio",
+                "type": "uint256"
+            }
+        ],
+        "name": "setRatio",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "unpause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_contract",
+                "type": "address"
+            }
+        ],
+        "name": "unregisterContract",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newImplementation",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "upgradeToAndCall",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "receive"
+    }
 ]
 
 export interface VaultInterface extends Interface {
-  getFunction(
-    nameOrSignature:
-      | "MG8"
-      | "UPGRADE_INTERFACE_VERSION"
-      | "claimAirdrop"
-      | "claimBNB"
-      | "claimMG8"
-      | "claimableAmount"
-      | "convertPointToMG8"
-      | "convertPointToMG8Ratio"
-      | "decreaseBNB"
-      | "decreaseMG8"
-      | "distributeAll"
-      | "dropBNB"
-      | "dropMG8"
-      | "increaseBNB"
-      | "increaseMG8"
-      | "initialize"
-      | "maxClaimAmount"
-      | "maxClaimAmountForAsset"
-      | "minAssetAmountForAirdrop"
-      | "minClaimAmount"
-      | "owner"
-      | "partnerContract"
-      | "pause"
-      | "paused"
-      | "proxiableUUID"
-      | "registerContract"
-      | "renounceOwnership"
-      | "setMaxClaimAmount"
-      | "setMaxClaimAmountForAsset"
-      | "setMinAmountForPartner"
-      | "setMinClaimAmount"
-      | "setRatio"
-      | "transferOwnership"
-      | "unpause"
-      | "unregisterContract"
-      | "upgradeToAndCall"
-  ): FunctionFragment;
+    getFunction(
+        nameOrSignature:
+            | "MG8"
+            | "UPGRADE_INTERFACE_VERSION"
+            | "claimAirdrop"
+            | "claimBNB"
+            | "claimMG8"
+            | "claimableAmount"
+            | "convertPointToMG8"
+            | "convertPointToMG8Ratio"
+            | "decreaseBNB"
+            | "decreaseMG8"
+            | "distributeAll"
+            | "dropBNB"
+            | "dropMG8"
+            | "increaseBNB"
+            | "increaseMG8"
+            | "initialize"
+            | "maxClaimAmount"
+            | "maxClaimAmountForAsset"
+            | "minAssetAmountForAirdrop"
+            | "minClaimAmount"
+            | "owner"
+            | "partnerContract"
+            | "pause"
+            | "paused"
+            | "proxiableUUID"
+            | "registerContract"
+            | "renounceOwnership"
+            | "setMaxClaimAmount"
+            | "setMaxClaimAmountForAsset"
+            | "setMinAmountForPartner"
+            | "setMinClaimAmount"
+            | "setRatio"
+            | "transferOwnership"
+            | "unpause"
+            | "unregisterContract"
+            | "upgradeToAndCall"
+    ): FunctionFragment;
 
-  getEvent(
-    nameOrSignatureOrTopic:
-      | "ClaimBNB"
-      | "ClaimMG8"
-      | "Initialized"
-      | "OwnershipTransferred"
-      | "Paused"
-      | "Unpaused"
-      | "Upgraded"
-  ): EventFragment;
+    getEvent(
+        nameOrSignatureOrTopic:
+            | "ClaimBNB"
+            | "ClaimMG8"
+            | "Initialized"
+            | "OwnershipTransferred"
+            | "Paused"
+            | "Unpaused"
+            | "Upgraded"
+    ): EventFragment;
 
-  encodeFunctionData(functionFragment: "MG8", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "UPGRADE_INTERFACE_VERSION",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "claimAirdrop",
-    values: [AddressLike, AddressLike, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "claimBNB",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "claimMG8",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "claimableAmount",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "convertPointToMG8",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "convertPointToMG8Ratio",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "decreaseBNB",
-    values: [AddressLike, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "decreaseMG8",
-    values: [AddressLike, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "distributeAll",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "dropBNB",
-    values: [AddressLike, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "dropMG8",
-    values: [AddressLike, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "increaseBNB",
-    values: [AddressLike, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "increaseMG8",
-    values: [AddressLike, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "initialize",
-    values: [
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      AddressLike,
-      AddressLike,
-      boolean
-    ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "maxClaimAmount",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "maxClaimAmountForAsset",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "minAssetAmountForAirdrop",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "minClaimAmount",
-    values?: undefined
-  ): string;
-  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "partnerContract",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(functionFragment: "pause", values?: undefined): string;
-  encodeFunctionData(functionFragment: "paused", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "proxiableUUID",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "registerContract",
-    values: [AddressLike, BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "renounceOwnership",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setMaxClaimAmount",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setMaxClaimAmountForAsset",
-    values: [AddressLike, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setMinAmountForPartner",
-    values: [AddressLike, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setMinClaimAmount",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setRatio",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transferOwnership",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "unregisterContract",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "upgradeToAndCall",
-    values: [AddressLike, BytesLike]
-  ): string;
+    encodeFunctionData(functionFragment: "MG8", values?: undefined): string;
 
-  decodeFunctionResult(functionFragment: "MG8", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "UPGRADE_INTERFACE_VERSION",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "claimAirdrop",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "claimBNB", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "claimMG8", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "claimableAmount",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "convertPointToMG8",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "convertPointToMG8Ratio",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "decreaseBNB",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "decreaseMG8",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "distributeAll",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "dropBNB", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "dropMG8", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "increaseBNB",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "increaseMG8",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "maxClaimAmount",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "maxClaimAmountForAsset",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "minAssetAmountForAirdrop",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "minClaimAmount",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "partnerContract",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "proxiableUUID",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "registerContract",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "renounceOwnership",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setMaxClaimAmount",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setMaxClaimAmountForAsset",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setMinAmountForPartner",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setMinClaimAmount",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "setRatio", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "transferOwnership",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "unregisterContract",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "upgradeToAndCall",
-    data: BytesLike
-  ): Result;
+    encodeFunctionData(
+        functionFragment: "UPGRADE_INTERFACE_VERSION",
+        values?: undefined
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "claimAirdrop",
+        values: [AddressLike, AddressLike, BigNumberish]
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "claimBNB",
+        values: [BigNumberish]
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "claimMG8",
+        values: [BigNumberish]
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "claimableAmount",
+        values: [AddressLike]
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "convertPointToMG8",
+        values: [BigNumberish]
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "convertPointToMG8Ratio",
+        values?: undefined
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "decreaseBNB",
+        values: [AddressLike, BigNumberish]
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "decreaseMG8",
+        values: [AddressLike, BigNumberish]
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "distributeAll",
+        values?: undefined
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "dropBNB",
+        values: [AddressLike, BigNumberish]
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "dropMG8",
+        values: [AddressLike, BigNumberish]
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "increaseBNB",
+        values: [AddressLike, BigNumberish]
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "increaseMG8",
+        values: [AddressLike, BigNumberish]
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "initialize",
+        values: [
+            BigNumberish,
+            BigNumberish,
+            BigNumberish,
+            AddressLike,
+            AddressLike,
+            boolean
+        ]
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "maxClaimAmount",
+        values?: undefined
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "maxClaimAmountForAsset",
+        values: [AddressLike]
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "minAssetAmountForAirdrop",
+        values: [AddressLike]
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "minClaimAmount",
+        values?: undefined
+    ): string;
+
+    encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+
+    encodeFunctionData(
+        functionFragment: "partnerContract",
+        values: [AddressLike]
+    ): string;
+
+    encodeFunctionData(functionFragment: "pause", values?: undefined): string;
+
+    encodeFunctionData(functionFragment: "paused", values?: undefined): string;
+
+    encodeFunctionData(
+        functionFragment: "proxiableUUID",
+        values?: undefined
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "registerContract",
+        values: [AddressLike, BigNumberish, BigNumberish]
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "renounceOwnership",
+        values?: undefined
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "setMaxClaimAmount",
+        values: [BigNumberish]
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "setMaxClaimAmountForAsset",
+        values: [AddressLike, BigNumberish]
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "setMinAmountForPartner",
+        values: [AddressLike, BigNumberish]
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "setMinClaimAmount",
+        values: [BigNumberish]
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "setRatio",
+        values: [BigNumberish]
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "transferOwnership",
+        values: [AddressLike]
+    ): string;
+
+    encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
+
+    encodeFunctionData(
+        functionFragment: "unregisterContract",
+        values: [AddressLike]
+    ): string;
+
+    encodeFunctionData(
+        functionFragment: "upgradeToAndCall",
+        values: [AddressLike, BytesLike]
+    ): string;
+
+    decodeFunctionResult(functionFragment: "MG8", data: BytesLike): Result;
+
+    decodeFunctionResult(
+        functionFragment: "UPGRADE_INTERFACE_VERSION",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(
+        functionFragment: "claimAirdrop",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(functionFragment: "claimBNB", data: BytesLike): Result;
+
+    decodeFunctionResult(functionFragment: "claimMG8", data: BytesLike): Result;
+
+    decodeFunctionResult(
+        functionFragment: "claimableAmount",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(
+        functionFragment: "convertPointToMG8",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(
+        functionFragment: "convertPointToMG8Ratio",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(
+        functionFragment: "decreaseBNB",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(
+        functionFragment: "decreaseMG8",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(
+        functionFragment: "distributeAll",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(functionFragment: "dropBNB", data: BytesLike): Result;
+
+    decodeFunctionResult(functionFragment: "dropMG8", data: BytesLike): Result;
+
+    decodeFunctionResult(
+        functionFragment: "increaseBNB",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(
+        functionFragment: "increaseMG8",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
+
+    decodeFunctionResult(
+        functionFragment: "maxClaimAmount",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(
+        functionFragment: "maxClaimAmountForAsset",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(
+        functionFragment: "minAssetAmountForAirdrop",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(
+        functionFragment: "minClaimAmount",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+
+    decodeFunctionResult(
+        functionFragment: "partnerContract",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
+
+    decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
+
+    decodeFunctionResult(
+        functionFragment: "proxiableUUID",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(
+        functionFragment: "registerContract",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(
+        functionFragment: "renounceOwnership",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(
+        functionFragment: "setMaxClaimAmount",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(
+        functionFragment: "setMaxClaimAmountForAsset",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(
+        functionFragment: "setMinAmountForPartner",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(
+        functionFragment: "setMinClaimAmount",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(functionFragment: "setRatio", data: BytesLike): Result;
+
+    decodeFunctionResult(
+        functionFragment: "transferOwnership",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
+
+    decodeFunctionResult(
+        functionFragment: "unregisterContract",
+        data: BytesLike
+    ): Result;
+
+    decodeFunctionResult(
+        functionFragment: "upgradeToAndCall",
+        data: BytesLike
+    ): Result;
 }
 
 export namespace ClaimBNBEvent {
-  export type InputTuple = [
-    user: AddressLike,
-    beforeAmount: BigNumberish,
-    afterAmount: BigNumberish,
-    amount: BigNumberish,
-    timestamp: BigNumberish
-  ];
-  export type OutputTuple = [
-    user: string,
-    beforeAmount: bigint,
-    afterAmount: bigint,
-    amount: bigint,
-    timestamp: bigint
-  ];
-  export interface OutputObject {
-    user: string;
-    beforeAmount: bigint;
-    afterAmount: bigint;
-    amount: bigint;
-    timestamp: bigint;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
+    export type InputTuple = [
+        user: AddressLike,
+        beforeAmount: BigNumberish,
+        afterAmount: BigNumberish,
+        amount: BigNumberish,
+        timestamp: BigNumberish
+    ];
+    export type OutputTuple = [
+        user: string,
+        beforeAmount: bigint,
+        afterAmount: bigint,
+        amount: bigint,
+        timestamp: bigint
+    ];
+
+    export interface OutputObject {
+        user: string;
+        beforeAmount: bigint;
+        afterAmount: bigint;
+        amount: bigint;
+        timestamp: bigint;
+    }
+
+    export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+    export type Filter = TypedDeferredTopicFilter<Event>;
+    export type Log = TypedEventLog<Event>;
+    export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace ClaimMG8Event {
-  export type InputTuple = [
-    user: AddressLike,
-    beforeAmount: BigNumberish,
-    afterAmount: BigNumberish,
-    amount: BigNumberish,
-    timestamp: BigNumberish
-  ];
-  export type OutputTuple = [
-    user: string,
-    beforeAmount: bigint,
-    afterAmount: bigint,
-    amount: bigint,
-    timestamp: bigint
-  ];
-  export interface OutputObject {
-    user: string;
-    beforeAmount: bigint;
-    afterAmount: bigint;
-    amount: bigint;
-    timestamp: bigint;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
+    export type InputTuple = [
+        user: AddressLike,
+        beforeAmount: BigNumberish,
+        afterAmount: BigNumberish,
+        amount: BigNumberish,
+        timestamp: BigNumberish
+    ];
+    export type OutputTuple = [
+        user: string,
+        beforeAmount: bigint,
+        afterAmount: bigint,
+        amount: bigint,
+        timestamp: bigint
+    ];
+
+    export interface OutputObject {
+        user: string;
+        beforeAmount: bigint;
+        afterAmount: bigint;
+        amount: bigint;
+        timestamp: bigint;
+    }
+
+    export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+    export type Filter = TypedDeferredTopicFilter<Event>;
+    export type Log = TypedEventLog<Event>;
+    export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace InitializedEvent {
-  export type InputTuple = [version: BigNumberish];
-  export type OutputTuple = [version: bigint];
-  export interface OutputObject {
-    version: bigint;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
+    export type InputTuple = [version: BigNumberish];
+    export type OutputTuple = [version: bigint];
+
+    export interface OutputObject {
+        version: bigint;
+    }
+
+    export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+    export type Filter = TypedDeferredTopicFilter<Event>;
+    export type Log = TypedEventLog<Event>;
+    export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace OwnershipTransferredEvent {
-  export type InputTuple = [previousOwner: AddressLike, newOwner: AddressLike];
-  export type OutputTuple = [previousOwner: string, newOwner: string];
-  export interface OutputObject {
-    previousOwner: string;
-    newOwner: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
+    export type InputTuple = [previousOwner: AddressLike, newOwner: AddressLike];
+    export type OutputTuple = [previousOwner: string, newOwner: string];
+
+    export interface OutputObject {
+        previousOwner: string;
+        newOwner: string;
+    }
+
+    export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+    export type Filter = TypedDeferredTopicFilter<Event>;
+    export type Log = TypedEventLog<Event>;
+    export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace PausedEvent {
-  export type InputTuple = [account: AddressLike];
-  export type OutputTuple = [account: string];
-  export interface OutputObject {
-    account: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
+    export type InputTuple = [account: AddressLike];
+    export type OutputTuple = [account: string];
+
+    export interface OutputObject {
+        account: string;
+    }
+
+    export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+    export type Filter = TypedDeferredTopicFilter<Event>;
+    export type Log = TypedEventLog<Event>;
+    export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace UnpausedEvent {
-  export type InputTuple = [account: AddressLike];
-  export type OutputTuple = [account: string];
-  export interface OutputObject {
-    account: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
+    export type InputTuple = [account: AddressLike];
+    export type OutputTuple = [account: string];
+
+    export interface OutputObject {
+        account: string;
+    }
+
+    export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+    export type Filter = TypedDeferredTopicFilter<Event>;
+    export type Log = TypedEventLog<Event>;
+    export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace UpgradedEvent {
-  export type InputTuple = [implementation: AddressLike];
-  export type OutputTuple = [implementation: string];
-  export interface OutputObject {
-    implementation: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
+    export type InputTuple = [implementation: AddressLike];
+    export type OutputTuple = [implementation: string];
+
+    export interface OutputObject {
+        implementation: string;
+    }
+
+    export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+    export type Filter = TypedDeferredTopicFilter<Event>;
+    export type Log = TypedEventLog<Event>;
+    export type LogDescription = TypedLogDescription<Event>;
 }
 
 export interface Vault extends BaseContract {
-  connect(runner?: ContractRunner | null): Vault;
-  waitForDeployment(): Promise<this>;
-
-  interface: VaultInterface;
-
-  queryFilter<TCEvent extends TypedContractEvent>(
-    event: TCEvent,
-    fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
-  ): Promise<Array<TypedEventLog<TCEvent>>>;
-  queryFilter<TCEvent extends TypedContractEvent>(
-    filter: TypedDeferredTopicFilter<TCEvent>,
-    fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
-  ): Promise<Array<TypedEventLog<TCEvent>>>;
-
-  on<TCEvent extends TypedContractEvent>(
-    event: TCEvent,
-    listener: TypedListener<TCEvent>
-  ): Promise<this>;
-  on<TCEvent extends TypedContractEvent>(
-    filter: TypedDeferredTopicFilter<TCEvent>,
-    listener: TypedListener<TCEvent>
-  ): Promise<this>;
-
-  once<TCEvent extends TypedContractEvent>(
-    event: TCEvent,
-    listener: TypedListener<TCEvent>
-  ): Promise<this>;
-  once<TCEvent extends TypedContractEvent>(
-    filter: TypedDeferredTopicFilter<TCEvent>,
-    listener: TypedListener<TCEvent>
-  ): Promise<this>;
-
-  listeners<TCEvent extends TypedContractEvent>(
-    event: TCEvent
-  ): Promise<Array<TypedListener<TCEvent>>>;
-  listeners(eventName?: string): Promise<Array<Listener>>;
-  removeAllListeners<TCEvent extends TypedContractEvent>(
-    event?: TCEvent
-  ): Promise<this>;
-
-  MG8: TypedContractMethod<[], [string], "view">;
-
-  UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
-
-  claimAirdrop: TypedContractMethod<
-    [assetAddr: AddressLike, _user: AddressLike, _amount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
-  claimBNB: TypedContractMethod<[amount: BigNumberish], [void], "payable">;
-
-  claimMG8: TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
-
-  claimableAmount: TypedContractMethod<
-    [user: AddressLike],
-    [[bigint, bigint] & { _bnbAmount: bigint; _mg8Amount: bigint }],
-    "view"
-  >;
-
-  convertPointToMG8: TypedContractMethod<
-    [amount: BigNumberish],
-    [bigint],
-    "view"
-  >;
-
-  convertPointToMG8Ratio: TypedContractMethod<[], [bigint], "view">;
-
-  decreaseBNB: TypedContractMethod<
-    [user: AddressLike, amount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
-  decreaseMG8: TypedContractMethod<
-    [user: AddressLike, amount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
-  distributeAll: TypedContractMethod<[], [void], "nonpayable">;
-
-  dropBNB: TypedContractMethod<
-    [user: AddressLike, amount: BigNumberish],
-    [void],
-    "payable"
-  >;
-
-  dropMG8: TypedContractMethod<
-    [user: AddressLike, amount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
-  increaseBNB: TypedContractMethod<
-    [user: AddressLike, amount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
-  increaseMG8: TypedContractMethod<
-    [user: AddressLike, amount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
-  initialize: TypedContractMethod<
-    [
-      _convertPointToMG8Ratio: BigNumberish,
-      _minClaimAmount: BigNumberish,
-      _maxClaimAmount: BigNumberish,
-      initialOwner: AddressLike,
-      mg8: AddressLike,
-      _paused: boolean
-    ],
-    [void],
-    "nonpayable"
-  >;
-
-  maxClaimAmount: TypedContractMethod<[], [bigint], "view">;
-
-  maxClaimAmountForAsset: TypedContractMethod<
-    [arg0: AddressLike],
-    [bigint],
-    "view"
-  >;
-
-  minAssetAmountForAirdrop: TypedContractMethod<
-    [arg0: AddressLike],
-    [bigint],
-    "view"
-  >;
-
-  minClaimAmount: TypedContractMethod<[], [bigint], "view">;
-
-  owner: TypedContractMethod<[], [string], "view">;
-
-  partnerContract: TypedContractMethod<[arg0: AddressLike], [boolean], "view">;
-
-  pause: TypedContractMethod<[], [void], "nonpayable">;
-
-  paused: TypedContractMethod<[], [boolean], "view">;
-
-  proxiableUUID: TypedContractMethod<[], [string], "view">;
-
-  registerContract: TypedContractMethod<
-    [
-      _contract: AddressLike,
-      _minAmount: BigNumberish,
-      _maxClaimAmount: BigNumberish
-    ],
-    [void],
-    "nonpayable"
-  >;
-
-  renounceOwnership: TypedContractMethod<[], [void], "nonpayable">;
-
-  setMaxClaimAmount: TypedContractMethod<
-    [_maxClaimAmount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
-  setMaxClaimAmountForAsset: TypedContractMethod<
-    [_contract: AddressLike, _maxAmount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
-  setMinAmountForPartner: TypedContractMethod<
-    [_contract: AddressLike, _minAmount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
-  setMinClaimAmount: TypedContractMethod<
-    [_minClaimAmount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
-  setRatio: TypedContractMethod<[_ratio: BigNumberish], [void], "nonpayable">;
-
-  transferOwnership: TypedContractMethod<
-    [newOwner: AddressLike],
-    [void],
-    "nonpayable"
-  >;
-
-  unpause: TypedContractMethod<[], [void], "nonpayable">;
-
-  unregisterContract: TypedContractMethod<
-    [_contract: AddressLike],
-    [void],
-    "nonpayable"
-  >;
-
-  upgradeToAndCall: TypedContractMethod<
-    [newImplementation: AddressLike, data: BytesLike],
-    [void],
-    "payable"
-  >;
-
-  getFunction<T extends ContractMethod = ContractMethod>(
-    key: string | FunctionFragment
-  ): T;
-
-  getFunction(
-    nameOrSignature: "MG8"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "UPGRADE_INTERFACE_VERSION"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "claimAirdrop"
-  ): TypedContractMethod<
-    [assetAddr: AddressLike, _user: AddressLike, _amount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "claimBNB"
-  ): TypedContractMethod<[amount: BigNumberish], [void], "payable">;
-  getFunction(
-    nameOrSignature: "claimMG8"
-  ): TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "claimableAmount"
-  ): TypedContractMethod<
-    [user: AddressLike],
-    [[bigint, bigint] & { _bnbAmount: bigint; _mg8Amount: bigint }],
-    "view"
-  >;
-  getFunction(
-    nameOrSignature: "convertPointToMG8"
-  ): TypedContractMethod<[amount: BigNumberish], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "convertPointToMG8Ratio"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "decreaseBNB"
-  ): TypedContractMethod<
-    [user: AddressLike, amount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "decreaseMG8"
-  ): TypedContractMethod<
-    [user: AddressLike, amount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "distributeAll"
-  ): TypedContractMethod<[], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "dropBNB"
-  ): TypedContractMethod<
-    [user: AddressLike, amount: BigNumberish],
-    [void],
-    "payable"
-  >;
-  getFunction(
-    nameOrSignature: "dropMG8"
-  ): TypedContractMethod<
-    [user: AddressLike, amount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "increaseBNB"
-  ): TypedContractMethod<
-    [user: AddressLike, amount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "increaseMG8"
-  ): TypedContractMethod<
-    [user: AddressLike, amount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "initialize"
-  ): TypedContractMethod<
-    [
-      _convertPointToMG8Ratio: BigNumberish,
-      _minClaimAmount: BigNumberish,
-      _maxClaimAmount: BigNumberish,
-      initialOwner: AddressLike,
-      mg8: AddressLike,
-      _paused: boolean
-    ],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "maxClaimAmount"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "maxClaimAmountForAsset"
-  ): TypedContractMethod<[arg0: AddressLike], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "minAssetAmountForAirdrop"
-  ): TypedContractMethod<[arg0: AddressLike], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "minClaimAmount"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "owner"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "partnerContract"
-  ): TypedContractMethod<[arg0: AddressLike], [boolean], "view">;
-  getFunction(
-    nameOrSignature: "pause"
-  ): TypedContractMethod<[], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "paused"
-  ): TypedContractMethod<[], [boolean], "view">;
-  getFunction(
-    nameOrSignature: "proxiableUUID"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "registerContract"
-  ): TypedContractMethod<
-    [
-      _contract: AddressLike,
-      _minAmount: BigNumberish,
-      _maxClaimAmount: BigNumberish
-    ],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "renounceOwnership"
-  ): TypedContractMethod<[], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "setMaxClaimAmount"
-  ): TypedContractMethod<[_maxClaimAmount: BigNumberish], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "setMaxClaimAmountForAsset"
-  ): TypedContractMethod<
-    [_contract: AddressLike, _maxAmount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "setMinAmountForPartner"
-  ): TypedContractMethod<
-    [_contract: AddressLike, _minAmount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "setMinClaimAmount"
-  ): TypedContractMethod<[_minClaimAmount: BigNumberish], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "setRatio"
-  ): TypedContractMethod<[_ratio: BigNumberish], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "transferOwnership"
-  ): TypedContractMethod<[newOwner: AddressLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "unpause"
-  ): TypedContractMethod<[], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "unregisterContract"
-  ): TypedContractMethod<[_contract: AddressLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "upgradeToAndCall"
-  ): TypedContractMethod<
-    [newImplementation: AddressLike, data: BytesLike],
-    [void],
-    "payable"
-  >;
-
-  getEvent(
-    key: "ClaimBNB"
-  ): TypedContractEvent<
-    ClaimBNBEvent.InputTuple,
-    ClaimBNBEvent.OutputTuple,
-    ClaimBNBEvent.OutputObject
-  >;
-  getEvent(
-    key: "ClaimMG8"
-  ): TypedContractEvent<
-    ClaimMG8Event.InputTuple,
-    ClaimMG8Event.OutputTuple,
-    ClaimMG8Event.OutputObject
-  >;
-  getEvent(
-    key: "Initialized"
-  ): TypedContractEvent<
-    InitializedEvent.InputTuple,
-    InitializedEvent.OutputTuple,
-    InitializedEvent.OutputObject
-  >;
-  getEvent(
-    key: "OwnershipTransferred"
-  ): TypedContractEvent<
-    OwnershipTransferredEvent.InputTuple,
-    OwnershipTransferredEvent.OutputTuple,
-    OwnershipTransferredEvent.OutputObject
-  >;
-  getEvent(
-    key: "Paused"
-  ): TypedContractEvent<
-    PausedEvent.InputTuple,
-    PausedEvent.OutputTuple,
-    PausedEvent.OutputObject
-  >;
-  getEvent(
-    key: "Unpaused"
-  ): TypedContractEvent<
-    UnpausedEvent.InputTuple,
-    UnpausedEvent.OutputTuple,
-    UnpausedEvent.OutputObject
-  >;
-  getEvent(
-    key: "Upgraded"
-  ): TypedContractEvent<
-    UpgradedEvent.InputTuple,
-    UpgradedEvent.OutputTuple,
-    UpgradedEvent.OutputObject
-  >;
-
-  filters: {
-    "ClaimBNB(address,uint256,uint256,uint256,uint256)": TypedContractEvent<
-      ClaimBNBEvent.InputTuple,
-      ClaimBNBEvent.OutputTuple,
-      ClaimBNBEvent.OutputObject
+    interface: VaultInterface;
+    MG8: TypedContractMethod<[], [string], "view">;
+    UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
+    claimAirdrop: TypedContractMethod<
+        [assetAddr: AddressLike, _user: AddressLike, _amount: BigNumberish],
+        [void],
+        "nonpayable"
     >;
-    ClaimBNB: TypedContractEvent<
-      ClaimBNBEvent.InputTuple,
-      ClaimBNBEvent.OutputTuple,
-      ClaimBNBEvent.OutputObject
+    claimBNB: TypedContractMethod<[amount: BigNumberish], [void], "payable">;
+    claimMG8: TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
+    claimableAmount: TypedContractMethod<
+        [user: AddressLike],
+        [[string, string] & { _bnbAmount: string; _mg8Amount: string }],
+        "view"
+    >;
+    convertPointToMG8: TypedContractMethod<
+        [amount: BigNumberish],
+        [bigint],
+        "view"
+    >;
+    convertPointToMG8Ratio: TypedContractMethod<[], [bigint], "view">;
+    decreaseBNB: TypedContractMethod<
+        [user: AddressLike, amount: BigNumberish],
+        [void],
+        "nonpayable"
+    >;
+    decreaseMG8: TypedContractMethod<
+        [user: AddressLike, amount: BigNumberish],
+        [void],
+        "nonpayable"
+    >;
+    distributeAll: TypedContractMethod<[], [void], "nonpayable">;
+    dropBNB: TypedContractMethod<
+        [user: AddressLike, amount: BigNumberish],
+        [void],
+        "payable"
+    >;
+    dropMG8: TypedContractMethod<
+        [user: AddressLike, amount: BigNumberish],
+        [void],
+        "nonpayable"
+    >;
+    increaseBNB: TypedContractMethod<
+        [user: AddressLike, amount: BigNumberish],
+        [void],
+        "nonpayable"
+    >;
+    increaseMG8: TypedContractMethod<
+        [user: AddressLike, amount: BigNumberish],
+        [void],
+        "nonpayable"
+    >;
+    initialize: TypedContractMethod<
+        [
+            _convertPointToMG8Ratio: BigNumberish,
+            _minClaimAmount: BigNumberish,
+            _maxClaimAmount: BigNumberish,
+            initialOwner: AddressLike,
+            mg8: AddressLike,
+            _paused: boolean
+        ],
+        [void],
+        "nonpayable"
+    >;
+    maxClaimAmount: TypedContractMethod<[], [bigint], "view">;
+    maxClaimAmountForAsset: TypedContractMethod<
+        [arg0: AddressLike],
+        [bigint],
+        "view"
+    >;
+    minAssetAmountForAirdrop: TypedContractMethod<
+        [arg0: AddressLike],
+        [bigint],
+        "view"
+    >;
+    minClaimAmount: TypedContractMethod<[], [bigint], "view">;
+    owner: TypedContractMethod<[], [string], "view">;
+    partnerContract: TypedContractMethod<[arg0: AddressLike], [boolean], "view">;
+    pause: TypedContractMethod<[], [void], "nonpayable">;
+    paused: TypedContractMethod<[], [boolean], "view">;
+    proxiableUUID: TypedContractMethod<[], [string], "view">;
+    registerContract: TypedContractMethod<
+        [
+            _contract: AddressLike,
+            _minAmount: BigNumberish,
+            _maxClaimAmount: BigNumberish
+        ],
+        [void],
+        "nonpayable"
+    >;
+    renounceOwnership: TypedContractMethod<[], [void], "nonpayable">;
+    setMaxClaimAmount: TypedContractMethod<
+        [_maxClaimAmount: BigNumberish],
+        [void],
+        "nonpayable"
+    >;
+    setMaxClaimAmountForAsset: TypedContractMethod<
+        [_contract: AddressLike, _maxAmount: BigNumberish],
+        [void],
+        "nonpayable"
+    >;
+    setMinAmountForPartner: TypedContractMethod<
+        [_contract: AddressLike, _minAmount: BigNumberish],
+        [void],
+        "nonpayable"
+    >;
+    setMinClaimAmount: TypedContractMethod<
+        [_minClaimAmount: BigNumberish],
+        [void],
+        "nonpayable"
+    >;
+    setRatio: TypedContractMethod<[_ratio: BigNumberish], [void], "nonpayable">;
+    transferOwnership: TypedContractMethod<
+        [newOwner: AddressLike],
+        [void],
+        "nonpayable"
+    >;
+    unpause: TypedContractMethod<[], [void], "nonpayable">;
+    unregisterContract: TypedContractMethod<
+        [_contract: AddressLike],
+        [void],
+        "nonpayable"
+    >;
+    upgradeToAndCall: TypedContractMethod<
+        [newImplementation: AddressLike, data: BytesLike],
+        [void],
+        "payable"
+    >;
+    filters: {
+        "ClaimBNB(address,uint256,uint256,uint256,uint256)": TypedContractEvent<
+            ClaimBNBEvent.InputTuple,
+            ClaimBNBEvent.OutputTuple,
+            ClaimBNBEvent.OutputObject
+        >;
+        ClaimBNB: TypedContractEvent<
+            ClaimBNBEvent.InputTuple,
+            ClaimBNBEvent.OutputTuple,
+            ClaimBNBEvent.OutputObject
+        >;
+
+        "ClaimMG8(address,uint256,uint256,uint256,uint256)": TypedContractEvent<
+            ClaimMG8Event.InputTuple,
+            ClaimMG8Event.OutputTuple,
+            ClaimMG8Event.OutputObject
+        >;
+        ClaimMG8: TypedContractEvent<
+            ClaimMG8Event.InputTuple,
+            ClaimMG8Event.OutputTuple,
+            ClaimMG8Event.OutputObject
+        >;
+
+        "Initialized(uint64)": TypedContractEvent<
+            InitializedEvent.InputTuple,
+            InitializedEvent.OutputTuple,
+            InitializedEvent.OutputObject
+        >;
+        Initialized: TypedContractEvent<
+            InitializedEvent.InputTuple,
+            InitializedEvent.OutputTuple,
+            InitializedEvent.OutputObject
+        >;
+
+        "OwnershipTransferred(address,address)": TypedContractEvent<
+            OwnershipTransferredEvent.InputTuple,
+            OwnershipTransferredEvent.OutputTuple,
+            OwnershipTransferredEvent.OutputObject
+        >;
+        OwnershipTransferred: TypedContractEvent<
+            OwnershipTransferredEvent.InputTuple,
+            OwnershipTransferredEvent.OutputTuple,
+            OwnershipTransferredEvent.OutputObject
+        >;
+
+        "Paused(address)": TypedContractEvent<
+            PausedEvent.InputTuple,
+            PausedEvent.OutputTuple,
+            PausedEvent.OutputObject
+        >;
+        Paused: TypedContractEvent<
+            PausedEvent.InputTuple,
+            PausedEvent.OutputTuple,
+            PausedEvent.OutputObject
+        >;
+
+        "Unpaused(address)": TypedContractEvent<
+            UnpausedEvent.InputTuple,
+            UnpausedEvent.OutputTuple,
+            UnpausedEvent.OutputObject
+        >;
+        Unpaused: TypedContractEvent<
+            UnpausedEvent.InputTuple,
+            UnpausedEvent.OutputTuple,
+            UnpausedEvent.OutputObject
+        >;
+
+        "Upgraded(address)": TypedContractEvent<
+            UpgradedEvent.InputTuple,
+            UpgradedEvent.OutputTuple,
+            UpgradedEvent.OutputObject
+        >;
+        Upgraded: TypedContractEvent<
+            UpgradedEvent.InputTuple,
+            UpgradedEvent.OutputTuple,
+            UpgradedEvent.OutputObject
+        >;
+    };
+
+    connect(runner?: ContractRunner | null): Vault;
+
+    waitForDeployment(): Promise<this>;
+
+    queryFilter<TCEvent extends TypedContractEvent>(
+        event: TCEvent,
+        fromBlockOrBlockhash?: string | number | undefined,
+        toBlock?: string | number | undefined
+    ): Promise<Array<TypedEventLog<TCEvent>>>;
+
+    queryFilter<TCEvent extends TypedContractEvent>(
+        filter: TypedDeferredTopicFilter<TCEvent>,
+        fromBlockOrBlockhash?: string | number | undefined,
+        toBlock?: string | number | undefined
+    ): Promise<Array<TypedEventLog<TCEvent>>>;
+
+    on<TCEvent extends TypedContractEvent>(
+        event: TCEvent,
+        listener: TypedListener<TCEvent>
+    ): Promise<this>;
+
+    on<TCEvent extends TypedContractEvent>(
+        filter: TypedDeferredTopicFilter<TCEvent>,
+        listener: TypedListener<TCEvent>
+    ): Promise<this>;
+
+    once<TCEvent extends TypedContractEvent>(
+        event: TCEvent,
+        listener: TypedListener<TCEvent>
+    ): Promise<this>;
+
+    once<TCEvent extends TypedContractEvent>(
+        filter: TypedDeferredTopicFilter<TCEvent>,
+        listener: TypedListener<TCEvent>
+    ): Promise<this>;
+
+    listeners<TCEvent extends TypedContractEvent>(
+        event: TCEvent
+    ): Promise<Array<TypedListener<TCEvent>>>;
+
+    listeners(eventName?: string): Promise<Array<Listener>>;
+
+    removeAllListeners<TCEvent extends TypedContractEvent>(
+        event?: TCEvent
+    ): Promise<this>;
+
+    getFunction<T extends ContractMethod = ContractMethod>(
+        key: string | FunctionFragment
+    ): T;
+
+    getFunction(
+        nameOrSignature: "MG8"
+    ): TypedContractMethod<[], [string], "view">;
+
+    getFunction(
+        nameOrSignature: "UPGRADE_INTERFACE_VERSION"
+    ): TypedContractMethod<[], [string], "view">;
+
+    getFunction(
+        nameOrSignature: "claimAirdrop"
+    ): TypedContractMethod<
+        [assetAddr: AddressLike, _user: AddressLike, _amount: BigNumberish],
+        [void],
+        "nonpayable"
     >;
 
-    "ClaimMG8(address,uint256,uint256,uint256,uint256)": TypedContractEvent<
-      ClaimMG8Event.InputTuple,
-      ClaimMG8Event.OutputTuple,
-      ClaimMG8Event.OutputObject
-    >;
-    ClaimMG8: TypedContractEvent<
-      ClaimMG8Event.InputTuple,
-      ClaimMG8Event.OutputTuple,
-      ClaimMG8Event.OutputObject
+    getFunction(
+        nameOrSignature: "claimBNB"
+    ): TypedContractMethod<[amount: BigNumberish], [void], "payable">;
+
+    getFunction(
+        nameOrSignature: "claimMG8"
+    ): TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
+
+    getFunction(
+        nameOrSignature: "claimableAmount"
+    ): TypedContractMethod<
+        [user: AddressLike],
+        [[bigint, bigint] & { _bnbAmount: bigint; _mg8Amount: bigint }],
+        "view"
     >;
 
-    "Initialized(uint64)": TypedContractEvent<
-      InitializedEvent.InputTuple,
-      InitializedEvent.OutputTuple,
-      InitializedEvent.OutputObject
-    >;
-    Initialized: TypedContractEvent<
-      InitializedEvent.InputTuple,
-      InitializedEvent.OutputTuple,
-      InitializedEvent.OutputObject
+    getFunction(
+        nameOrSignature: "convertPointToMG8"
+    ): TypedContractMethod<[amount: BigNumberish], [bigint], "view">;
+
+    getFunction(
+        nameOrSignature: "convertPointToMG8Ratio"
+    ): TypedContractMethod<[], [bigint], "view">;
+
+    getFunction(
+        nameOrSignature: "decreaseBNB"
+    ): TypedContractMethod<
+        [user: AddressLike, amount: BigNumberish],
+        [void],
+        "nonpayable"
     >;
 
-    "OwnershipTransferred(address,address)": TypedContractEvent<
-      OwnershipTransferredEvent.InputTuple,
-      OwnershipTransferredEvent.OutputTuple,
-      OwnershipTransferredEvent.OutputObject
-    >;
-    OwnershipTransferred: TypedContractEvent<
-      OwnershipTransferredEvent.InputTuple,
-      OwnershipTransferredEvent.OutputTuple,
-      OwnershipTransferredEvent.OutputObject
+    getFunction(
+        nameOrSignature: "decreaseMG8"
+    ): TypedContractMethod<
+        [user: AddressLike, amount: BigNumberish],
+        [void],
+        "nonpayable"
     >;
 
-    "Paused(address)": TypedContractEvent<
-      PausedEvent.InputTuple,
-      PausedEvent.OutputTuple,
-      PausedEvent.OutputObject
-    >;
-    Paused: TypedContractEvent<
-      PausedEvent.InputTuple,
-      PausedEvent.OutputTuple,
-      PausedEvent.OutputObject
+    getFunction(
+        nameOrSignature: "distributeAll"
+    ): TypedContractMethod<[], [void], "nonpayable">;
+
+    getFunction(
+        nameOrSignature: "dropBNB"
+    ): TypedContractMethod<
+        [user: AddressLike, amount: BigNumberish],
+        [void],
+        "payable"
     >;
 
-    "Unpaused(address)": TypedContractEvent<
-      UnpausedEvent.InputTuple,
-      UnpausedEvent.OutputTuple,
-      UnpausedEvent.OutputObject
-    >;
-    Unpaused: TypedContractEvent<
-      UnpausedEvent.InputTuple,
-      UnpausedEvent.OutputTuple,
-      UnpausedEvent.OutputObject
+    getFunction(
+        nameOrSignature: "dropMG8"
+    ): TypedContractMethod<
+        [user: AddressLike, amount: BigNumberish],
+        [void],
+        "nonpayable"
     >;
 
-    "Upgraded(address)": TypedContractEvent<
-      UpgradedEvent.InputTuple,
-      UpgradedEvent.OutputTuple,
-      UpgradedEvent.OutputObject
+    getFunction(
+        nameOrSignature: "increaseBNB"
+    ): TypedContractMethod<
+        [user: AddressLike, amount: BigNumberish],
+        [void],
+        "nonpayable"
     >;
-    Upgraded: TypedContractEvent<
-      UpgradedEvent.InputTuple,
-      UpgradedEvent.OutputTuple,
-      UpgradedEvent.OutputObject
+
+    getFunction(
+        nameOrSignature: "increaseMG8"
+    ): TypedContractMethod<
+        [user: AddressLike, amount: BigNumberish],
+        [void],
+        "nonpayable"
     >;
-  };
+
+    getFunction(
+        nameOrSignature: "initialize"
+    ): TypedContractMethod<
+        [
+            _convertPointToMG8Ratio: BigNumberish,
+            _minClaimAmount: BigNumberish,
+            _maxClaimAmount: BigNumberish,
+            initialOwner: AddressLike,
+            mg8: AddressLike,
+            _paused: boolean
+        ],
+        [void],
+        "nonpayable"
+    >;
+
+    getFunction(
+        nameOrSignature: "maxClaimAmount"
+    ): TypedContractMethod<[], [bigint], "view">;
+
+    getFunction(
+        nameOrSignature: "maxClaimAmountForAsset"
+    ): TypedContractMethod<[arg0: AddressLike], [bigint], "view">;
+
+    getFunction(
+        nameOrSignature: "minAssetAmountForAirdrop"
+    ): TypedContractMethod<[arg0: AddressLike], [bigint], "view">;
+
+    getFunction(
+        nameOrSignature: "minClaimAmount"
+    ): TypedContractMethod<[], [bigint], "view">;
+
+    getFunction(
+        nameOrSignature: "owner"
+    ): TypedContractMethod<[], [string], "view">;
+
+    getFunction(
+        nameOrSignature: "partnerContract"
+    ): TypedContractMethod<[arg0: AddressLike], [boolean], "view">;
+
+    getFunction(
+        nameOrSignature: "pause"
+    ): TypedContractMethod<[], [void], "nonpayable">;
+
+    getFunction(
+        nameOrSignature: "paused"
+    ): TypedContractMethod<[], [boolean], "view">;
+
+    getFunction(
+        nameOrSignature: "proxiableUUID"
+    ): TypedContractMethod<[], [string], "view">;
+
+    getFunction(
+        nameOrSignature: "registerContract"
+    ): TypedContractMethod<
+        [
+            _contract: AddressLike,
+            _minAmount: BigNumberish,
+            _maxClaimAmount: BigNumberish
+        ],
+        [void],
+        "nonpayable"
+    >;
+
+    getFunction(
+        nameOrSignature: "renounceOwnership"
+    ): TypedContractMethod<[], [void], "nonpayable">;
+
+    getFunction(
+        nameOrSignature: "setMaxClaimAmount"
+    ): TypedContractMethod<[_maxClaimAmount: BigNumberish], [void], "nonpayable">;
+
+    getFunction(
+        nameOrSignature: "setMaxClaimAmountForAsset"
+    ): TypedContractMethod<
+        [_contract: AddressLike, _maxAmount: BigNumberish],
+        [void],
+        "nonpayable"
+    >;
+
+    getFunction(
+        nameOrSignature: "setMinAmountForPartner"
+    ): TypedContractMethod<
+        [_contract: AddressLike, _minAmount: BigNumberish],
+        [void],
+        "nonpayable"
+    >;
+
+    getFunction(
+        nameOrSignature: "setMinClaimAmount"
+    ): TypedContractMethod<[_minClaimAmount: BigNumberish], [void], "nonpayable">;
+
+    getFunction(
+        nameOrSignature: "setRatio"
+    ): TypedContractMethod<[_ratio: BigNumberish], [void], "nonpayable">;
+
+    getFunction(
+        nameOrSignature: "transferOwnership"
+    ): TypedContractMethod<[newOwner: AddressLike], [void], "nonpayable">;
+
+    getFunction(
+        nameOrSignature: "unpause"
+    ): TypedContractMethod<[], [void], "nonpayable">;
+
+    getFunction(
+        nameOrSignature: "unregisterContract"
+    ): TypedContractMethod<[_contract: AddressLike], [void], "nonpayable">;
+
+    getFunction(
+        nameOrSignature: "upgradeToAndCall"
+    ): TypedContractMethod<
+        [newImplementation: AddressLike, data: BytesLike],
+        [void],
+        "payable"
+    >;
+
+    getEvent(
+        key: "ClaimBNB"
+    ): TypedContractEvent<
+        ClaimBNBEvent.InputTuple,
+        ClaimBNBEvent.OutputTuple,
+        ClaimBNBEvent.OutputObject
+    >;
+
+    getEvent(
+        key: "ClaimMG8"
+    ): TypedContractEvent<
+        ClaimMG8Event.InputTuple,
+        ClaimMG8Event.OutputTuple,
+        ClaimMG8Event.OutputObject
+    >;
+
+    getEvent(
+        key: "Initialized"
+    ): TypedContractEvent<
+        InitializedEvent.InputTuple,
+        InitializedEvent.OutputTuple,
+        InitializedEvent.OutputObject
+    >;
+
+    getEvent(
+        key: "OwnershipTransferred"
+    ): TypedContractEvent<
+        OwnershipTransferredEvent.InputTuple,
+        OwnershipTransferredEvent.OutputTuple,
+        OwnershipTransferredEvent.OutputObject
+    >;
+
+    getEvent(
+        key: "Paused"
+    ): TypedContractEvent<
+        PausedEvent.InputTuple,
+        PausedEvent.OutputTuple,
+        PausedEvent.OutputObject
+    >;
+
+    getEvent(
+        key: "Unpaused"
+    ): TypedContractEvent<
+        UnpausedEvent.InputTuple,
+        UnpausedEvent.OutputTuple,
+        UnpausedEvent.OutputObject
+    >;
+
+    getEvent(
+        key: "Upgraded"
+    ): TypedContractEvent<
+        UpgradedEvent.InputTuple,
+        UpgradedEvent.OutputTuple,
+        UpgradedEvent.OutputObject
+    >;
 }
