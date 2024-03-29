@@ -109,8 +109,8 @@ const Reward = () => {
 
                 const nonce = await forwarder.nonces(walletAddress);
 
-                const checkInAvailable = await dailyAttendance.checkedInToday(walletAddress)
-                if (!checkInAvailable) {
+                const alreadyCheckedIn = await dailyAttendance.checkedInToday(walletAddress)
+                if (alreadyCheckedIn) {
                     alert("You already checked in today.")
                     return;
                 }
