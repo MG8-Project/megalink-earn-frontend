@@ -123,13 +123,13 @@ const Points = (props: PointsProps) => {
     if (!isLoggedIn || loginAttemptFailed) {
         buttonContent = (<LoginButton onClick={clickLogin}>Login</LoginButton>);
     } else {
-        buttonContent = (<ClaimButton 
-                           onClick={!isClaimable ? handleOpenModal : null}
-                           style={{color: isClaimable ? '#fff' : theme.colors.bg.icon}}>
-                    {isClaimable ? 'Activate Claim' : 'Claim All'}
-                        </ClaimButton>});
+        buttonContent = (<ClaimButton
+            onClick={!isClaimable ? handleOpenModal : null}
+            style={{color: isClaimable ? '#fff' : theme.colors.bg.icon}}>
+            {isClaimable ? 'Activate Claim' : 'Claim All'}
+        </ClaimButton>)
     }
-  
+
     return (
         <PointsWrapper>
             <TextWrapper>
