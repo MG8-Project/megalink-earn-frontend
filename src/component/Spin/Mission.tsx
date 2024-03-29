@@ -12,8 +12,11 @@ const Mission = () => {
                 <PoolCard/>
             </CardWrapper>
             <SpinContainer>
-                {/*FIXME: 테스트시 console err 때문에 잠시 주석처리*/}
-                {/*<SpinContainerImage src="http://cv2.avivgame.com/game.html"/>*/}
+                {
+                <SpinContainerImage 
+                    src="https://cv2.avivgame.com/game.html"
+                />
+                }
             </SpinContainer>
         </MissionWrapper>
     );

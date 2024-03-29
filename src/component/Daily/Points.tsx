@@ -56,17 +56,28 @@ const Points = () => {
 
     useEffect(() => {
         void fetchMyPoints();
-    }, [walletAddress, fetchMyPoints]);
+        if (isLoggedIn) {
+            const interval = setInterval(fetchMyPoints, 5000);
+            return () => clearInterval(interval);
+        }
+    }, [walletAddress, fetchMyPoints, isLoggedIn]);
 
+    let buttonContent;
+    if (!isLoggedIn || loginAttemptFailed) {
+        buttonContent = (<LoginButton onClick={clickLogin}>Login</LoginButton>);
+    } else {
+        buttonContent = (<ClaimButton>Claim All</ClaimButton>);
+    }
     return (
         <PointsWrapper>
             <TextWrapper>
                 <div>My Total MG8 Points</div>
                 <PointText>{isLoggedIn ? myPoints : '-'} P</PointText>
             </TextWrapper>
-            {(!isLoggedIn || loginAttemptFailed) && (
+            {buttonContent}
+            {/* {(!isLoggedIn || loginAttemptFailed) && (
                 <LoginButton onClick={clickLogin}>Login</LoginButton>
-            )}
+            )} */}
         </PointsWrapper>
     );
 };
@@ -98,4 +109,14 @@ const LoginButton = styled.button`
     border: 1px solid #ffffff;
     border-radius: 100px;
     font-size: 20px;
+`;
+const ClaimButton = styled.button`
+    margin-top: 36px;
+    font-weight: 600;
+    width: 150px;
+    height: 56px;
+    border: 1px solid gray;
+    border-radius: 100px;
+    font-size: 20px;
+    color: gray;
 `;
