@@ -10,7 +10,7 @@ const LeaderBoard = () => {
     const [activeTab, setActiveTab] = useState(INDIVIDUAL);
     const isTabIndividual = activeTab === INDIVIDUAL;
     return (
-        <LeaderBoardWrapper>
+        <LeaderBoardWrapper id='leaderboard'>
             <TitleContainer>
                 <MainTitle>MG8 24h Leaderboard</MainTitle>
 
