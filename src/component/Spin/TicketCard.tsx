@@ -17,7 +17,7 @@ const TicketCard = () => {
         setMyTickets(response >= 0 ? response : 0);
       } else {
         setMyTickets(0);
-    }
+      }
     } catch (error) {
       console.error("Error fetching my tickets:", error);
     }
@@ -26,9 +26,8 @@ const TicketCard = () => {
   useEffect(() => {
     fetchMyTickets();
     if (isLoggedIn) {
-
       const interval = setInterval(fetchMyTickets, 5000);
-      return () => clearInterval(interval); 
+      return () => clearInterval(interval);
     }
   }, [fetchMyTickets, isLoggedIn]);
 
@@ -68,5 +67,5 @@ const CardImage = styled.img`
 
 const CardText = styled.div`
   font-size: 48px;
-  font-weight: 600;
+  font-weight: 500;
 `;

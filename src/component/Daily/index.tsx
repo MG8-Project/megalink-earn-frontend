@@ -2,23 +2,33 @@ import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import Reward from "./Reward";
 import Points from "./Points";
+import Popup from "./Popup";
+import ReceiptPopup from "./ReceiptPopup";
+import FailPopup from "./FailPopup";
 
 const Daily = () => {
   return (
-    <DailyWrapper>
-      <TitleContainer>
-        <MainTitle>Daily dose of $MG8</MainTitle>
-        <SubTitle>Login 7 days in a row, and your rewards will grow.</SubTitle>
-      </TitleContainer>
-      <DayWrapper>
-        <RewardContainer>
-          <Reward />
-        </RewardContainer>
-        <PointsContainer>
-          <Points />
-        </PointsContainer>
-      </DayWrapper>
-    </DailyWrapper>
+    <>
+      <DailyWrapper>
+        <TitleContainer>
+          <MainTitle>Daily dose of $MG8</MainTitle>
+          <SubTitle>
+            Login 7 days in a row, and your rewards will grow.
+          </SubTitle>
+        </TitleContainer>
+        <DayWrapper>
+          <RewardContainer>
+            <Reward />
+          </RewardContainer>
+          <PointsContainer>
+            <Points />
+          </PointsContainer>
+        </DayWrapper>
+      </DailyWrapper>
+      <Popup />
+      <ReceiptPopup />
+      <FailPopup />
+    </>
   );
 };
 

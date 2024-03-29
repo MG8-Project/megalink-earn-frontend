@@ -7,7 +7,7 @@ const Leaderboard = () => {
   return (
     <HomeWrapper>
       <Header />
-	    <LeaderBard />
+      <LeaderBard />
       <Footer />
     </HomeWrapper>
   );

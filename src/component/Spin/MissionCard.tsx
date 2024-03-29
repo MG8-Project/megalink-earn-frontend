@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useInterval } from 'react-use';
+import { useState, useEffect } from "react";
+import { useInterval } from "react-use";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import { clock } from "../../assets/images";
@@ -7,21 +7,40 @@ import { clock } from "../../assets/images";
 const MissionCard = () => {
   const [remainingTime, setRemainingTime] = useState(getRemainingTime());
 
-  useEffect(() => {
-  }, [])
+  useEffect(() => {}, []);
   useInterval(() => {
     setRemainingTime(getRemainingTime());
   }, 1000);
   function getRemainingTime() {
     const now = new Date();
-    const targetTime = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds()));
-    const targetHourUTC = (targetTime.getUTCHours() < 0 || targetTime.getUTCHours() >= 12) ? 0 : 12;
+    const targetTime = new Date(
+      Date.UTC(
+        now.getUTCFullYear(),
+        now.getUTCMonth(),
+        now.getUTCDate(),
+        now.getUTCHours(),
+        now.getUTCMinutes(),
+        now.getUTCSeconds()
+      )
+    );
+    const targetHourUTC =
+      targetTime.getUTCHours() < 0 || targetTime.getUTCHours() >= 12 ? 0 : 12;
 
     targetTime.setHours(targetHourUTC, 0, 0, 0);
 
     let difference = targetTime.getTime() - now.getTime();
     if (difference < 0) {
-      const tomorrow = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, targetHourUTC, 0, 0, 0));
+      const tomorrow = new Date(
+        Date.UTC(
+          now.getUTCFullYear(),
+          now.getUTCMonth(),
+          now.getUTCDate() + 1,
+          targetHourUTC,
+          0,
+          0,
+          0
+        )
+      );
       difference = tomorrow.getTime() - now.getTime();
     }
 
@@ -38,11 +57,11 @@ const MissionCard = () => {
         <CardTitle>Daily Mission</CardTitle>
         <div>
           <TimeContainer>
-              {remainingTime.hours.toString().padStart(2, '0')}
-              <p>:</p> 
-              {remainingTime.minutes.toString().padStart(2, '0')}
-              <p>:</p>
-              {remainingTime.seconds.toString().padStart(2, '0')}
+            {remainingTime.hours.toString().padStart(2, "0")}
+            <p>:</p>
+            {remainingTime.minutes.toString().padStart(2, "0")}
+            <p>:</p>
+            {remainingTime.seconds.toString().padStart(2, "0")}
           </TimeContainer>
           <TimeText>
             <span>Hours</span>
@@ -91,7 +110,7 @@ const TimeContainer = styled.div`
   display: flex;
   gap: 20px;
   font-size: 48px;
-  font-weight: 600;
+  font-weight: 500;
   align-items: center;
 
   > p {
