@@ -3,7 +3,6 @@ import {useAuthStore} from "../store/authStore";
 import {ethers, getAddress} from "ethers";
 
 export const useWallet = () => {
-    // const currentUserAccount = useAuthStore((state) => state.userAccount);
     const setWalletAddress = useAuthStore((state) => state.setUserAccount);
     const logout = useAuthStore((state) => state.logout);
     const [currentAccount, setCurrentAccount] = useState<string | null>(
@@ -16,7 +15,7 @@ export const useWallet = () => {
             /**
              * Network Name: opBNB Mainnet
              * RPC URL: https://opBNB-mainnet-rpc.bnbchain.org
-             * ChainID: 204
+             * ChainID: 0x15eb
              * Symbol: BNB
              * Explorer: http://mainnet.opBNBscan.com/
              */
@@ -35,7 +34,6 @@ export const useWallet = () => {
                 });
                 const provider = new ethers.BrowserProvider(window.ethereum);
                 const accounts = await provider.getSigner(0);
-                const address = getAddress(await accounts.getAddress());
                 setWalletAddress(getAddress(await accounts.getAddress()));
                 setCurrentAccount(getAddress(await accounts.getAddress()));
                 return getAddress(await accounts.getAddress());

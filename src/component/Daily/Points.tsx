@@ -53,6 +53,7 @@ const Points = () => {
             console.error('Error fetching total points:', error);
         }
     }, [walletAddress]);
+
     useEffect(() => {
         void fetchMyPoints();
         if (isLoggedIn) {
