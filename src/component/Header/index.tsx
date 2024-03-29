@@ -22,22 +22,26 @@ const Header = () => {
     const onWalletDisconnect = () => {
         //  Disconnect 시 logout
         useAuthStore.getState().logout();
-        useAuthStore.getState().setUserAccount(null);
+        // useAuthStore.getState().setUserAccount(null);
         // 같은 메서드인데 다른 컴포넌트에서는 alert여서 일단 alert로 통일 시켜놓았습니다.
         alert(DISCONNECTED);
     };
 
+    const clickMenu = (id: string) => {
+        const destinationSection = document.getElementById(id);
+        if (destinationSection) {
+            destinationSection.scrollIntoView({behavior: "smooth"})
+        }
+    }
     return (
         <HeaderWrapper>
             <HeaderLogo src={headerLogo} alt=""/>
             <div>
                 <HeaderUl>
-                    <li>
+                    <li style={{cursor: "pointer"}}>
                         <Link to={"/"}>Home</Link>
                     </li>
-                    <li>
-                        <Link to={"/leaderboard"}>LeaderBoard</Link>
-                    </li>
+                    <li style={{cursor: "pointer"}} onClick={() => clickMenu('leaderboard')}>LeaderBoard</li>
                 </HeaderUl>
             </div>
             {!walletAddress ? (

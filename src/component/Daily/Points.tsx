@@ -88,7 +88,11 @@ const Points = (props: PointsProps) => {
 
     useEffect(() => {
         void fetchMyPoints();
-    }, [walletAddress, fetchMyPoints]);
+        if (isLoggedIn) {
+            const interval = setInterval(fetchMyPoints, 5000);
+            return () => clearInterval(interval);
+        }
+    }, [walletAddress, fetchMyPoints, isLoggedIn]);
 
     useEffect(() => {
         if (isDialogOpen) {
@@ -114,19 +118,25 @@ const Points = (props: PointsProps) => {
         }
         void fetchIsClaimAvailable()
     }, [])
+
+    let buttonContent;
+    if (!isLoggedIn || loginAttemptFailed) {
+        buttonContent = (<LoginButton onClick={clickLogin}>Login</LoginButton>);
+    } else {
+        buttonContent = (<ClaimButton 
+                           onClick={!isClaimable ? handleOpenModal : null}
+                           style={{color: isClaimable ? '#fff' : theme.colors.bg.icon}}>
+                    {isClaimable ? 'Activate Claim' : 'Claim All'}
+                        </ClaimButton>});
+    }
+  
     return (
         <PointsWrapper>
             <TextWrapper>
                 <div>My Total MG8 Points</div>
                 <PointText>{isLoggedIn ? myPoints : '-'} P</PointText>
             </TextWrapper>
-            {(!isLoggedIn || loginAttemptFailed) ? (
-                    <LoginButton onClick={clickLogin}>Login</LoginButton>
-                ) :
-                <ClaimButton onClick={!isClaimable ? handleOpenModal : null}
-                             style={{color: isClaimable ? '#fff' : theme.colors.bg.icon}}>
-                    {isClaimable ? 'Activate Claim' : 'Claim All'}
-                </ClaimButton>}
+            {buttonContent}
             {isDialogOpen ?
                 <ClaimDialog ref={dialogRef}
                              currentMG8={currentMG8}
@@ -135,6 +145,9 @@ const Points = (props: PointsProps) => {
                              minAmount={minAmount}
                              handleCloseDialog={handleCloseDialog}/>
                 : null}
+            {/* {(!isLoggedIn || loginAttemptFailed) && (
+                <LoginButton onClick={clickLogin}>Login</LoginButton>
+            )} */}
         </PointsWrapper>
     );
 };
@@ -168,16 +181,17 @@ const LoginButton = styled.button`
     font-size: 20px;
 `;
 
-const ClaimButton = styled.button`
-    margin-top: 36px;
-    font-weight: 600;
-    border: 1px solid #ffffff;
-    border-radius: 100px;
-    font-size: 20px;
-    padding: 12px 30px 12px 30px;
-`
-
 const StyledDialog = styled.dialog`
     background: darkblue;
     width: 100vw;
 `
+const ClaimButton = styled.button`
+    margin-top: 36px;
+    font-weight: 600;
+    width: 150px;
+    height: 56px;
+    border: 1px solid gray;
+    border-radius: 100px;
+    font-size: 20px;
+    color: gray;
+`;
