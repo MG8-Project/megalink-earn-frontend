@@ -1,4 +1,5 @@
 import {ace, binance, discord, mega8, mg8gray, telegram, wemix, x,} from "../assets/images";
+import {hexlify} from "ethers";
 //footer
 export const FooterList = [
     {title: "Megalink", content: "Website", link: ""},
@@ -87,3 +88,35 @@ export const METAMASK_LINK_FAILED = "Metamask linkage failed. Please check your 
 export const LOGIN_FAILED = "Failed to login. You should join first.";
 export const LOGIN_SUCCESS = "Successfully logged in.";
 export const DISCONNECTED = "Disconnected"
+
+export const OPBNB_TESTNET = {
+    chainId: hexlify('0x15eb'), // 5611
+    chainName: 'opBNB Testnet',
+    symbol: 'tBNB',
+    rpcUrls: ['https://opbnb-testnet-rpc.bnbchain.org'],
+    blockExplorerUrls: ['https://testnet.opbnbscan.com/']
+}
+
+export const OPBNB_MAINNET = {
+    chainId: hexlify('0xcc'), // 204
+    chainName: 'opBNB Mainnet',
+    symbol: 'BNB',
+    rpcUrls: ['https://opbnb-mainnet-rpc.bnbchain.org'],
+    blockExplorerUrls: ['https://mainnet.opbnbscan.com/']
+}
+
+export const BNB_TESTNET = {
+    chainId: hexlify('0x61'), // 97
+    chainName: 'BNB Smart Chain Testnet',
+    symbol: 'tBNB',
+    rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
+    blockExplorerUrls: ['https://testnet.bscscan.com/']
+}
+
+export const BNB_MAINNET = {
+    chainId: hexlify('0x38'), // 56
+    chainName: 'BNB Smart Chain Mainnet',
+    symbol: 'BNB',
+    rpcUrls: ['https://bsc-dataseed.binance.org/'],
+    blockExplorerUrls: ['https://bscscan.com/']
+}
