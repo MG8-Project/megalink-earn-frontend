@@ -27,17 +27,21 @@ const Header = () => {
         alert(DISCONNECTED);
     };
 
+    const clickMenu = (id: string) => {
+        const destinationSection = document.getElementById(id);
+        if (destinationSection) {
+            destinationSection.scrollIntoView({behavior: "smooth"})
+        }
+    }
     return (
         <HeaderWrapper>
             <HeaderLogo src={headerLogo} alt=""/>
             <div>
                 <HeaderUl>
-                    <li>
+                    <li style={{cursor: "pointer"}}>
                         <Link to={"/"}>Home</Link>
                     </li>
-                    <li>
-                        <Link to={"/leaderboard"}>LeaderBoard</Link>
-                    </li>
+                    <li style={{cursor: "pointer"}} onClick={() => clickMenu('leaderboard')}>LeaderBoard</li>
                 </HeaderUl>
             </div>
             {!walletAddress ? (
