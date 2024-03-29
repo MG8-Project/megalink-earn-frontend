@@ -2,9 +2,12 @@ import styled from "styled-components";
 import {useWallet} from "../../hooks/useWallet";
 import {useAuthStore} from "../../store/authStore";
 import ApiPoints from "../../apis/ApiPoints";
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {LOGIN_FAILED, METAMASK_LINK_FAILED} from "../../constants";
 import ApiDaily from "../../apis/ApiDaily";
+import ClaimDialog from "./dialog/ClaimDialog";
+import {theme} from "../../styles/theme";
+import API from "../../apis/Api";
 
 // FIXME: LoginResponse 확인 후 프로퍼티 수정하기
 interface LoginResponse {
@@ -17,13 +20,42 @@ interface MyPointsResponse {
     msg: string;
 }
 
-const Points = () => {
+
+interface IsClaimAvailableResponse {
+    status: number;
+    data: {
+        resultCode: string,
+        msg: string,
+        claimable: boolean
+    }
+}
+
+interface PointsProps {
+    exchangeRatio: number;
+    currentPoint: number;
+    currentMG8: number;
+    minAmount: number;
+}
+
+const Points = (props: PointsProps) => {
+    const {minAmount, exchangeRatio, currentPoint, currentMG8} = props;
     const {connectWallet} = useWallet();
+    const [isClaimable, setIsClaimable] = useState<boolean>(false);
+    const dialogRef = useRef<HTMLDialogElement | null>(null)
     const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
     const walletAddress = useAuthStore((state) => state.userAccount);
     const [loginAttemptFailed, setLoginAttemptFailed] = useState(false);
     const [myPoints, setMyPoints] = useState(0);
 
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const handleOpenModal = () => {
+        setIsDialogOpen(true)
+        dialogRef.current?.showModal()
+    }
+    const handleCloseDialog = () => {
+        setIsDialogOpen(false)
+        dialogRef.current?.close()
+    }
     const clickLogin = async () => {
         try {
             let address = walletAddress || await connectWallet();
@@ -62,12 +94,42 @@ const Points = () => {
         }
     }, [walletAddress, fetchMyPoints, isLoggedIn]);
 
+    useEffect(() => {
+        if (isDialogOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isDialogOpen]);
+
+    useEffect(() => {
+        const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/claim/available`;
+        const fetchIsClaimAvailable = async () => {
+            try {
+                const res: IsClaimAvailableResponse = await API.get(API_ENDPOINT)
+                setIsClaimable(res.data.claimable)
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        void fetchIsClaimAvailable()
+    }, [])
+
     let buttonContent;
     if (!isLoggedIn || loginAttemptFailed) {
         buttonContent = (<LoginButton onClick={clickLogin}>Login</LoginButton>);
     } else {
-        buttonContent = (<ClaimButton>Claim All</ClaimButton>);
+        buttonContent = (<ClaimButton 
+                           onClick={!isClaimable ? handleOpenModal : null}
+                           style={{color: isClaimable ? '#fff' : theme.colors.bg.icon}}>
+                    {isClaimable ? 'Activate Claim' : 'Claim All'}
+                        </ClaimButton>});
     }
+  
     return (
         <PointsWrapper>
             <TextWrapper>
@@ -75,6 +137,14 @@ const Points = () => {
                 <PointText>{isLoggedIn ? myPoints : '-'} P</PointText>
             </TextWrapper>
             {buttonContent}
+            {isDialogOpen ?
+                <ClaimDialog ref={dialogRef}
+                             currentMG8={currentMG8}
+                             exchangeRatio={exchangeRatio}
+                             currentPoint={currentPoint}
+                             minAmount={minAmount}
+                             handleCloseDialog={handleCloseDialog}/>
+                : null}
             {/* {(!isLoggedIn || loginAttemptFailed) && (
                 <LoginButton onClick={clickLogin}>Login</LoginButton>
             )} */}
@@ -110,6 +180,11 @@ const LoginButton = styled.button`
     border-radius: 100px;
     font-size: 20px;
 `;
+
+const StyledDialog = styled.dialog`
+    background: darkblue;
+    width: 100vw;
+`
 const ClaimButton = styled.button`
     margin-top: 36px;
     font-weight: 600;
