@@ -25,9 +25,9 @@ const Daily = () => {
           </PointsContainer>
         </DayWrapper>
       </DailyWrapper>
-      <Popup />
+      {/* <Popup />
       <ReceiptPopup />
-      <FailPopup />
+      <FailPopup /> */}
     </>
   );
 };
