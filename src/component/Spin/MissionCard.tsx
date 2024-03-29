@@ -14,16 +14,14 @@ const MissionCard = () => {
   }, 1000);
   function getRemainingTime() {
     const now = new Date();
-    let targetTime = new Date();
-    const targetHour = (now.getHours() < 9 || now.getHours() >= 21) ? 9 : 21; // 오전 9시를 지나면 21시로 변경
+    const targetTime = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds()));
+    const targetHourUTC = (targetTime.getUTCHours() < 0 || targetTime.getUTCHours() >= 12) ? 0 : 12;
 
-    targetTime.setHours(targetHour, 0, 0, 0);
+    targetTime.setHours(targetHourUTC, 0, 0, 0);
 
     let difference = targetTime.getTime() - now.getTime();
     if (difference < 0) {
-      const tomorrow = new Date(now);
-      tomorrow.setDate(now.getDate() + 1);
-      tomorrow.setHours(targetHour, 0, 0, 0);
+      const tomorrow = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, targetHourUTC, 0, 0, 0));
       difference = tomorrow.getTime() - now.getTime();
     }
 
