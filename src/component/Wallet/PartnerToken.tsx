@@ -1,13 +1,31 @@
 import styled from "styled-components";
 import {theme} from "../../styles/theme";
 import {coinList} from "../../constants";
-import {ethers} from "ethers";
-import {useCallback, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useAuthStore} from "../../store/authStore";
 import {IToken} from "./index";
+import API from "../../apis/Api";
 
 interface PartnerTokenProps {
     tokenList: IToken[]
+}
+
+interface Response {
+    status: number;
+    data: {
+        "resultCode": "string",
+        "msg": "string",
+        "address": "string",
+        "assets": [
+            {
+                "address": "string",
+                "symbol": "string",
+                "decimals": "number",
+                "chainId": "number",
+                "balance": "bigint"
+            }
+        ]
+    }
 }
 
 const PartnerToken = (props: PartnerTokenProps) => {
@@ -15,27 +33,44 @@ const PartnerToken = (props: PartnerTokenProps) => {
     const userAddress = useAuthStore((state) => state.userAccount);
     const [coins, setCoins] = useState(coinList);
 
-    const fetchBalances = useCallback(async () => {
-        if (!userAddress) {
-            return;
-        }
+    // const fetchBalances = useCallback(async () => {
+    //     if (!userAddress) {
+    //         return;
+    //     }
+    //     const updatedCoins = await Promise.all(
+    //         coins.map(async (item) => {
+    //             const provider = new ethers.JsonRpcProvider(item.url, item.chainId);
+    //             const balance = await provider.getBalance(userAddress);
+    //             const balanceInEther = ethers.formatEther(balance);
+    //             return {...item, balance: balanceInEther};
+    //         })
+    //     );
+    //     setCoins(updatedCoins);
+    // }, [userAddress]);
+    // console.log(coins)
 
-        const updatedCoins = await Promise.all(
-            coins.map(async (item) => {
-                const provider = new ethers.JsonRpcProvider(item.url, item.chainId);
-                const balance = await provider.getBalance(userAddress);
-                const balanceInEther = ethers.formatEther(balance);
-                return {...item, balance: balanceInEther};
+    // useEffect(() => {
+    //     void fetchBalances();
+    // }, [fetchBalances]);
+
+    const fetchBalances = async () => {
+        try {
+            const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/airdrop/balanceAll`
+            const res: Response = await API.get(API_ENDPOINT, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+                }
             })
-        );
-        setCoins(updatedCoins);
-    }, [userAddress, coins]);
+            // console.log(res)
+
+        } catch (err) {
+            console.error(err)
+        }
+    }
 
     useEffect(() => {
-        void fetchBalances();
-    }, [fetchBalances]);
-
-
+        void fetchBalances()
+    }, []);
     return (
         <CardWrapper>
             {tokenList.map((item, index) => (
@@ -66,19 +101,9 @@ const CardBox = styled.div`
     gap: 20px;
     align-items: center;
 `;
-const CardAmountBox = styled.div`
-    width: 100px;
-    height: 40px;
-    border: 1.5px solid gray;
-    border-radius: 20px;
-    background-color: black;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    justify-content: center;
-    align-items: center;
-`;
+
 const CardBoxImg = styled.img`
     width: 64px;
+    height: 64px;
     margin-top: 40px;
 `;

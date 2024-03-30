@@ -51,7 +51,6 @@ const Wallet = () => {
         try {
             const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/airdrop/partnerToken`
             const res: Response = await API.get(API_ENDPOINT)
-            console.log(res)
             setTokeList(res.data.partnerTokens)
         } catch (err) {
             console.error(err)
