@@ -19,23 +19,29 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
     const isButtonActive = minAmount <= currentMG8;
-    const handleClick = async () => {
-        if (!isButtonActive) {
-            return;
+    const claim = async () => {
+        try {
+            if (!isButtonActive) {
+                return;
+            }
+            console.log('claim start')
+            const provider = new BrowserProvider(window.ethereum);
+            const vault: Vault = new Contract(process.env.REACT_APP_CONTRACT_VAULT, VaultAbi, provider) as unknown as Vault
+            const signer = await provider.getSigner(0)
+            const res: any = await vault.claimableAmount(await signer.getAddress())
+            console.log(res, "?")
+            console.log('bnbamount: ', res._bnbAmount)
+            console.log('dd', res._mg8Amount)
+            // console.log('contract? : ', await vault.claimableAmount(await signer.getAddress()))
+            // await vault.claimMG8(currentPoint);
+        } catch (error) {
+            console.error(error)
         }
-        // handleCloseDialog();
-        const provider = new BrowserProvider(window.ethereum);
-        const vault: Vault = new Contract(process.env.REACT_APP_CONTRACT_VAULT, VaultAbi, provider) as unknown as Vault
-        // console.log('provider sign : ', await provider.getSigner(0))
-        const signer = await provider.getSigner(0)
-        // console.log('signer address : ', await signer.getAddress())
-        const res: any = await vault.claimableAmount(await signer.getAddress())
-        console.log('bnbamount: ', res._bnbAmount)
-        console.log('dd', res._mg8Amount)
-        // console.log('contract? : ', await vault.claimableAmount(await signer.getAddress()))
-        // await vault.claimMG8(currentPoint);
     }
     // claimMg8 -> req는 point로 보내기
+    const handleClick = () => {
+        void claim();
+    }
 
     return (
         <DialogWrapper ref={ref}>

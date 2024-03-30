@@ -47,13 +47,10 @@ const Points = (props: PointsProps) => {
     const [loginAttemptFailed, setLoginAttemptFailed] = useState(false);
     const [myPoints, setMyPoints] = useState(0);
 
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const handleOpenModal = () => {
-        setIsDialogOpen(true)
         dialogRef.current?.showModal()
     }
     const handleCloseDialog = () => {
-        setIsDialogOpen(false)
         dialogRef.current?.close()
     }
     const clickLogin = async () => {
@@ -94,17 +91,6 @@ const Points = (props: PointsProps) => {
         }
     }, [walletAddress, fetchMyPoints, isLoggedIn]);
 
-    useEffect(() => {
-        if (isDialogOpen) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'unset';
-        }
-
-        return () => {
-            document.body.style.overflow = 'unset';
-        };
-    }, [isDialogOpen]);
 
     useEffect(() => {
         const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/claim/available`;
@@ -137,14 +123,13 @@ const Points = (props: PointsProps) => {
                 <PointText>{isLoggedIn ? myPoints : '-'} P</PointText>
             </TextWrapper>
             {buttonContent}
-            {isDialogOpen ?
-                <ClaimDialog ref={dialogRef}
-                             currentMG8={currentMG8}
-                             exchangeRatio={exchangeRatio}
-                             currentPoint={currentPoint}
-                             minAmount={minAmount}
-                             handleCloseDialog={handleCloseDialog}/>
-                : null}
+            <ClaimDialog ref={dialogRef}
+                         currentMG8={currentMG8}
+                         exchangeRatio={exchangeRatio}
+                         currentPoint={currentPoint}
+                         minAmount={minAmount}
+                         handleCloseDialog={handleCloseDialog}/>
+
             {/* {(!isLoggedIn || loginAttemptFailed) && (
                 <LoginButton onClick={clickLogin}>Login</LoginButton>
             )} */}
