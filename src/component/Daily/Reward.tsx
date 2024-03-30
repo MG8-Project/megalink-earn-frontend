@@ -5,9 +5,9 @@
 * */
 
 import styled from "styled-components";
-import {DailyRewardList} from "../../constants";
+import {DailyRewardList, OPBNB_TESTNET} from "../../constants";
 import {useAuthStore} from "../../store/authStore";
-import {BrowserProvider, Contract, ethers, toBeHex} from "ethers";
+import {BrowserProvider, Contract, ethers} from "ethers";
 import {ForwarderAbi} from "../../typechain-types/contracts/Forwarder";
 import {DailyAttendanceAbi} from "../../typechain-types/contracts/DailyAttendance";
 import API from "../../apis/Api";
@@ -37,172 +37,180 @@ export const DOMAIN_SEPARATOR: Domain = {
 }
 
 const Reward = () => {
-    const isLoggedIn = useAuthStore(state => state.isLoggedIn);
-    const [isFetch, setIsFetch] = useState(false);
-    const walletAddress = useAuthStore(state => state.userAccount);
-    const [receivedStatus, setReceivedStatus] = useState<{ todayIndex: number, attendedList: number[] }>({
-        todayIndex: 0,
-        attendedList: [0, 0, 0, 0, 0, 0, 0]
-    });
-    const isTodayCheckAvailable = (index: number) => {
-        return index === receivedStatus.todayIndex
-    }
-    const signTypedData = async () => {
-        try {
-            if (!isLoggedIn) {
-                alert("Please login first.")
-                return;
-            }
-
-            const provider = new BrowserProvider(window.ethereum);
-            const dailyAttendance = new Contract(process.env.REACT_APP_CONTRACT_DAILY_ATTENDANCE, DailyAttendanceAbi, provider);
-            const forwarder = new Contract(process.env.REACT_APP_CONTRACT_FORWARDER, ForwarderAbi, provider);
-            const currentTimestamp = Math.floor(new Date().getTime() / 1000);
-            const oneWeekInSeconds = 60;
-            const futureTimestamp = currentTimestamp + oneWeekInSeconds;
-            const uint48Value = ethers.toNumber(futureTimestamp);
-
-            const chainId = await window.ethereum.request({method: "eth_chainId"});
-
-            if (chainId.toString() !== DOMAIN_SEPARATOR.chainId.toString()) {
-                // FIXME: 추후 Mainnet 정보로 변경
-                await window.ethereum.request({
-                    "method": "wallet_addEthereumChain",
-                    "params": [
-                        {
-                            "chainId": toBeHex(DOMAIN_SEPARATOR.chainId.toString()).toString(),
-                            "chainName": "opBNB",
-                            "rpcUrls": [
-                                "https://opbnb-testnet-rpc.bnbchain.org"
-                            ],
-                            "iconUrls": [
-                                "https://docs.bnbchain.org/opbnb-docs/img/logo.svg",
-                            ],
-                            "nativeCurrency": {
-                                "name": "tBNB",
-                                "symbol": "tBNB",
-                                "decimals": 18
-                            },
-                            "blockExplorerUrls": [
-                                "https://testnet.opbnbscan.com/"
-                            ]
-                        }
-                    ]
-                });
-
-                await window.ethereum.request({
-                    method: "wallet_switchEthereumChain",
-                    params: [{chainId: toBeHex(DOMAIN_SEPARATOR.chainId.toString()).toString()}]
-                })
-            }
-
-            const nonce = await forwarder.nonces(walletAddress);
-
-            const checkInAvailable = await dailyAttendance.checkedInToday(walletAddress)
-            // FIXME: 지난번에 !checkInAvailable 로 로직 변경했는데 바꾸기 전 로직이 정상작동됨 확인 필요
-            if (checkInAvailable) {
-                alert("You already checked in today.")
-                return;
-            }
-
-            const message = {
-                from: walletAddress,
-                to: process.env.REACT_APP_CONTRACT_DAILY_ATTENDANCE,
-                value: "0",
-                gas: "50000",
-                nonce: nonce.toString(),
-                deadline: uint48Value.toString(),
-                data: dailyAttendance.interface.encodeFunctionData("checkIn", undefined),
-            }
-            const typedData = JSON.stringify({
-                domain: DOMAIN_SEPARATOR,
-                message: message,
-                primaryType: "ForwardRequest",
-                types: {
-                    EIP712Domain: [
-                        {name: "name", type: "string"},
-                        {name: "version", type: "string"},
-                        {name: "chainId", type: "uint256"},
-                        {name: "verifyingContract", type: "address"},
-                    ],
-                    ForwardRequest: [
-                        {name: "from", type: "address"},
-                        {name: "to", type: "address"},
-                        {name: "value", type: "uint256"},
-                        {name: "gas", type: "uint256"},
-                        {name: "nonce", type: "uint256"},
-                        {name: "deadline", type: "uint48"},
-                        {name: "data", type: "bytes"},
-                    ],
-                }
-            })
-            const method = "eth_signTypedData_v4";
-            const params = [walletAddress, typedData]
-            const signature = await window.ethereum.request({method, params});
-            const param = {
-                userAccount: walletAddress,
-                signature,
-                ...message,
-            }
-
-            await API.post(process.env.REACT_APP_API_PERSONAL_CHECK, param, {
-                headers: {
-                    "Authorization": "application/json",
-                }
-            });
-            alert("Successfully checked in.")
-            setIsFetch(!isFetch);
-        } catch (error) {
-            console.error(error)
+        const isLoggedIn = useAuthStore(state => state.isLoggedIn);
+        const [isFetch, setIsFetch] = useState(false);
+        const walletAddress = useAuthStore(state => state.userAccount);
+        const [receivedStatus, setReceivedStatus] = useState<{ todayIndex: number, attendedList: number[] }>({
+            todayIndex: 0,
+            attendedList: [0, 0, 0, 0, 0, 0, 0]
+        });
+        const isTodayCheckAvailable = (index: number) => {
+            return index === receivedStatus.todayIndex
         }
-    };
-
-    useEffect(() => {
-        const fetchReceivedStatus = async () => {
+        const signTypedData = async () => {
             try {
-                const response: MyTotalLoginsResponse = await ApiDaily.myTotalLogin(walletAddress);
-                const data = {
-                    todayIndex: response.todayIndex,
-                    attendedList: response.attendedList
+                if (!isLoggedIn) {
+                    alert("Please login first.")
+                    return;
                 }
-                setReceivedStatus(data);
+
+                const provider = new BrowserProvider(window.ethereum);
+                const dailyAttendance = new Contract(process.env.REACT_APP_CONTRACT_DAILY_ATTENDANCE, DailyAttendanceAbi, provider);
+                const forwarder = new Contract(process.env.REACT_APP_CONTRACT_FORWARDER, ForwarderAbi, provider);
+                const currentTimestamp = Math.floor(new Date().getTime() / 1000);
+                const oneWeekInSeconds = 60;
+                const futureTimestamp = currentTimestamp + oneWeekInSeconds;
+                const uint48Value = ethers.toNumber(futureTimestamp);
+
+                const chainId = await window.ethereum.request({method: "eth_chainId"});
+
+                if (chainId.toString() !== DOMAIN_SEPARATOR.chainId.toString()) {
+                    // FIXME: 추후 Mainnet 정보로 변경
+                    if (window.ethereum) {
+                        try {
+                            await window.ethereum.request({
+                                method: 'wallet_switchEthereumChain',
+                                params: [{chainId: OPBNB_TESTNET.chainId}],
+                            });
+                        } catch (error: any) {
+                            if (error.code === 4902) {
+                                try {
+                                    await window.ethereum.request({
+                                        method: 'wallet_addEthereumChain',
+                                        params: [
+                                            {
+                                                chainId: OPBNB_TESTNET.chainId,
+                                                chainName: OPBNB_TESTNET.chainName,
+                                                nativeCurrency: {
+                                                    name: OPBNB_TESTNET.symbol,
+                                                    symbol: OPBNB_TESTNET.symbol,
+                                                    decimals: 18
+                                                },
+                                                rpcUrls: OPBNB_TESTNET.rpcUrls,
+                                                blockExplorerUrls: OPBNB_TESTNET.blockExplorerUrls
+                                            },
+                                        ],
+                                    });
+                                } catch (addError) {
+                                    alert('Refused to add network.');
+                                    console.error(addError);
+                                    return;
+                                }
+                            } else if (error.code === 4001) {
+                                alert('Network switch refused.');
+                            } else {
+                                alert('An error occurred while switching networks.');
+                                console.error(error);
+                            }
+                        }
+                    }
+                }
+
+                const nonce = await forwarder.nonces(walletAddress);
+
+                const alreadyCheckedIn = await dailyAttendance.checkedInToday(walletAddress)
+                if (alreadyCheckedIn) {
+                    alert("You already checked in today.")
+                    return;
+                }
+
+                const message = {
+                    from: walletAddress,
+                    to: process.env.REACT_APP_CONTRACT_DAILY_ATTENDANCE,
+                    value: "0",
+                    gas: "50000",
+                    nonce: nonce.toString(),
+                    deadline: uint48Value.toString(),
+                    data: dailyAttendance.interface.encodeFunctionData("checkIn", undefined),
+                }
+                const typedData = JSON.stringify({
+                    domain: DOMAIN_SEPARATOR,
+                    message: message,
+                    primaryType: "ForwardRequest",
+                    types: {
+                        EIP712Domain: [
+                            {name: "name", type: "string"},
+                            {name: "version", type: "string"},
+                            {name: "chainId", type: "uint256"},
+                            {name: "verifyingContract", type: "address"},
+                        ],
+                        ForwardRequest: [
+                            {name: "from", type: "address"},
+                            {name: "to", type: "address"},
+                            {name: "value", type: "uint256"},
+                            {name: "gas", type: "uint256"},
+                            {name: "nonce", type: "uint256"},
+                            {name: "deadline", type: "uint48"},
+                            {name: "data", type: "bytes"},
+                        ],
+                    }
+                })
+                const method = "eth_signTypedData_v4";
+                const params = [walletAddress, typedData]
+                const signature = await window.ethereum.request({method, params});
+                const param = {
+                    userAccount: walletAddress,
+                    signature,
+                    ...message,
+                }
+
+                await API.post(process.env.REACT_APP_API_PERSONAL_CHECK, param, {
+                    headers: {
+                        "Authorization": "application/json",
+                    }
+                });
             } catch (error) {
-                console.error('Error fetching received status:', error);
+                console.error(error)
             }
         };
-        if (isLoggedIn) {
-            void fetchReceivedStatus();
+
+        useEffect(() => {
+            const fetchReceivedStatus = async () => {
+                try {
+                    const response: MyTotalLoginsResponse = await ApiDaily.myTotalLogin(walletAddress);
+                    const data = {
+                        todayIndex: response.todayIndex,
+                        attendedList: response.attendedList
+                    }
+                    setReceivedStatus(data);
+                } catch (error) {
+                    console.error('Error fetching received status:', error);
+                }
+            };
+            if (isLoggedIn) {
+                void fetchReceivedStatus();
+            }
+            return () => {
+            };
+        }, [isLoggedIn, walletAddress, isFetch]);
+
+        // FIXME: attendedList undefined ㅎㅕ상 수정하기
+        const test = (index: number) => {
+            return isLoggedIn && receivedStatus.attendedList !== undefined && receivedStatus.attendedList[index] !== 0
         }
-        return () => {
-        };
-    }, [isLoggedIn, walletAddress, isFetch]);
 
-    // FIXME: attendedList undefined ㅎㅕ상 수정하기
-    const test = (index: number) => {
-        return isLoggedIn && receivedStatus.attendedList !== undefined && receivedStatus.attendedList[index] !== 0
+        return (
+            <RewardWrapper>
+                {DailyRewardList.map((item, index) => (
+                    <RewardContainer
+                        key={item.id}
+                        onClick={isLoggedIn && isTodayCheckAvailable(index) ? () => void signTypedData() : null}
+                        style={{
+                            cursor: isLoggedIn && isTodayCheckAvailable(index) ? 'pointer' : 'default',
+                            border: isLoggedIn && isTodayCheckAvailable((index)) ? "2px solid white" : "2px solid transparent",
+                        }}>
+                        <RewardTitle>{item.title}</RewardTitle>
+                        <RewardImage
+                            src={test(index) ? mega8 : mg8gray}
+                            alt=""/>
+                        <RewardPrice>{item.point}</RewardPrice>
+                        {/* <RewardRequest onClick={signTypedData}>Get</RewardRequest> */}
+                    </RewardContainer>
+                ))}
+            </RewardWrapper>
+        );
     }
-
-    return (
-        <RewardWrapper>
-            {DailyRewardList.map((item, index) => (
-                <RewardContainer
-                    key={item.id}
-                    onClick={isLoggedIn && isTodayCheckAvailable(index) ? () => void signTypedData() : null}
-                    style={{
-                        cursor: isLoggedIn && isTodayCheckAvailable(index) ? 'pointer' : 'default',
-                        border: isLoggedIn && isTodayCheckAvailable((index)) ? "2px solid white" : "2px solid transparent",
-                    }}>
-                    <RewardTitle>{item.title}</RewardTitle>
-                    <RewardImage
-                        src={test(index) ? mega8 : mg8gray}
-                        alt=""/>
-                    <RewardPrice>{item.point}</RewardPrice>
-                    {/* <RewardRequest onClick={signTypedData}>Get</RewardRequest> */}
-                </RewardContainer>
-            ))}
-        </RewardWrapper>
-    );
-};
+;
 
 export default Reward;
 
