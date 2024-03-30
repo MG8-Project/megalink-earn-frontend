@@ -2,10 +2,21 @@ import API from './Api';
 
 const endpointUser = process.env.REACT_APP_API_USER;
 
-const login = async (userAccount: string) => {
-    const response = await API.post(`${endpointUser}/login`, {userAccount});
-    const data = response.data;
+interface LoginResponse {
+    status: number;
+    data: {
+        accessToken: string
+        msg: string
+        refreshToken: string
+        resultCode: string
+    }
+}
 
+const login = async (userAccount: string) => {
+    const response: LoginResponse = await API.post(`${endpointUser}/login`, {userAccount});
+    const data = response.data;
+    localStorage.setItem('accessToken', response.data.accessToken);
+    localStorage.setItem('refreshToken', response.data.refreshToken);
     switch (data.resultCode) {
         case "1":
             return data;

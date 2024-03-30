@@ -23,11 +23,8 @@ import type {
   TypedContractMethod,
 } from "../common";
 
-// @ts-ignore
-export const ForwarderAbi =  [
+export const ForwarderAbi = [
   {
-    /* tslint:disable */
-    /* eslint-disable */
     // @ts-ignore
     "inputs": [],
     "stateMutability": "nonpayable",
