@@ -26,8 +26,7 @@ const AlertDialog = forwardRef((props: AlertDialogProps, ref: any) => {
                     </div>
                     <Link to={`https://testnet.bscscan.com/tx/${props.hash}`}>
                         <StyledHashBox>
-                            <div>View on BscScan</div>
-                            <div>{hash}</div>
+                            <div>View on BscScan {hash.slice(0, 8)}...</div>
                         </StyledHashBox>
                     </Link>
                 </DialogContentWrapper>
@@ -93,7 +92,7 @@ const DialogContentWrapper = styled.section`
 `
 const StyledHashBox = styled.div`
     cursor: pointer;
-    width: 40rem;
+    width: 30rem;
     margin-top: 20px;
     background: ${theme.colors.bg.iconHover};
     border-radius: 10px;
