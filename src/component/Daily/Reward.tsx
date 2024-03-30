@@ -38,13 +38,12 @@ export const DOMAIN_SEPARATOR: Domain = {
 
 const Reward = () => {
         const isLoggedIn = useAuthStore(state => state.isLoggedIn);
+        const [isFetch, setIsFetch] = useState(false);
         const walletAddress = useAuthStore(state => state.userAccount);
         const [receivedStatus, setReceivedStatus] = useState<{ todayIndex: number, attendedList: number[] }>({
             todayIndex: 0,
             attendedList: [0, 0, 0, 0, 0, 0, 0]
         });
-
-
         const isTodayCheckAvailable = (index: number) => {
             return index === receivedStatus.todayIndex
         }
@@ -160,10 +159,7 @@ const Reward = () => {
                         "Authorization": "application/json",
                     }
                 });
-
-                alert("Successfully checked in.")
-            } catch
-                (error) {
+            } catch (error) {
                 console.error(error)
             }
         };
@@ -186,7 +182,12 @@ const Reward = () => {
             }
             return () => {
             };
-        }, [isLoggedIn, walletAddress]);
+        }, [isLoggedIn, walletAddress, isFetch]);
+
+        // FIXME: attendedList undefined ㅎㅕ상 수정하기
+        const test = (index: number) => {
+            return isLoggedIn && receivedStatus.attendedList !== undefined && receivedStatus.attendedList[index] !== 0
+        }
 
         return (
             <RewardWrapper>
@@ -200,7 +201,7 @@ const Reward = () => {
                         }}>
                         <RewardTitle>{item.title}</RewardTitle>
                         <RewardImage
-                            src={isLoggedIn && receivedStatus.attendedList[index] !== 0 ? mega8 : mg8gray}
+                            src={test(index) ? mega8 : mg8gray}
                             alt=""/>
                         <RewardPrice>{item.point}</RewardPrice>
                         {/* <RewardRequest onClick={signTypedData}>Get</RewardRequest> */}
