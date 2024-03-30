@@ -173,7 +173,6 @@ const Points = (props: PointsProps) => {
                          receivedMG8={receivedMG8 / (10 ** decimal)}
                          exchangeRatio={exchangeRatio}
                          currentPoint={currentPoint}
-                         isTransactionComplete={isTransactionComplete}
                          setIsTransactionComplete={setIsTransactionComplete}
                          handleOpenDialog={handleOpenDialog}
                          handleCloseDialog={handleCloseDialog}

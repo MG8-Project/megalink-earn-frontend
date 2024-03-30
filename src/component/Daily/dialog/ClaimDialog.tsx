@@ -2,9 +2,10 @@ import {Dispatch, forwardRef, SetStateAction} from "react";
 import styled from "styled-components";
 import {theme} from "../../../styles/theme";
 import {close} from "../../../assets/images"
-import {BrowserProvider, Contract, parseUnits} from "ethers";
 import {Vault, VaultAbi} from "../../../typechain-types/contracts/Vault";
 import Spinner from "../../ui/Spinner";
+import {BrowserProvider, Contract, parseUnits} from "ethers";
+
 
 interface ClaimDialogProps {
     receivedMG8: number;
@@ -15,14 +16,12 @@ interface ClaimDialogProps {
     currentPoint: number;
     setHash: Dispatch<SetStateAction<string>>
     isActivate: boolean;
-    isTransactionComplete: boolean;
     setIsTransactionComplete: Dispatch<SetStateAction<boolean>>
 }
 
 const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
     const {
         isActivate,
-        isTransactionComplete,
         setIsTransactionComplete,
         receivedMG8,
         minAmount,
@@ -54,11 +53,13 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
             handleOpenDialog('alert')
         } catch (error) {
             console.error(error)
+            handleOpenDialog('alert')
         }
     }
     const handleClick = () => {
         void claim();
     }
+
 
     return (
         <DialogWrapper ref={ref}>
@@ -104,7 +105,7 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
                 </DialogProgressWrapper>
                 <DialogButtonWrapper>
                     <DialogButton
-                        onClick={handleClick}
+                        onClick={isActivate ? handleClick : null}
                         style={{color: isButtonActive ? '#fff' : theme.colors.bg.iconHover}}>
                         {isActivate ? 'Claim All' : 'Active Claim'}
                     </DialogButton>
