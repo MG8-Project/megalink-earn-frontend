@@ -28,3 +28,7 @@ export {default as nextarrow} from "./nextarrow.png";
 
 // close
 export {default as close} from "./closeWhite.png";
+
+//check
+export {default as check} from "./check.png";
+export {default as failed} from "./failed.png";

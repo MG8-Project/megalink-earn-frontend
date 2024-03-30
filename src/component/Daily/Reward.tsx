@@ -177,6 +177,11 @@ const Reward = () => {
         };
     }, [isLoggedIn, walletAddress, isFetch]);
 
+    // FIXME: attendedList undefined ㅎㅕ상 수정하기
+    const test = (index: number) => {
+        return isLoggedIn && receivedStatus.attendedList !== undefined && receivedStatus.attendedList[index] !== 0
+    }
+
     return (
         <RewardWrapper>
             {DailyRewardList.map((item, index) => (
@@ -189,7 +194,7 @@ const Reward = () => {
                     }}>
                     <RewardTitle>{item.title}</RewardTitle>
                     <RewardImage
-                        src={isLoggedIn && receivedStatus.attendedList[index] !== 0 ? mega8 : mg8gray}
+                        src={test(index) ? mega8 : mg8gray}
                         alt=""/>
                     <RewardPrice>{item.point}</RewardPrice>
                     {/* <RewardRequest onClick={signTypedData}>Get</RewardRequest> */}

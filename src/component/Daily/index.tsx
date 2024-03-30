@@ -14,6 +14,7 @@ interface CurrentClaimResponse {
         exchangeRatio: number,
         currentPoints: number,
         mg8Amount: number
+        decimals: number
     }
 }
 
@@ -22,8 +23,8 @@ interface MinClaimResponse {
     data: {
         resultCode: string,
         msg: string,
-        minAmount: number,
-        maxAmount: number
+        minAmount: bigint,
+        maxAmount: bigint
     }
 }
 
@@ -31,8 +32,9 @@ const Daily = () => {
     const [currentMG8, setCurrentMG8] = useState(0);
     const [currentPoint, setCurrentPoint] = useState(0);
     const [exchangeRatio, setExchangeRatio] = useState(0);
-    const [minAmount, setMinAmount] = useState(0);
-    const [maxAmount, setMaxAmount] = useState(0)
+    const [minAmount, setMinAmount] = useState<bigint>(BigInt(0));
+    const [maxAmount, setMaxAmount] = useState<bigint>(BigInt(0));
+    const [decimal, setDecimal] = useState(0)
 
     const isAvailableClaim = currentMG8 >= minAmount
     const addCommas = (num: number) => {
@@ -46,13 +48,18 @@ const Daily = () => {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`
                 }
             })
+            // "Unable Claim" 에러처리
+            if (res.data.resultCode === '40') throw new Error(res.data.resultCode)
             setCurrentPoint(res.data.currentPoints)
             setCurrentMG8(res.data.mg8Amount)
             setExchangeRatio(res.data.exchangeRatio)
+            setDecimal(res.data.decimals)
         } catch (error) {
+            // FIXME: 에러처리 추가
             console.error(error)
         }
     }
+
     const fetchMinClaim = async () => {
         try {
             const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/claim/minMaxAmount`
@@ -80,11 +87,13 @@ const Daily = () => {
                         currentMG8={currentMG8}
                         exchangeRatio={exchangeRatio}
                         minAmount={minAmount}
+                        maxAmount={maxAmount}
+                        decimal={decimal}
                         currentPoint={currentPoint}/>
                 </ContentWrapper>
                 {isAvailableClaim ? <ContentAlertText>
                         *CLAIM NOTICE : You can claim up to
-                        <strong style={{fontWeight: 'bold'}}> {addCommas(maxAmount)}p</strong> at once.
+                        {/*<strong style={{fontWeight: 'bold'}}> {addCommas(maxAmount)}p</strong> at once.*/}
                     </ContentAlertText> :
                     <ContentAlertText style={{color: '#b81414'}}>Insufficient POINT to claim.</ContentAlertText>
                 }

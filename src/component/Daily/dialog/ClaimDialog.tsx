@@ -1,44 +1,61 @@
-import {forwardRef} from "react";
+import {Dispatch, forwardRef, SetStateAction} from "react";
 import styled from "styled-components";
 import {theme} from "../../../styles/theme";
 import {close} from "../../../assets/images"
-import {BrowserProvider, Contract} from "ethers";
+import {BrowserProvider, Contract, parseUnits} from "ethers";
 import {Vault, VaultAbi} from "../../../typechain-types/contracts/Vault";
+import Spinner from "../../ui/Spinner";
 
 interface ClaimDialogProps {
-    handleCloseDialog: () => void;
+    receivedMG8: number;
+    minAmount: bigint
+    handleOpenDialog: (refCategory: string) => void;
+    handleCloseDialog: (refCategory: string) => void;
     exchangeRatio: number;
     currentPoint: number;
-    currentMG8: number
-    minAmount: number
+    setHash: Dispatch<SetStateAction<string>>
+    isActivate: boolean;
+    isTransactionComplete: boolean;
+    setIsTransactionComplete: Dispatch<SetStateAction<boolean>>
 }
 
 const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
-    const {minAmount, handleCloseDialog, exchangeRatio, currentPoint, currentMG8} = props;
+    const {
+        isActivate,
+        isTransactionComplete,
+        setIsTransactionComplete,
+        receivedMG8,
+        minAmount,
+        handleOpenDialog,
+        handleCloseDialog,
+        exchangeRatio,
+        currentPoint,
+        setHash
+    } = props;
+
     const addCommas = (num: number) => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-    const isButtonActive = minAmount <= currentMG8;
+    const isButtonActive = minAmount > receivedMG8;
+
+
     const claim = async () => {
         try {
             if (!isButtonActive) {
                 return;
             }
-            console.log('claim start')
             const provider = new BrowserProvider(window.ethereum);
-            const vault: Vault = new Contract(process.env.REACT_APP_CONTRACT_VAULT, VaultAbi, provider) as unknown as Vault
-            const signer = await provider.getSigner(0)
-            const res: any = await vault.claimableAmount(await signer.getAddress())
-            console.log(res, "?")
-            console.log('bnbamount: ', res._bnbAmount)
-            console.log('dd', res._mg8Amount)
-            // console.log('contract? : ', await vault.claimableAmount(await signer.getAddress()))
-            // await vault.claimMG8(currentPoint);
+            const signer = await provider.getSigner()
+            const vault: Vault = new Contract(process.env.REACT_APP_CONTRACT_VAULT, VaultAbi, signer) as unknown as Vault
+            const amount = parseUnits((receivedMG8 / exchangeRatio).toString())
+            const tx = await vault.claimMG8(amount);
+            setHash(tx.hash);
+            setIsTransactionComplete(true)
+            handleOpenDialog('alert')
         } catch (error) {
             console.error(error)
         }
     }
-    // claimMg8 -> req는 point로 보내기
     const handleClick = () => {
         void claim();
     }
@@ -47,7 +64,7 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
         <DialogWrapper ref={ref}>
             <DialogContent>
                 <DialogIcon>
-                    <CloseImg src={close} onClick={handleCloseDialog}/>
+                    <CloseImg src={close} onClick={() => handleCloseDialog('claim')}/>
                 </DialogIcon>
                 <DialogTitleWrapper>
                     <DialogTitle>Transaction Request</DialogTitle>
@@ -65,17 +82,19 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
                         </DialogContentInfo>
                         <DialogContentInfo>
                             <p style={{fontSize: "1.5rem", fontWeight: 'normal'}}>Your Will Received</p>
-                            <p style={{fontSize: "1.8rem", fontWeight: 'bold'}}> {addCommas(currentMG8)} MG8</p>
+                            <p style={{fontSize: "1.8rem", fontWeight: 'bold'}}> {addCommas(receivedMG8)} MG8</p>
                         </DialogContentInfo>
                     </DialogContentCurrentStatus>
                 </DialogContentWrapper>
                 <DialogProgressWrapper>
+                    {isActivate ? null : <Spinner/>}
                     <p style={{fontSize: "1.5rem", fontWeight: 'normal', color: '#fff'}}>*Gas fee will be paid in
                         BNB</p>
                     <DialogProgressbar>
-                        <DialogProgressStatusActiveCircle/>
+                        <DialogProgressStatusCircle style={{background: '#fff'}}/>
                         <DialogProgressLine/>
-                        <DialogProgressStatusDisableCircle/>
+                        <DialogProgressStatusCircle
+                            style={{background: isActivate ? '#fff' : 'transparent'}}/>
                     </DialogProgressbar>
                     <DialogProgressbar>
                         <DialogProgressStatusText>Activate</DialogProgressStatusText>
@@ -86,8 +105,8 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
                 <DialogButtonWrapper>
                     <DialogButton
                         onClick={handleClick}
-                        style={{color: isButtonActive ? '#fff' : theme.colors.bg.icon}}>
-                        Active Claim
+                        style={{color: isButtonActive ? '#fff' : theme.colors.bg.iconHover}}>
+                        {isActivate ? 'Claim All' : 'Active Claim'}
                     </DialogButton>
                 </DialogButtonWrapper>
             </DialogContent>
@@ -97,7 +116,7 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
 
 export default ClaimDialog;
 
-const DialogWrapper = styled.dialog`
+export const DialogWrapper = styled.dialog`
     border: none;
     position: fixed;
     width: 100%;
@@ -121,7 +140,7 @@ const DialogWrapper = styled.dialog`
         z-index: -1;
     }
 `
-const DialogContent = styled.section`
+export const DialogContent = styled.section`
     gap: 15px;
     position: absolute;
     top: 50%;
@@ -149,7 +168,7 @@ const CloseImg = styled.img`
     width: 12px;
     cursor: pointer;
 `
-const DialogTitleWrapper = styled.section`
+export const DialogTitleWrapper = styled.section`
     grid-area: title;
     width: 100%;
     display: flex;
@@ -213,18 +232,11 @@ const DialogProgressbar = styled.section`
     align-items: center;
     justify-content: center;
 `
-const DialogProgressStatusActiveCircle = styled.div`
+const DialogProgressStatusCircle = styled.div`
     border-radius: 100%;
-    background: #fff;
     border: 5px solid ${theme.colors.bg.iconHover};
     padding: 10px;
-
-`
-const DialogProgressStatusDisableCircle = styled.div`
-    border-radius: 100%;
-    background: transparent;
-    border: 5px solid ${theme.colors.bg.iconHover};
-    padding: 10px;
+    transition: all 0.5s ease-in-out;
 `
 const DialogProgressLine = styled.div`
     width: 250px;

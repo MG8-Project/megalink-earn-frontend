@@ -8,6 +8,11 @@ import ApiDaily from "../../apis/ApiDaily";
 import ClaimDialog from "./dialog/ClaimDialog";
 import {theme} from "../../styles/theme";
 import API from "../../apis/Api";
+import {BrowserProvider, Contract, toBeHex} from "ethers";
+import {Vault} from "../../typechain-types";
+import {VaultAbi} from "../../typechain-types/contracts/Vault";
+import AlertDialog from "./dialog/AlertDialog";
+import {DOMAIN_SEPARATOR} from "./Reward";
 
 // FIXME: LoginResponse 확인 후 프로퍼티 수정하기
 interface LoginResponse {
@@ -34,24 +39,61 @@ interface PointsProps {
     exchangeRatio: number;
     currentPoint: number;
     currentMG8: number;
-    minAmount: number;
+    minAmount: bigint;
+    maxAmount: bigint;
+    decimal: number;
 }
 
 const Points = (props: PointsProps) => {
-    const {minAmount, exchangeRatio, currentPoint, currentMG8} = props;
+    const {decimal, maxAmount, minAmount, exchangeRatio, currentPoint, currentMG8} = props;
     const {connectWallet} = useWallet();
     const [isClaimable, setIsClaimable] = useState<boolean>(false);
-    const dialogRef = useRef<HTMLDialogElement | null>(null)
+    const claimDialogRef = useRef<HTMLDialogElement | null>(null)
+    const alertDialogRef = useRef<HTMLDialogElement>(null)
     const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
     const walletAddress = useAuthStore((state) => state.userAccount);
     const [loginAttemptFailed, setLoginAttemptFailed] = useState(false);
     const [myPoints, setMyPoints] = useState(0);
 
-    const handleOpenModal = () => {
+    const [receivedMG8, setReceivedMG8] = useState(0)
+    const [hash, setHash] = useState('')
+    const [isTransactionComplete, setIsTransactionComplete] = useState(false)
+    const [isActivate, setIsActivate] = useState(false)
+
+    const getClaimableAmount = async () => {
+        const provider = new BrowserProvider(window.ethereum);
+        const vault: Vault = new Contract(process.env.REACT_APP_CONTRACT_VAULT, VaultAbi, provider) as unknown as Vault
+        const chainId = await window.ethereum.request({method: "eth_chainId"});
+        if (chainId.toString() !== DOMAIN_SEPARATOR.chainId.toString()) {
+            await window.ethereum.request({
+                method: "wallet_switchEthereumChain",
+                params: [{chainId: toBeHex(97)}]
+            })
+            const signer = await provider.getSigner(0)
+            const res: any = await vault.claimableAmount(await signer.getAddress())
+            setReceivedMG8(maxAmount <= res._mg8Amount ? maxAmount : res._mg8Amount)
+            setIsActivate(true)
+        }
+
+    }
+    const handleOpenDialog = (refCategory: string) => {
+        const dialogRef = refCategory === 'claim' ? claimDialogRef : alertDialogRef
+        void getClaimableAmount()
         dialogRef.current?.showModal()
     }
-    const handleCloseDialog = () => {
-        dialogRef.current?.close()
+    const handleCloseDialog = (refCategory: string) => {
+        switch (refCategory) {
+            case 'claim':
+                claimDialogRef.current?.close()
+                break;
+            case 'alert':
+                alertDialogRef.current?.close()
+                break;
+            default:
+                alertDialogRef.current?.close()
+                claimDialogRef.current?.close()
+                break;
+        }
     }
     const clickLogin = async () => {
         try {
@@ -105,31 +147,44 @@ const Points = (props: PointsProps) => {
         void fetchIsClaimAvailable()
     }, [])
 
+    // FIXME: 테스트떄문에 ! 로 해놓음 바꿔야함ㄴ
     let buttonContent;
     if (!isLoggedIn || loginAttemptFailed) {
         buttonContent = (<LoginButton onClick={clickLogin}>Login</LoginButton>);
     } else {
         buttonContent = (<ClaimButton
-            onClick={!isClaimable ? handleOpenModal : null}
+            onClick={!isClaimable ? () => handleOpenDialog('claim') : null}
             style={{color: isClaimable ? '#fff' : theme.colors.bg.icon}}>
             {isClaimable ? 'Activate Claim' : 'Claim All'}
         </ClaimButton>)
     }
-
     return (
         <PointsWrapper>
+            <button onClick={() => handleOpenDialog('alert')}>test</button>
             <TextWrapper>
                 <div>My Total MG8 Points</div>
                 <PointText>{isLoggedIn ? myPoints : '-'} P</PointText>
             </TextWrapper>
             {buttonContent}
-            <ClaimDialog ref={dialogRef}
-                         currentMG8={currentMG8}
+            <ClaimDialog ref={claimDialogRef}
+                         setHash={setHash}
+                         minAmount={minAmount}
+                         isActivate={isActivate}
+                         receivedMG8={receivedMG8 / (10 ** decimal)}
                          exchangeRatio={exchangeRatio}
                          currentPoint={currentPoint}
-                         minAmount={minAmount}
-                         handleCloseDialog={handleCloseDialog}/>
-
+                         isTransactionComplete={isTransactionComplete}
+                         setIsTransactionComplete={setIsTransactionComplete}
+                         handleOpenDialog={handleOpenDialog}
+                         handleCloseDialog={handleCloseDialog}
+            />
+            <AlertDialog
+                ref={alertDialogRef}
+                hash={hash}
+                isTransactionComplete={isTransactionComplete}
+                receivedMG8={receivedMG8 / (10 ** decimal)}
+                handleCloseDialog={handleCloseDialog}
+            />
             {/* {(!isLoggedIn || loginAttemptFailed) && (
                 <LoginButton onClick={clickLogin}>Login</LoginButton>
             )} */}
