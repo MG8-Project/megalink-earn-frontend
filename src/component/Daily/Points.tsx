@@ -38,14 +38,13 @@ interface IsClaimAvailableResponse {
 interface PointsProps {
     exchangeRatio: number;
     currentPoint: number;
-    currentMG8: number;
     minAmount: bigint;
     maxAmount: bigint;
     decimal: number;
 }
 
 const Points = (props: PointsProps) => {
-    const {decimal, maxAmount, minAmount, exchangeRatio, currentPoint, currentMG8} = props;
+    const {decimal, maxAmount, minAmount, exchangeRatio, currentPoint} = props;
     const {connectWallet} = useWallet();
     const [isClaimable, setIsClaimable] = useState<boolean>(false);
     const claimDialogRef = useRef<HTMLDialogElement | null>(null)
@@ -147,7 +146,9 @@ const Points = (props: PointsProps) => {
         void fetchIsClaimAvailable()
     }, [])
 
-    // FIXME: 테스트떄문에 ! 로 해놓음 바꿔야함ㄴ
+    // console.log('current point :', currentPoint, 'my: ', myPoints)
+    // FIXME: 테스트떄문에 ! 로 해놓음 바꿔야함
+    // FIXME: 버튼 활성화 처리하기
     let buttonContent;
     if (!isLoggedIn || loginAttemptFailed) {
         buttonContent = (<LoginButton onClick={clickLogin}>Login</LoginButton>);
@@ -160,7 +161,6 @@ const Points = (props: PointsProps) => {
     }
     return (
         <PointsWrapper>
-            <button onClick={() => handleOpenDialog('alert')}>test</button>
             <TextWrapper>
                 <div>My Total MG8 Points</div>
                 <PointText>{isLoggedIn ? myPoints : '-'} P</PointText>

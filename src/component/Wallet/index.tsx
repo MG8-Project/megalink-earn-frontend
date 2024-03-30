@@ -1,8 +1,5 @@
 import styled from "styled-components";
 import PartnerToken from "./PartnerToken";
-import {useWallet} from "../../hooks/useWallet";
-import {useAuthStore} from "../../store/authStore";
-import {DISCONNECTED, METAMASK_LOCKED_OR_UNINSTALL} from "../../constants";
 import API from "../../apis/Api";
 import {useEffect, useState} from "react";
 
@@ -28,25 +25,25 @@ interface Response {
 }
 
 const Wallet = () => {
-    const {connectWallet} = useWallet();
-    const walletAddress = useAuthStore((state) => state.userAccount);
+    // const {connectWallet} = useWallet();
+    // const walletAddress = useAuthStore((state) => state.userAccount);
     const [tokenList, setTokeList] = useState<IToken[]>([])
 
-    const onWalletConnect = async () => {
-        const address = await connectWallet();
-        if (address === null) {
-            alert(METAMASK_LOCKED_OR_UNINSTALL);
-            return;
-        }
-        useAuthStore.getState().setUserAccount(address);
-    };
-
-    const onWalletDisconnect = () => {
-        //  Disconnect 시 logout
-        useAuthStore.getState().logout();
-        useAuthStore.getState().setUserAccount(null);
-        alert(DISCONNECTED);
-    };
+    // const onWalletConnect = async () => {
+    //     const address = await connectWallet();
+    //     if (address === null) {
+    //         alert(METAMASK_LOCKED_OR_UNINSTALL);
+    //         return;
+    //     }
+    //     useAuthStore.getState().setUserAccount(address);
+    // };
+    //
+    // const onWalletDisconnect = () => {
+    //     //  Disconnect 시 logout
+    //     useAuthStore.getState().logout();
+    //     useAuthStore.getState().setUserAccount(null);
+    //     alert(DISCONNECTED);
+    // };
     const fetchPartnerTokens = async () => {
         try {
             const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/airdrop/partnerToken`
@@ -64,15 +61,15 @@ const Wallet = () => {
         <WalletWrapper>
             <WalletTitle>Get $MG8 if you have one of these coins</WalletTitle>
             <PartnerToken tokenList={tokenList}/>
-            {!walletAddress ? (
-                <WalletContainer onClick={onWalletConnect}>
-                    Connect Wallet
-                </WalletContainer>
-            ) : (
-                <WalletContainer onClick={onWalletDisconnect}>
-                    Connected
-                </WalletContainer>
-            )}
+            {/*{!walletAddress ? (*/}
+            {/*    <WalletContainer onClick={onWalletConnect}>*/}
+            {/*        Connect Wallet*/}
+            {/*    </WalletContainer>*/}
+            {/*) : (*/}
+            {/*    <WalletContainer onClick={onWalletDisconnect}>*/}
+            {/*        Connected*/}
+            {/*    </WalletContainer>*/}
+            {/*)}*/}
         </WalletWrapper>
     );
 };
