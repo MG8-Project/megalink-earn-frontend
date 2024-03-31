@@ -64,6 +64,12 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
     return (
         <DialogWrapper ref={ref}>
             <DialogContent>
+                {isActivate ? null :
+                    <SpinnerWrapper>
+                        <Spinner size={50}/>
+                        <p style={{color: '#fff'}}> 네트워크를 변경중입니다...</p>
+                        <SpinnerButton onClick={() => handleCloseDialog('claim')}>취소</SpinnerButton>
+                    </SpinnerWrapper>}
                 <DialogIcon>
                     <CloseImg src={close} onClick={() => handleCloseDialog('claim')}/>
                 </DialogIcon>
@@ -74,21 +80,27 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
                 <DialogContentWrapper>
                     <DialogContentInfo>
                         <p>MG8 Point Convert Info</p>
-                        <p>1p = {exchangeRatio}MG8</p>
+                        <p>1p = {isActivate ? exchangeRatio : '...'}MG8</p>
                     </DialogContentInfo>
                     <DialogContentCurrentStatus>
                         <DialogContentInfo>
                             <p style={{fontSize: "1.5rem", fontWeight: 'normal'}}>Your Current Point</p>
-                            <p style={{fontSize: "1.8rem", fontWeight: 'bold'}}> {addCommas(currentPoint)} p</p>
+                            <p style={{
+                                fontSize: "1.8rem",
+                                fontWeight: 'bold'
+                            }}> {isActivate ? addCommas(currentPoint) : '...'} p</p>
                         </DialogContentInfo>
                         <DialogContentInfo>
                             <p style={{fontSize: "1.5rem", fontWeight: 'normal'}}>Your Will Received</p>
-                            <p style={{fontSize: "1.8rem", fontWeight: 'bold'}}> {addCommas(receivedMG8)} MG8</p>
+                            <p style={{
+                                fontSize: "1.8rem",
+                                fontWeight: 'bold'
+                            }}> {isActivate ? addCommas(receivedMG8) : '...'} MG8</p>
                         </DialogContentInfo>
                     </DialogContentCurrentStatus>
                 </DialogContentWrapper>
                 <DialogProgressWrapper>
-                    {isActivate ? null : <Spinner/>}
+                    {/*{isActivate ? null : <SpinnerWrapper> <Spinner/></SpinnerWrapper>}*/}
                     <p style={{fontSize: "1.5rem", fontWeight: 'normal', color: '#fff'}}>*Gas fee will be paid in
                         BNB</p>
                     <DialogProgressbar>
@@ -148,7 +160,7 @@ export const DialogContent = styled.section`
     left: 50%;
     transform: translate(-50%, -50%);
     width: 400px;
-    height: auto;
+    height: 50rem;
     background: ${theme.colors.bg.main};
     border: 3px solid ${theme.colors.bg.icon};
     border-radius: 20px;
@@ -277,4 +289,22 @@ const DialogButton = styled.button`
     border-radius: 10px;
     color: #fff;
     font-size: 1.5rem;
+`
+const SpinnerWrapper = styled.div`
+    position: absolute;
+    background-color: rgba(16, 17, 17, 0.8);
+    width: 100%;
+    height: 50rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    gap: 30px;
+`
+const SpinnerButton = styled.button`
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: ${theme.colors.bg.icon};
+    color: #fff;
 `

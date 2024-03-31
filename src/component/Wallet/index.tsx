@@ -1,42 +1,75 @@
 import styled from "styled-components";
-import CoinCard from "./CoinCard";
-import {useWallet} from "../../hooks/useWallet";
-import {useAuthStore} from "../../store/authStore";
-import {DISCONNECTED, METAMASK_LOCKED_OR_UNINSTALL} from "../../constants";
+import PartnerToken from "./PartnerToken";
+import API from "../../apis/Api";
+import {useEffect, useState} from "react";
+
+
+export interface IToken {
+    "symbol": "string",
+    "logoUrl": "string",
+    "contractAddress": "string",
+    "chainId": "number",
+    "minAmount": "bigint",
+    "maxAmount": "bigint",
+    "decimals": "number"
+}
+
+interface Response {
+    status: number;
+    data: {
+        "resultCode": "string",
+        "msg": "string",
+        "partnerTokens": IToken[]
+    }
+
+}
 
 const Wallet = () => {
-    const {connectWallet} = useWallet();
-    const walletAddress = useAuthStore((state) => state.userAccount);
+    // const {connectWallet} = useWallet();
+    // const walletAddress = useAuthStore((state) => state.userAccount);
+    const [tokenList, setTokeList] = useState<IToken[]>([])
 
-    const onWalletConnect = async () => {
-        const address = await connectWallet();
-        if (address === null) {
-            alert(METAMASK_LOCKED_OR_UNINSTALL);
-            return;
+    // const onWalletConnect = async () => {
+    //     const address = await connectWallet();
+    //     if (address === null) {
+    //         alert(METAMASK_LOCKED_OR_UNINSTALL);
+    //         return;
+    //     }
+    //     useAuthStore.getState().setUserAccount(address);
+    // };
+    //
+    // const onWalletDisconnect = () => {
+    //     //  Disconnect 시 logout
+    //     useAuthStore.getState().logout();
+    //     useAuthStore.getState().setUserAccount(null);
+    //     alert(DISCONNECTED);
+    // };
+    const fetchPartnerTokens = async () => {
+        try {
+            const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/airdrop/partnerToken`
+            const res: Response = await API.get(API_ENDPOINT)
+            setTokeList(res.data.partnerTokens)
+        } catch (err) {
+            console.error(err)
         }
-        useAuthStore.getState().setUserAccount(address);
-    };
-
-    const onWalletDisconnect = () => {
-        //  Disconnect 시 logout
-        useAuthStore.getState().logout();
-        useAuthStore.getState().setUserAccount(null);
-        alert(DISCONNECTED);
-    };
+    }
+    useEffect(() => {
+        void fetchPartnerTokens();
+    }, []);
 
     return (
         <WalletWrapper>
             <WalletTitle>Get $MG8 if you have one of these coins</WalletTitle>
-            <CoinCard/>
-            {!walletAddress ? (
-                <WalletContainer onClick={onWalletConnect}>
-                    Connect Wallet
-                </WalletContainer>
-            ) : (
-                <WalletContainer onClick={onWalletDisconnect}>
-                    Connected
-                </WalletContainer>
-            )}
+            <PartnerToken tokenList={tokenList}/>
+            {/*{!walletAddress ? (*/}
+            {/*    <WalletContainer onClick={onWalletConnect}>*/}
+            {/*        Connect Wallet*/}
+            {/*    </WalletContainer>*/}
+            {/*) : (*/}
+            {/*    <WalletContainer onClick={onWalletDisconnect}>*/}
+            {/*        Connected*/}
+            {/*    </WalletContainer>*/}
+            {/*)}*/}
         </WalletWrapper>
     );
 };
