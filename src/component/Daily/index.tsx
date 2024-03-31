@@ -4,6 +4,7 @@ import Reward from "./Reward";
 import Points from "./Points";
 import {useEffect, useState} from "react";
 import API from "../../apis/Api";
+import {formatUnits} from "ethers";
 
 
 interface CurrentClaimResponse {
@@ -28,6 +29,15 @@ interface MinClaimResponse {
     }
 }
 
+interface IsClaimAvailableResponse {
+    status: number;
+    data: {
+        resultCode: string,
+        msg: string,
+        claimable: boolean
+    }
+}
+
 const Daily = () => {
     const [currentMG8, setCurrentMG8] = useState(0);
     const [currentPoint, setCurrentPoint] = useState(0);
@@ -35,10 +45,16 @@ const Daily = () => {
     const [minAmount, setMinAmount] = useState<bigint>(BigInt(0));
     const [maxAmount, setMaxAmount] = useState<bigint>(BigInt(0));
     const [decimal, setDecimal] = useState(0)
+    const [isClaimable, setIsClaimable] = useState<boolean>(false);
 
     const isAvailableClaim = currentMG8 >= minAmount
     const addCommas = (num: number) => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    const convertNumber = (data: string) => {
+        const numData = Number(data)
+        if (numData < 1) return addCommas(numData)
+        return addCommas(Math.floor(numData))
     }
     const fetchCurrentClaim = async () => {
         try {
@@ -59,7 +75,7 @@ const Daily = () => {
             console.error(error)
         }
     }
-    
+
 
     const fetchMinClaim = async () => {
         try {
@@ -74,7 +90,19 @@ const Daily = () => {
     useEffect(() => {
         void fetchCurrentClaim()
         void fetchMinClaim()
+        const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/claim/available`;
+        const fetchIsClaimAvailable = async () => {
+            try {
+                const res: IsClaimAvailableResponse = await API.get(API_ENDPOINT)
+                setIsClaimable(res.data.claimable)
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        void fetchIsClaimAvailable()
     }, [])
+
+
     return (
         <DailyWrapper>
             <TitleContainer>
@@ -85,17 +113,25 @@ const Daily = () => {
                 <ContentWrapper>
                     <Reward/>
                     <Points
+                        isClaimable={isClaimable}
                         exchangeRatio={exchangeRatio}
                         minAmount={minAmount}
                         maxAmount={maxAmount}
                         decimal={decimal}
                         currentPoint={currentPoint}/>
                 </ContentWrapper>
-                {isAvailableClaim ? <ContentAlertText>
-                        *CLAIM NOTICE : You can claim up to
-                        {/*<strong style={{fontWeight: 'bold'}}> {addCommas(maxAmount)}p</strong> at once.*/}
-                    </ContentAlertText> :
-                    <ContentAlertText style={{color: '#b81414'}}>Insufficient POINT to claim.</ContentAlertText>
+                {isClaimable ? (isAvailableClaim ?
+                        <ContentAlertText>
+                            *CLAIM NOTICE : You can claim up to&nbsp;
+                            <strong style={{fontWeight: 'bold'}}>
+                                {convertNumber(formatUnits(maxAmount, decimal))}
+                            </strong>p at
+                            once.
+                        </ContentAlertText> :
+                        <ContentAlertText style={{color: '#b81414'}}>
+                            Insufficient POINT to claim.
+                        </ContentAlertText>)
+                    : null
                 }
             </DayWrapper>
             <ContentAlertText>You can claim your points after the events ends.</ContentAlertText>
