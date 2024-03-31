@@ -7,35 +7,38 @@ interface RemainTimeProps {
 
 const RemainTime = (props: RemainTimeProps) => {
     const {remainTime} = props;
+    const [timestamp, setTimestamp] = useState<number>(0);
     const convertTime = (time: number) => {
-        const date = new Date(time);
-        const hours = date.getHours().toString().padStart(2, '0'); // 두 자리 수로 표시하고 앞에 0을 채움
-        const minutes = date.getMinutes().toString().padStart(2, '0');
-        const seconds = date.getSeconds().toString().padStart(2, '0');
-        return `${hours}:${minutes}:${seconds}`;
-    }
-    const [time, setTime] = useState(convertTime(remainTime))
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            const currentTime = timeStringToSeconds(time) - 1;
-            setTime(secondsToTimeString(currentTime));
-        }, 1000);
-        return () => clearInterval(intervalId);
-    }, [time]);
-    const timeStringToSeconds = (timeString: string): number => {
-        const [hours, minutes, seconds] = timeString.split(':').map(Number);
-        return hours * 3600 + minutes * 60 + seconds;
-    };
-    const secondsToTimeString = (seconds: number): string => {
-        const hours = Math.floor(seconds / 3600);
+        const seconds = Math.floor(time / 1000);
+        const days = Math.floor(seconds / (3600 * 24));
+        const hours = Math.floor((seconds % (3600 * 24)) / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);
-        const secs = seconds % 60;
-        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-    };
+        const remainingSeconds = seconds % 60;
 
+        const formattedDays = days < 10 ? `0${days}` : `${days}`;
+        const formattedHours = hours < 10 ? `0${hours}` : `${hours}`;
+        const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+        const formattedSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`;
+
+        return `${formattedDays}:${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+    }
+
+
+    useEffect(() => {
+        setTimestamp(remainTime)
+        const intervalId = setInterval(() => {
+            setTimestamp(prevTimestamp => {
+                const newTimestamp = prevTimestamp - 1000;
+                return newTimestamp <= 0 ? 0 : newTimestamp;
+            });
+        }, 1000);
+
+        return () => clearInterval(intervalId);
+    }, [remainTime]);
+    
     return (<RemainWrapper>
         <StyledTitle>Remaining until Airdrop</StyledTitle>
-        <TimeWrapper>{time}</TimeWrapper>
+        <TimeWrapper>{convertTime(timestamp)}</TimeWrapper>
         <TimeWrapper></TimeWrapper>
     </RemainWrapper>)
 }

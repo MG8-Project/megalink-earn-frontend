@@ -5,10 +5,15 @@ import {IToken} from "./index";
 import API from "../../apis/Api";
 import {formatUnits} from "ethers";
 import {useWallet} from "../../hooks/useWallet";
-import {METAMASK_LOCKED_OR_UNINSTALL} from "../../constants";
+import {LOGIN_FAILED, METAMASK_LINK_FAILED, METAMASK_LOCKED_OR_UNINSTALL} from "../../constants";
 import {useAuthStore} from "../../store/authStore";
 import Spinner from "../ui/Spinner";
 import RemainTime from "./RemainTime";
+import ApiPoints from "../../apis/ApiPoints";
+
+interface LoginResponse {
+    resultCode: string;
+}
 
 interface PartnerTokenProps {
     tokenList: IToken[]
@@ -44,6 +49,7 @@ const PartnerToken = (props: PartnerTokenProps) => {
     const {isClaimAvailable, remainTime, tokenList} = props;
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [balaceList, setBalanceList] = useState<IBalance[]>([])
+    const isLogin = useAuthStore((state) => state.isLoggedIn);
     const {walletAddress, connectWallet} = useWallet();
     const onWalletConnect = async () => {
         setIsLoading(true)
@@ -84,6 +90,23 @@ const PartnerToken = (props: PartnerTokenProps) => {
         }
         return true
     }
+    const clickLogin = async () => {
+        try {
+            let address = walletAddress || await connectWallet();
+            if (address === null) {
+                alert(METAMASK_LINK_FAILED);
+                return;
+            }
+            const loginResponse: LoginResponse = await ApiPoints.login(address);
+            if (loginResponse.resultCode !== '1') {
+                throw new Error(LOGIN_FAILED);
+            }
+            useAuthStore.getState().login(address);
+        } catch (error) {
+            console.error("An error occurred during login process:", error);
+            alert(LOGIN_FAILED);
+        }
+    };
     // const userAddress = useAuthStore((state) => state.userAccount);
     // const [coins, setCoins] = useState(coinList);
 
@@ -148,14 +171,14 @@ const PartnerToken = (props: PartnerTokenProps) => {
                     <CardBox key={index}>
                         <CardBoxImg src={item.logoUrl} alt=""/>
                         <div>{item.symbol}</div>
-                        {walletAddress !== null ?
+                        {isLogin ?
                             <CardAmountBox>{convertNumber(formatUnits(findBalance(item.symbol), item.decimals))}/{convertNumber(formatUnits(item.minAmount, item.decimals))}</CardAmountBox> : null
                         }
                     </CardBox>
                 ))}
 
             </TokenWrapper>
-            {walletAddress !== null ? <RemainTime remainTime={remainTime}/> : <>Please Login</>}
+            {walletAddress !== null && isLogin ? <RemainTime remainTime={remainTime}/> : <>Please Login</>}
             <ButtonWrapper>
                 {!walletAddress ? (
                     <WalletContainer onClick={onWalletConnect}>
@@ -165,9 +188,12 @@ const PartnerToken = (props: PartnerTokenProps) => {
                     </WalletContainer>
                 ) : (
                     // <WalletContainer onClick={onWalletDisconnect}>
-                    <WalletContainer onClick={isClaimAvailable ? clickAirdrop : null}
-                                     style={{color: isClaimAvailable ? '#fff' : theme.colors.bg.iconHover}}>
-                        {isClaimAvailable ? 'Claim' : 'Already Claimed'}
+                    <WalletContainer onClick={isLogin ? (isClaimAvailable ? clickAirdrop : null) : clickLogin}
+                                     style={{
+                                         color: isLogin ? (isClaimAvailable ? '#fff' : '#3dbd3d') : '#fff',
+                                         border: isLogin ? (isClaimAvailable ? '1px solid #fff' : '1px solid #3dbd3d') : '1px solid #fff'
+                                     }}>
+                        {isLogin ? (isClaimAvailable ? 'Claim' : 'Claimed!') : 'Login'}
                         {/*{isClaimAvailable() ? "Claim" : "Connected"}*/}
                     </WalletContainer>
                 )}
