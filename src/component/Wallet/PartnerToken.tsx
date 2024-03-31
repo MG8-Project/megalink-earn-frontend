@@ -7,6 +7,7 @@ import {formatUnits} from "ethers";
 import {useWallet} from "../../hooks/useWallet";
 import {DISCONNECTED, METAMASK_LOCKED_OR_UNINSTALL} from "../../constants";
 import {useAuthStore} from "../../store/authStore";
+import Spinner from "../ui/Spinner";
 
 interface PartnerTokenProps {
     tokenList: IToken[]
@@ -33,15 +34,18 @@ interface Response {
 
 const PartnerToken = (props: PartnerTokenProps) => {
     const {tokenList} = props;
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [balaceList, setBalanceList] = useState<IBalance[]>([])
     const {walletAddress, connectWallet} = useWallet();
     const onWalletConnect = async () => {
+        setIsLoading(true)
         const address = await connectWallet();
         if (address === null) {
             alert(METAMASK_LOCKED_OR_UNINSTALL);
             return;
         }
         useAuthStore.getState().setUserAccount(address);
+        setIsLoading(false)
     };
 
     const onWalletDisconnect = () => {
@@ -96,6 +100,9 @@ const PartnerToken = (props: PartnerTokenProps) => {
     // }, [fetchBalances]);
 
 
+    const airDrop = () => {
+        const address = walletAddress
+    }
     const fetchBalances = async () => {
         try {
             const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/airdrop/balanceAll`
@@ -130,7 +137,9 @@ const PartnerToken = (props: PartnerTokenProps) => {
             <ButtonWrapper>
                 {!walletAddress ? (
                     <WalletContainer onClick={onWalletConnect}>
-                        Connect Wallet
+                        {isLoading ? <><Spinner size={15}/>
+                            <div style={{marginLeft: '10px'}}>Checking...</div>
+                        </> : 'Connect Wallet'}
                     </WalletContainer>
                 ) : (
                     <WalletContainer onClick={onWalletDisconnect}>

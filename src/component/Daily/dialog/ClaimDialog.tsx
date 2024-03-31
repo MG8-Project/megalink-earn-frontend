@@ -66,7 +66,7 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
             <DialogContent>
                 {isActivate ? null :
                     <SpinnerWrapper>
-                        <Spinner/>
+                        <Spinner size={50}/>
                         <p style={{color: '#fff'}}> 네트워크를 변경중입니다...</p>
                         <SpinnerButton onClick={() => handleCloseDialog('claim')}>취소</SpinnerButton>
                     </SpinnerWrapper>}

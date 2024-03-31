@@ -1,9 +1,11 @@
-import styled from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 
+interface SpinnerProps {
+    size: number;
+}
 
-const Spinner = () => (
-
-    <StyledSpinner>
+const Spinner: React.FC<SpinnerProps> = ({size}) => (
+    <StyledSpinner size={size} viewBox="0 0 50 50">
         <circle
             className="path"
             cx="25"
@@ -15,43 +17,37 @@ const Spinner = () => (
     </StyledSpinner>
 );
 
+const spin = keyframes`
+    100% {
+        transform: rotate(360deg);
+    }
+`;
 
-const StyledSpinner = styled.svg`
+const dash = keyframes`
+    0% {
+        stroke-dasharray: 1, 150;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -35;
+    }
+    100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -124;
+    }
+`;
 
-    animation: rotate 2s linear infinite;
-    width: 50px;
-    height: 50px;
+const StyledSpinner = styled.svg<SpinnerProps>`
+    animation: ${spin} 2s linear infinite;
+    width: ${(props) => props.size}px;
+    height: ${(props) => props.size}px;
 
     & .path {
         stroke: #fff;
         stroke-linecap: round;
-        animation: dash 1.5s ease-in-out infinite;
-    }
-
-    @keyframes rotate {
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-    @keyframes dash {
-        0% {
-            stroke-dasharray: 1, 150;
-            stroke-dashoffset: 0;
-        }
-        50% {
-            stroke-dasharray: 90, 150;
-            stroke-dashoffset: -35;
-        }
-        100% {
-            stroke-dasharray: 90, 150;
-            stroke-dashoffset: -124;
-        }
+        animation: ${dash} 1.5s ease-in-out infinite;
     }
 `;
 
-
 export default Spinner;
-
-
-
-

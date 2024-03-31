@@ -159,6 +159,7 @@ const Points = (props: PointsProps) => {
     if (!isLoggedIn || loginAttemptFailed) {
         buttonContent = (<LoginButton onClick={clickLogin}>Login</LoginButton>);
     } else {
+        //
         buttonContent = (<ClaimButton
             onClick={!isClaimable ? () => handleOpenDialog('claim') : null}
             style={{color: isClaimable ? '#fff' : theme.colors.bg.icon}}>
