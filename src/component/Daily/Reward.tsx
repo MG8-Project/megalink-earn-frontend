@@ -154,11 +154,16 @@ const Reward = () => {
                     ...message,
                 }
 
-                await API.post(process.env.REACT_APP_API_PERSONAL_CHECK, param, {
+                const res = await API.post(process.env.REACT_APP_API_PERSONAL_CHECK, param, {
                     headers: {
                         "Authorization": "application/json",
                     }
                 });
+                if (res && res.data.resultCode === '1') {
+                    setIsFetch(true);
+                } else {
+                    throw new Error(res && res.data.msg);
+                }
             } catch (error) {
                 console.error(error)
             }
