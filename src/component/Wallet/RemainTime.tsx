@@ -35,11 +35,10 @@ const RemainTime = (props: RemainTimeProps) => {
 
         return () => clearInterval(intervalId);
     }, [remainTime]);
-    
+
     return (<RemainWrapper>
         <StyledTitle>Remaining until Airdrop</StyledTitle>
         <TimeWrapper>{convertTime(timestamp)}</TimeWrapper>
-        <TimeWrapper></TimeWrapper>
     </RemainWrapper>)
 }
 export default RemainTime
@@ -50,10 +49,13 @@ const RemainWrapper = styled.div`
     justify-content: center;
     align-items: center;
     color: #fff;
+    gap: 20px;
 `
 const StyledTitle = styled.div`
 `
 const TimeWrapper = styled.div`
     padding: 10px;
+    font-size: 3rem;
+    font-weight: bold;
 
 `
