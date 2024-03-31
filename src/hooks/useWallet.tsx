@@ -6,6 +6,7 @@ import {OPBNB_TESTNET} from "../constants";
 export const useWallet = () => {
     const setWalletAddress = useAuthStore((state) => state.setUserAccount);
     const logout = useAuthStore((state) => state.logout);
+    const login = useAuthStore((state) => state.login);
     const [currentAccount, setCurrentAccount] = useState<string | null>(
         null
     );
@@ -84,6 +85,24 @@ export const useWallet = () => {
                     }
                 }
             }
+
+            window.ethereum.on("accountsChanged", (accounts: string[]) => {
+                if (accounts.length === 0) {
+                    logout();
+                    setCurrentAccount(null);
+                } else {
+                    const newAccount = accounts[0];
+                    if (currentAccount !== newAccount) {
+                        logout();
+                        setWalletAddress(newAccount);
+                        setCurrentAccount(newAccount);
+                        try {
+                            login(newAccount);
+                        } catch (error) {
+                        }
+                    }
+                }
+            })
         }
     }, [setWalletAddress]);
 
@@ -95,6 +114,7 @@ export const useWallet = () => {
             } else {
                 const newAccount = accounts[0];
                 if (currentAccount !== newAccount) {
+                    logout();
                     setWalletAddress(newAccount);
                     setCurrentAccount(newAccount);
                 }
@@ -106,7 +126,7 @@ export const useWallet = () => {
                 window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
             };
         }
-    }, [setWalletAddress, logout, currentAccount]);
+    }, [setWalletAddress, logout, currentAccount, login]);
 
     return {
         walletAddress: useAuthStore(
