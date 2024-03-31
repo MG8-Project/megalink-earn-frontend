@@ -64,14 +64,12 @@ const Daily = () => {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`
                 }
             })
-            // "Unable Claim" 에러처리
             if (res.data.resultCode === '40') throw new Error(res.data.resultCode)
             setCurrentPoint(res.data.currentPoints)
             setCurrentMG8(res.data.mg8Amount)
             setExchangeRatio(res.data.exchangeRatio)
             setDecimal(res.data.decimals)
         } catch (error) {
-            // FIXME: 에러처리 추가
             console.error(error)
         }
     }

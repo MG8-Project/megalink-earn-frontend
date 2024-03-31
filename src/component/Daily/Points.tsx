@@ -131,16 +131,30 @@ const Points = (props: PointsProps) => {
     }, [walletAddress, fetchMyPoints, isLoggedIn]);
 
 
-    // FIXME: 테스트떄문에 ! 로 해놓음 바꿔야함
     let buttonContent;
     if (!isLoggedIn || loginAttemptFailed) {
         buttonContent = (<LoginButton onClick={clickLogin}>Login</LoginButton>);
     } else {
-        buttonContent = (<ClaimButton
-            onClick={isClaimable ? (isButtonActive ? () => handleOpenDialog('claim') : () => setIsButtonActive(true)) : null}
-            style={{color: isClaimable ? '#fff' : theme.colors.bg.icon}}>
-            {isClaimable ? (isButtonActive ? 'Claim All' : 'Activate Claim') : 'Disabled'}
-        </ClaimButton>)
+        if (isClaimable) {
+            if (currentPoint === 0) {
+                buttonContent =
+                    <ClaimButton onClick={null} style={{color: theme.colors.bg.icon, fontSize: '18px'}}>No MG8
+                        Point</ClaimButton>
+            } else {
+                if (isButtonActive) {
+                    buttonContent = <ClaimButton onClick={() => handleOpenDialog('claim')}
+                                                 style={{color: '#fff', fontSize: '20px'}}>Claim
+                        All</ClaimButton>
+                } else {
+                    buttonContent =
+                        <ClaimButton onClick={() => setIsButtonActive(true)} style={{color: '#fff', fontSize: '17px'}}>Activate
+                            Claim</ClaimButton>
+                }
+            }
+        } else {
+            buttonContent = <ClaimButton onClick={null}
+                                         style={{color: theme.colors.bg.icon, fontSize: '20px'}}>Disabled</ClaimButton>
+        }
     }
     return (
         <PointsWrapper>
@@ -210,6 +224,5 @@ const ClaimButton = styled.button`
     height: 56px;
     border: 1px solid gray;
     border-radius: 100px;
-    font-size: 20px;
     color: gray;
 `;
