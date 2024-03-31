@@ -7,7 +7,6 @@ import {LOGIN_FAILED, METAMASK_LINK_FAILED} from "../../constants";
 import ApiDaily from "../../apis/ApiDaily";
 import ClaimDialog from "./dialog/ClaimDialog";
 import {theme} from "../../styles/theme";
-import API from "../../apis/Api";
 import {BrowserProvider, Contract, toBeHex} from "ethers";
 import {Vault} from "../../typechain-types";
 import {VaultAbi} from "../../typechain-types/contracts/Vault";
@@ -26,16 +25,8 @@ interface MyPointsResponse {
 }
 
 
-interface IsClaimAvailableResponse {
-    status: number;
-    data: {
-        resultCode: string,
-        msg: string,
-        claimable: boolean
-    }
-}
-
 interface PointsProps {
+    isClaimable: boolean;
     exchangeRatio: number;
     currentPoint: number;
     minAmount: bigint;
@@ -44,9 +35,8 @@ interface PointsProps {
 }
 
 const Points = (props: PointsProps) => {
-    const {decimal, maxAmount, minAmount, exchangeRatio, currentPoint} = props;
+    const {isClaimable, decimal, maxAmount, minAmount, exchangeRatio, currentPoint} = props;
     const {connectWallet} = useWallet();
-    const [isClaimable, setIsClaimable] = useState<boolean>(false);
     const claimDialogRef = useRef<HTMLDialogElement | null>(null)
     const alertDialogRef = useRef<HTMLDialogElement>(null)
     const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -57,7 +47,8 @@ const Points = (props: PointsProps) => {
     const [receivedMG8, setReceivedMG8] = useState(0)
     const [hash, setHash] = useState('')
     const [isTransactionComplete, setIsTransactionComplete] = useState(false)
-    const [isActivate, setIsActivate] = useState(false)
+    const [isNetworkChange, setIsNetworkChange] = useState(false)
+    const [isButtonActive, setIsButtonActive] = useState(false)
 
     const getClaimableAmount = async () => {
         try {
@@ -73,10 +64,10 @@ const Points = (props: PointsProps) => {
                 const res: any = await vault.claimableAmount(await signer.getAddress())
                 setReceivedMG8(maxAmount <= res._mg8Amount ? maxAmount : res._mg8Amount)
             }
-            setIsActivate(true)
+            setIsNetworkChange(true)
         } catch (error) {
             console.error(error)
-            setIsActivate(false)
+            setIsNetworkChange(false)
             claimDialogRef.current?.close()
         }
 
@@ -140,31 +131,30 @@ const Points = (props: PointsProps) => {
     }, [walletAddress, fetchMyPoints, isLoggedIn]);
 
 
-    useEffect(() => {
-        const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/claim/available`;
-        const fetchIsClaimAvailable = async () => {
-            try {
-                const res: IsClaimAvailableResponse = await API.get(API_ENDPOINT)
-                setIsClaimable(res.data.claimable)
-            } catch (err) {
-                console.error(err);
-            }
-        }
-        void fetchIsClaimAvailable()
-    }, [])
-
-    // FIXME: 테스트떄문에 ! 로 해놓음 바꿔야함
-    // FIXME: 버튼 활성화 처리하기
     let buttonContent;
     if (!isLoggedIn || loginAttemptFailed) {
         buttonContent = (<LoginButton onClick={clickLogin}>Login</LoginButton>);
     } else {
-        //
-        buttonContent = (<ClaimButton
-            onClick={!isClaimable ? () => handleOpenDialog('claim') : null}
-            style={{color: isClaimable ? '#fff' : theme.colors.bg.icon}}>
-            {isClaimable ? 'Activate Claim' : 'Claim All'}
-        </ClaimButton>)
+        if (isClaimable) {
+            if (currentPoint === 0) {
+                buttonContent =
+                    <ClaimButton onClick={null} style={{color: theme.colors.bg.icon, fontSize: '18px'}}>No MG8
+                        Point</ClaimButton>
+            } else {
+                if (isButtonActive) {
+                    buttonContent = <ClaimButton onClick={() => handleOpenDialog('claim')}
+                                                 style={{color: '#fff', fontSize: '20px'}}>Claim
+                        All</ClaimButton>
+                } else {
+                    buttonContent =
+                        <ClaimButton onClick={() => setIsButtonActive(true)} style={{color: '#fff', fontSize: '17px'}}>Activate
+                            Claim</ClaimButton>
+                }
+            }
+        } else {
+            buttonContent = <ClaimButton onClick={null}
+                                         style={{color: theme.colors.bg.icon, fontSize: '20px'}}>Disabled</ClaimButton>
+        }
     }
     return (
         <PointsWrapper>
@@ -176,7 +166,7 @@ const Points = (props: PointsProps) => {
             <ClaimDialog ref={claimDialogRef}
                          setHash={setHash}
                          minAmount={minAmount}
-                         isActivate={isActivate}
+                         isNetworkChange={isNetworkChange}
                          receivedMG8={receivedMG8 / (10 ** decimal)}
                          exchangeRatio={exchangeRatio}
                          currentPoint={currentPoint}
@@ -227,10 +217,6 @@ const LoginButton = styled.button`
     font-size: 20px;
 `;
 
-const StyledDialog = styled.dialog`
-    background: darkblue;
-    width: 100vw;
-`
 const ClaimButton = styled.button`
     margin-top: 36px;
     font-weight: 600;
@@ -238,6 +224,5 @@ const ClaimButton = styled.button`
     height: 56px;
     border: 1px solid gray;
     border-radius: 100px;
-    font-size: 20px;
     color: gray;
 `;

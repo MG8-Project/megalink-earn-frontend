@@ -24,10 +24,23 @@ interface Response {
 
 }
 
+interface ClaimAvailableResponse {
+    status: number;
+    data: {
+        resultCode: string,
+        msg: string,
+        claimable: boolean,
+        remainingTime: number
+    }
+
+}
+
 const Wallet = () => {
     // const {connectWallet} = useWallet();
     // const walletAddress = useAuthStore((state) => state.userAccount);
     const [tokenList, setTokeList] = useState<IToken[]>([])
+    const [remainTime, setRemainTime] = useState<number>(0)
+    const [isClaimAvailable, setIsClaimAvailable] = useState<boolean>(false)
 
     // const onWalletConnect = async () => {
     //     const address = await connectWallet();
@@ -53,14 +66,30 @@ const Wallet = () => {
             console.error(err)
         }
     }
+    const fetchClaimAvailable = async () => {
+        try {
+            const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/airdrop/claim/available `
+            const res: ClaimAvailableResponse = await API.get(API_ENDPOINT, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+                }
+            })
+            console.log(res)
+            setIsClaimAvailable(res.data.claimable)
+            setRemainTime(res.data.remainingTime)
+        } catch (err) {
+            console.error(err)
+        }
+    }
     useEffect(() => {
         void fetchPartnerTokens();
+        void fetchClaimAvailable()
     }, []);
 
     return (
         <WalletWrapper>
             <WalletTitle>Get $MG8 if you have one of these coins</WalletTitle>
-            <PartnerToken tokenList={tokenList}/>
+            <PartnerToken tokenList={tokenList} remainTime={remainTime} isClaimAvailable={isClaimAvailable}/>
             {/*{!walletAddress ? (*/}
             {/*    <WalletContainer onClick={onWalletConnect}>*/}
             {/*        Connect Wallet*/}

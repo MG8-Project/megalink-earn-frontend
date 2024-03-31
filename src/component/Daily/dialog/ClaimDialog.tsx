@@ -15,13 +15,13 @@ interface ClaimDialogProps {
     exchangeRatio: number;
     currentPoint: number;
     setHash: Dispatch<SetStateAction<string>>
-    isActivate: boolean;
+    isNetworkChange: boolean;
     setIsTransactionComplete: Dispatch<SetStateAction<boolean>>
 }
 
 const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
     const {
-        isActivate,
+        isNetworkChange,
         setIsTransactionComplete,
         receivedMG8,
         minAmount,
@@ -64,7 +64,7 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
     return (
         <DialogWrapper ref={ref}>
             <DialogContent>
-                {isActivate ? null :
+                {isNetworkChange ? null :
                     <SpinnerWrapper>
                         <Spinner size={50}/>
                         <p style={{color: '#fff'}}> 네트워크를 변경중입니다...</p>
@@ -80,7 +80,7 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
                 <DialogContentWrapper>
                     <DialogContentInfo>
                         <p>MG8 Point Convert Info</p>
-                        <p>1p = {isActivate ? exchangeRatio : '...'}MG8</p>
+                        <p>1p = {isNetworkChange ? exchangeRatio : '...'}MG8</p>
                     </DialogContentInfo>
                     <DialogContentCurrentStatus>
                         <DialogContentInfo>
@@ -88,14 +88,14 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
                             <p style={{
                                 fontSize: "1.8rem",
                                 fontWeight: 'bold'
-                            }}> {isActivate ? addCommas(currentPoint) : '...'} p</p>
+                            }}> {isNetworkChange ? addCommas(currentPoint) : '...'} p</p>
                         </DialogContentInfo>
                         <DialogContentInfo>
                             <p style={{fontSize: "1.5rem", fontWeight: 'normal'}}>Your Will Received</p>
                             <p style={{
                                 fontSize: "1.8rem",
                                 fontWeight: 'bold'
-                            }}> {isActivate ? addCommas(receivedMG8) : '...'} MG8</p>
+                            }}> {isNetworkChange ? addCommas(receivedMG8) : '...'} MG8</p>
                         </DialogContentInfo>
                     </DialogContentCurrentStatus>
                 </DialogContentWrapper>
@@ -107,7 +107,7 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
                         <DialogProgressStatusCircle style={{background: '#fff'}}/>
                         <DialogProgressLine/>
                         <DialogProgressStatusCircle
-                            style={{background: isActivate ? '#fff' : 'transparent'}}/>
+                            style={{background: isNetworkChange ? '#fff' : 'transparent'}}/>
                     </DialogProgressbar>
                     <DialogProgressbar>
                         <DialogProgressStatusText>Activate</DialogProgressStatusText>
@@ -117,9 +117,9 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
                 </DialogProgressWrapper>
                 <DialogButtonWrapper>
                     <DialogButton
-                        onClick={isActivate ? handleClick : null}
+                        onClick={isNetworkChange ? handleClick : null}
                         style={{color: isButtonActive ? '#fff' : theme.colors.bg.iconHover}}>
-                        {isActivate ? 'Claim All' : 'Active Claim'}
+                        {isNetworkChange ? 'Claim All' : 'Active Claim'}
                     </DialogButton>
                 </DialogButtonWrapper>
             </DialogContent>
