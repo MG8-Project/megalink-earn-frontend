@@ -1,8 +1,9 @@
-import styled, {keyframes} from 'styled-components';
+import styled from 'styled-components';
 
 
 const Spinner = () => (
-    <StyledSpinner viewBox="0 0 50 50">
+
+    <StyledSpinner>
         <circle
             className="path"
             cx="25"
@@ -14,9 +15,10 @@ const Spinner = () => (
     </StyledSpinner>
 );
 
+
 const StyledSpinner = styled.svg`
+
     animation: rotate 2s linear infinite;
-    margin: -25px 0 0 -25px;
     width: 50px;
     height: 50px;
 
@@ -50,14 +52,6 @@ const StyledSpinner = styled.svg`
 
 export default Spinner;
 
-const spin = keyframes`
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-`;
 
 
 

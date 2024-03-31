@@ -60,19 +60,26 @@ const Points = (props: PointsProps) => {
     const [isActivate, setIsActivate] = useState(false)
 
     const getClaimableAmount = async () => {
-        const provider = new BrowserProvider(window.ethereum);
-        const vault: Vault = new Contract(process.env.REACT_APP_CONTRACT_VAULT, VaultAbi, provider) as unknown as Vault
-        const chainId = await window.ethereum.request({method: "eth_chainId"});
-        if (chainId.toString() !== DOMAIN_SEPARATOR.chainId.toString()) {
-            await window.ethereum.request({
-                method: "wallet_switchEthereumChain",
-                params: [{chainId: toBeHex(97)}]
-            })
-            const signer = await provider.getSigner(0)
-            const res: any = await vault.claimableAmount(await signer.getAddress())
-            setReceivedMG8(maxAmount <= res._mg8Amount ? maxAmount : res._mg8Amount)
+        try {
+            const provider = new BrowserProvider(window.ethereum);
+            const vault: Vault = new Contract(process.env.REACT_APP_CONTRACT_VAULT, VaultAbi, provider) as unknown as Vault
+            const chainId = await window.ethereum.request({method: "eth_chainId"});
+            if (chainId.toString() !== DOMAIN_SEPARATOR.chainId.toString()) {
+                await window.ethereum.request({
+                    method: "wallet_switchEthereumChain",
+                    params: [{chainId: toBeHex(97)}]
+                })
+                const signer = await provider.getSigner(0)
+                const res: any = await vault.claimableAmount(await signer.getAddress())
+                setReceivedMG8(maxAmount <= res._mg8Amount ? maxAmount : res._mg8Amount)
+            }
             setIsActivate(true)
+        } catch (error) {
+            console.error(error)
+            setIsActivate(false)
+            claimDialogRef.current?.close()
         }
+
 
     }
     const handleOpenDialog = (refCategory: string) => {
@@ -146,7 +153,6 @@ const Points = (props: PointsProps) => {
         void fetchIsClaimAvailable()
     }, [])
 
-    // console.log('current point :', currentPoint, 'my: ', myPoints)
     // FIXME: 테스트떄문에 ! 로 해놓음 바꿔야함
     // FIXME: 버튼 활성화 처리하기
     let buttonContent;
