@@ -147,6 +147,7 @@ const PartnerToken = (props: PartnerTokenProps) => {
                     </WalletContainer>
                 )}
             </ButtonWrapper>
+            {isClaimAvailable ? null : <TokenAlertText>Deposit more coins above to claim</TokenAlertText>}
         </CardWrapper>
     );
 };
@@ -221,3 +222,11 @@ const CardBoxImg = styled.img`
     height: 64px;
     margin-top: 20px;
 `;
+const TokenAlertText = styled.div`
+    padding: 15px 0;
+    width: 100%;
+    color: #fa3434;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
