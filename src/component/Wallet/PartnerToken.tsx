@@ -74,7 +74,7 @@ const PartnerToken = (props: PartnerTokenProps) => {
         return Math.floor(numData)
     }
     const findBalance = (symbol: string) => {
-        const find = balaceList.find((item) => item.symbol === symbol);
+        const find = balaceList?.find((item) => item.symbol === symbol);
         if (find) {
             return find.balance;
         } else {
