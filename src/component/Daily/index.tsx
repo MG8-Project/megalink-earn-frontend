@@ -34,7 +34,7 @@ interface IsClaimAvailableResponse {
     data: {
         resultCode: string,
         msg: string,
-        claimable: boolean
+        claimable: boolean,
     }
 }
 

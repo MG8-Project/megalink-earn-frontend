@@ -5,12 +5,15 @@ import {IToken} from "./index";
 import API from "../../apis/Api";
 import {formatUnits} from "ethers";
 import {useWallet} from "../../hooks/useWallet";
-import {DISCONNECTED, METAMASK_LOCKED_OR_UNINSTALL} from "../../constants";
+import {METAMASK_LOCKED_OR_UNINSTALL} from "../../constants";
 import {useAuthStore} from "../../store/authStore";
 import Spinner from "../ui/Spinner";
+import RemainTime from "./RemainTime";
 
 interface PartnerTokenProps {
     tokenList: IToken[]
+    remainTime: number
+    isClaimAvailable: boolean
 }
 
 interface IBalance {
@@ -32,8 +35,13 @@ interface Response {
     }
 }
 
+interface AirdropResponse {
+    status: number;
+    data: { "resultCode": string, "msg": string, "txHash": string }
+}
+
 const PartnerToken = (props: PartnerTokenProps) => {
-    const {tokenList} = props;
+    const {isClaimAvailable, remainTime, tokenList} = props;
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [balaceList, setBalanceList] = useState<IBalance[]>([])
     const {walletAddress, connectWallet} = useWallet();
@@ -48,12 +56,12 @@ const PartnerToken = (props: PartnerTokenProps) => {
         setIsLoading(false)
     };
 
-    const onWalletDisconnect = () => {
-        //  Disconnect 시 logout
-        useAuthStore.getState().logout();
-        useAuthStore.getState().setUserAccount(null);
-        alert(DISCONNECTED);
-    };
+    // const onWalletDisconnect = () => {
+    //     //  Disconnect 시 logout
+    //     useAuthStore.getState().logout();
+    //     useAuthStore.getState().setUserAccount(null);
+    //     alert(DISCONNECTED);
+    // };
     const convertNumber = (data: string) => {
         const numData = Number(data)
         if (numData < 1) return numData
@@ -67,7 +75,7 @@ const PartnerToken = (props: PartnerTokenProps) => {
             return 0;
         }
     }
-    const isClaimAvailable = () => {
+    const checkBalance = () => {
         for (let i = 0; i < tokenList.length; i++) {
             const num = Number(findBalance(tokenList[i].symbol)) / convertNumber(formatUnits(tokenList[i].minAmount, tokenList[i].decimals))
             if (num < 1) {
@@ -100,8 +108,21 @@ const PartnerToken = (props: PartnerTokenProps) => {
     // }, [fetchBalances]);
 
 
-    const airDrop = () => {
-        const address = walletAddress
+    const fetchAirDrop = async () => {
+        try {
+            const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/airdrop/claim`
+            const res: AirdropResponse = await API.post(API_ENDPOINT, {}, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+                }
+            })
+            console.log(res)
+        } catch (err) {
+            console.error(err)
+        }
+    }
+    const clickAirdrop = () => {
+        void fetchAirDrop()
     }
     const fetchBalances = async () => {
         try {
@@ -128,12 +149,13 @@ const PartnerToken = (props: PartnerTokenProps) => {
                         <CardBoxImg src={item.logoUrl} alt=""/>
                         <div>{item.symbol}</div>
                         {walletAddress !== null ?
-                            <CardAmountBox>{findBalance(item.symbol)}/{convertNumber(formatUnits(item.minAmount, item.decimals))}</CardAmountBox> : null
+                            <CardAmountBox>{convertNumber(formatUnits(findBalance(item.symbol), item.decimals))}/{convertNumber(formatUnits(item.minAmount, item.decimals))}</CardAmountBox> : null
                         }
                     </CardBox>
                 ))}
 
             </TokenWrapper>
+            {walletAddress !== null ? <RemainTime remainTime={remainTime}/> : <>Please Login</>}
             <ButtonWrapper>
                 {!walletAddress ? (
                     <WalletContainer onClick={onWalletConnect}>
@@ -142,12 +164,15 @@ const PartnerToken = (props: PartnerTokenProps) => {
                         </> : 'Connect Wallet'}
                     </WalletContainer>
                 ) : (
-                    <WalletContainer onClick={onWalletDisconnect}>
-                        {isClaimAvailable() ? "Claim" : "Connected"}
+                    // <WalletContainer onClick={onWalletDisconnect}>
+                    <WalletContainer onClick={isClaimAvailable ? clickAirdrop : null}
+                                     style={{color: isClaimAvailable ? '#fff' : theme.colors.bg.iconHover}}>
+                        {isClaimAvailable ? 'Claim' : 'Already Claimed'}
+                        {/*{isClaimAvailable() ? "Claim" : "Connected"}*/}
                     </WalletContainer>
                 )}
             </ButtonWrapper>
-            {isClaimAvailable ? null : <TokenAlertText>Deposit more coins above to claim</TokenAlertText>}
+            {checkBalance ? null : <TokenAlertText>Deposit more coins above to claim</TokenAlertText>}
         </CardWrapper>
     );
 };
@@ -155,7 +180,6 @@ const PartnerToken = (props: PartnerTokenProps) => {
 export default PartnerToken;
 
 const ButtonWrapper = styled.div`
-
     width: 100%;
     display: flex;
     align-items: center;
@@ -179,9 +203,10 @@ const CardWrapper = styled.div`
     display: grid;
     grid-template-areas: 
             "token" 
+            "time"
             "button";
-    grid-template-columns: 4fr 1fr;
-    width: 80vw;
+    grid-template-columns: 4fr 2fr 1.5fr;
+    width: 90vw;
     place-items: center;
     //gap: 24px;
 `;
@@ -193,13 +218,11 @@ const TokenWrapper = styled.div`
     width: 100%;
 `
 const CardBox = styled.div`
-    //background: #001bf9;
     width: 10%;
     height: 200px;
     border-radius: 16px;
     display: flex;
     flex-direction: column;
-    //gap: 20px;
     align-items: center;
     justify-content: space-around;
 `;
