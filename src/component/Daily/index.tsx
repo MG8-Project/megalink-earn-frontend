@@ -59,6 +59,7 @@ const Daily = () => {
             console.error(error)
         }
     }
+    
 
     const fetchMinClaim = async () => {
         try {
@@ -84,7 +85,6 @@ const Daily = () => {
                 <ContentWrapper>
                     <Reward/>
                     <Points
-                        currentMG8={currentMG8}
                         exchangeRatio={exchangeRatio}
                         minAmount={minAmount}
                         maxAmount={maxAmount}
