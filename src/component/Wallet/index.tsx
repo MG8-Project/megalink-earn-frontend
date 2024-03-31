@@ -74,7 +74,6 @@ const Wallet = () => {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`
                 }
             })
-            console.log(res)
             setIsClaimAvailable(res.data.claimable)
             setRemainTime(res.data.remainingTime)
         } catch (err) {
