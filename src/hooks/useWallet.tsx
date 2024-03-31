@@ -93,6 +93,7 @@ export const useWallet = () => {
                 } else {
                     const newAccount = accounts[0];
                     if (currentAccount !== newAccount) {
+                        logout();
                         setWalletAddress(newAccount);
                         setCurrentAccount(newAccount);
                         try {
@@ -113,6 +114,7 @@ export const useWallet = () => {
             } else {
                 const newAccount = accounts[0];
                 if (currentAccount !== newAccount) {
+                    logout();
                     setWalletAddress(newAccount);
                     setCurrentAccount(newAccount);
                 }
