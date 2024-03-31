@@ -91,7 +91,11 @@ const Daily = () => {
         const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/claim/available`;
         const fetchIsClaimAvailable = async () => {
             try {
-                const res: IsClaimAvailableResponse = await API.get(API_ENDPOINT)
+                const res: IsClaimAvailableResponse = await API.get(API_ENDPOINT, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+                    }
+                })
                 setIsClaimable(res.data.claimable)
             } catch (err) {
                 console.error(err);
