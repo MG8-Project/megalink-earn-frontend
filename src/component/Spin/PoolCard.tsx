@@ -65,4 +65,5 @@ const CardText = styled.div`
   padding-top: 56px;
   font-size: 18px;
   font-weight: 400;
+  line-height: 22px;
 `;

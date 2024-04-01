@@ -24,18 +24,8 @@ const Daily = () => {
             <Points />
           </PointsContainer>
         </DayWrapper>
-        <DailyInfoText>
-          <div>You can claim your points after the event ends.</div>
-          {/* <div>
-            <span>CLAIM NOTICE:</span> You can claim up to <span>50,000 P</span>{" "}
-            at once.
-          </div>
-          <DailyWarningText>Insufficeient POINT to claim​</DailyWarningText> */}
-        </DailyInfoText>
       </DailyWrapper>
-      {/* <Popup />
-      <ReceiptPopup />
-      <FailPopup /> */}
+      {/* <Popup /> */}
     </>
   );
 };
@@ -82,24 +72,3 @@ const DayWrapper = styled.div`
 const RewardContainer = styled.div``;
 
 const PointsContainer = styled.div``;
-
-const DailyInfoText = styled.div`
-  text-align: center;
-  padding-top: 24px;
-  color: #fff;
-  font-size: 18px;
-  font-weight: 400;
-  div {
-    span {
-      color: #fff;
-      font-weight: 700;
-    }
-  }
-`;
-
-const DailyWarningText = styled.div`
-  text-align: center;
-  color: #ee4646;
-  font-size: 18px;
-  font-weight: 400;
-`;

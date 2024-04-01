@@ -9,7 +9,7 @@ const FailPopup = () => {
           <TopContnet>
             <ContentWrapper>
               <img src={redCircle} alt="" width={72} height={72} />
-              <CheckImage src={noneCheck} alt="" width={36} height={36} />
+              <CheckImage src={noneCheck} alt="" />
             </ContentWrapper>
 
             <TopContentTitle>Transaction Fail</TopContentTitle>
@@ -27,6 +27,16 @@ const FailPopup = () => {
 };
 
 export default FailPopup;
+
+const PopupOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 999;
+`;
 
 const PopupWrapper = styled.div`
   display: inline-flex;
@@ -61,6 +71,7 @@ const ActiveButton = styled.button`
 
 const ContentWrapper = styled.div`
   position: relative;
+  height: 72px;
 `;
 
 const CheckImage = styled.img`
@@ -80,6 +91,7 @@ const TopContnet = styled.div`
 const TopContentTitle = styled.div`
   font-size: 20px;
   font-weight: 600;
+  line-height: normal;
 `;
 const ReceiveText = styled.div`
   width: 300px;
@@ -87,34 +99,17 @@ const ReceiveText = styled.div`
   text-align: center;
   font-size: 16px;
   font-weight: 400;
+  line-height: normal;
 `;
-
-const MiddleContnet = styled.div``;
 
 const MiddleText = styled.div`
   margin-top: 12px;
   margin-bottom: 32px;
   color: #fff;
   text-align: center;
+  font-family: Pretendard;
   font-size: 16px;
+  font-style: normal;
   font-weight: 400;
-`;
-
-const ViewText = styled.div`
-  display: flex;
-  padding: 8px 16px;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 4px;
-  border-radius: 4px;
-  background: #222;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 400;
-
-  margin-bottom: 24px;
-  span {
-    display: flex;
-    align-items: center;
-  }
+  line-height: normal;
 `;

@@ -83,6 +83,7 @@ const Circle = styled.div`
 
 const ContentWrapper = styled.div`
   position: relative;
+  height: 72px;
 `;
 
 const CheckImage = styled.img`
@@ -126,6 +127,7 @@ const MiddleText = styled.div`
   font-family: Pretendard;
   font-size: 14px;
   font-weight: 400;
+  line-height: normal;
 `;
 
 const ViewText = styled.div`
