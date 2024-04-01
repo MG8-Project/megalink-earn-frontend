@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import { coinList } from "../../constants";
 import { ethers } from "ethers";
@@ -39,11 +39,10 @@ const CoinCard = () => {
         <CardBox key={index}>
           <CardBoxImg src={item.image} alt="" />
           <div>{item.title}</div>
-          <CardTextBox highBalance={parseFloat(item.balance) < item.amount}>
-            <CardText highBalance={parseFloat(item.balance) < item.amount}>
-              {item.balance}/{item.amount}
-            </CardText>
-          </CardTextBox>
+
+          <CardText highBalance={parseFloat(item.balance) < item.amount}>
+            {item.balance}/{item.amount}
+          </CardText>
         </CardBox>
       ))}
     </CardWrapper>
@@ -68,30 +67,33 @@ const CardBox = styled.div`
   align-items: center;
 `;
 
-const CardTextBox = styled.div<CardBoxProps>`
-  background: linear-gradient(90deg, #82e8ff, #379fff);
-  border-radius: 100px;
-  border: 1px solid transparent;
-  background-image: linear-gradient(#000000, #000000),
-    linear-gradient(90deg, #82e8ff, #379fff);
-  background-origin: border-box;
-  background-clip: padding-box,
-    border-box
-      ${(props) =>
-        props.highBalance &&
-        css`
-          border: 1px solid transparent;
-          background-image: linear-gradient(#000000, #000000),
-            linear-gradient(90deg, #333333, #333333);
-          background-origin: border-box;
-          background-clip: padding-box, border-box;
-        `};
-`;
-const CardText = styled.div<CardBoxProps>`
-  z-index: 1000;
-  height: 40px;
+// const CardTextBox = styled.div<CardBoxProps>`
+//   color: transparent;
+//   background: linear-gradient(90deg, #82e8ff, #379fff);
+//   border-radius: 100px;
+//   border: 1px solid transparent;
+//   background-image: linear-gradient(#000000, #000000),
+//     linear-gradient(90deg, #82e8ff, #379fff);
+//   background-origin: border-box;
+//   background-clip: padding-box, border-box;
 
+//   ${(props) =>
+//     props.highBalance &&
+//     css`
+//       border: 1px solid transparent;
+//       background-image: linear-gradient(#000000, #000000),
+//         linear-gradient(90deg, #333333, #333333);
+//       background-origin: border-box;
+//       background-clip: padding-box, border-box;
+//     `};
+// `;
+const CardText = styled.div<CardBoxProps>`
+  z-index: 100;
+
+  height: 40px;
+  border: 1.5px solid gray;
   border-radius: 20px;
+  background-color: black;
   display: flex;
   padding: 10px 24px;
   justify-content: center;
