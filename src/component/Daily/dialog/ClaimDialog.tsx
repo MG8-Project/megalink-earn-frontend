@@ -8,14 +8,13 @@ import {BrowserProvider, Contract, formatUnits, parseUnits} from "ethers";
 
 
 interface ClaimDialogProps {
-    receivedMG8: bigint;
     minAmount: bigint;
     maxAmount: bigint;
     claimableAmount: bigint;
     handleOpenDialog: (refCategory: string) => void;
     handleCloseDialog: (refCategory: string) => void;
     exchangeRatio: number;
-    currentPoint: bigint;
+    myPointContract: number;
     setHash: Dispatch<SetStateAction<string>>
     isNetworkChange: boolean;
     setIsTransactionComplete: Dispatch<SetStateAction<boolean>>
@@ -25,33 +24,29 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
     const {
         isNetworkChange,
         setIsTransactionComplete,
-        receivedMG8,
-        claimableAmount,
+        claimableAmount, // FIXME: receivedMG8와 claimableAmount 은 같음
         minAmount,
         maxAmount,
         handleOpenDialog,
         handleCloseDialog,
         exchangeRatio,
-        currentPoint,
-        setHash
+        setHash,
+        myPointContract
     } = props;
-
-    const addCommas = (num: bigint) => {
+    const addCommas = (num: bigint | number) => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-    const isButtonActive = minAmount > receivedMG8;
+    const isButtonActive = minAmount < claimableAmount;
     const max = maxAmount > claimableAmount ? claimableAmount : maxAmount;
     const claim = async () => {
         try {
-            if (isButtonActive) {
-                console.log(minAmount, receivedMG8)
+            if (!isButtonActive) {
                 return;
             }
             const provider = new BrowserProvider(window.ethereum);
             const signer = await provider.getSigner()
             const vault: Vault = new Contract(process.env.REACT_APP_CONTRACT_VAULT, VaultAbi, signer) as unknown as Vault
-            const amount = parseUnits((receivedMG8 / BigInt(exchangeRatio)).toString())
-            const tx = await vault.claimMG8(amount);
+            const tx = await vault.claimMG8(claimableAmount * BigInt(exchangeRatio));
             setHash(tx.hash);
             setIsTransactionComplete(true)
             handleOpenDialog('alert')
@@ -90,10 +85,10 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
                             <p style={{
                                 fontSize: "1.8rem",
                                 fontWeight: 'bold'
-                            }}> {isNetworkChange ? addCommas(currentPoint) : '...'} p</p>
+                            }}> {isNetworkChange ? addCommas(myPointContract) : '...'} p</p>
                         </DialogContentInfo>
                         <DialogContentInfo>
-                            <p style={{fontSize: "1.5rem", fontWeight: 'normal'}}>Your Will Received</p>
+                            <p style={{fontSize: "1.5rem", fontWeight: 'normal'}}>You Will Received</p>
                             <p style={{
                                 fontSize: "1.8rem",
                                 fontWeight: 'bold'
