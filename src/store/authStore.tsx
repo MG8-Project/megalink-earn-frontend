@@ -19,7 +19,6 @@ export const useAuthStore = create<State>()(
                 login: (userAccount: string) => set((state) => ({ isLoggedIn: true, userAccount })),
                 logout: () => set((state) => {
                     localStorage.clear();
-                    console.log(document.cookie.split(";"));
                     Cookies.remove('token', {
                         path: '/game'
                     });
