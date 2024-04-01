@@ -2,7 +2,6 @@ import styled from "styled-components";
 import MissionCard from "./MissionCard";
 import TicketCard from "./TicketCard";
 import PoolCard from "./PoolCard";
-
 const Mission = () => {
     return (
         <MissionWrapper>
@@ -14,7 +13,7 @@ const Mission = () => {
             <SpinContainer>
                 {
                 <SpinContainerImage 
-                    src="game/index.html"
+                    src="../../../game"
                 />
                 }
             </SpinContainer>
