@@ -13,7 +13,7 @@ const Mission = () => {
             <SpinContainer>
                 {
                 <SpinContainerImage 
-                    src={`/game/game.html`}
+                    src="game"
                 />
                 }
             </SpinContainer>
