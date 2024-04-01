@@ -40,7 +40,7 @@ interface IsClaimAvailableResponse {
 
 const Daily = () => {
     const [currentMG8, setCurrentMG8] = useState(0);
-    const [currentPoint, setCurrentPoint] = useState(0);
+    const [currentPoint, setCurrentPoint] = useState<bigint>(BigInt(0));
     const [exchangeRatio, setExchangeRatio] = useState(0);
     const [minAmount, setMinAmount] = useState<bigint>(BigInt(0));
     const [maxAmount, setMaxAmount] = useState<bigint>(BigInt(0));
@@ -65,7 +65,7 @@ const Daily = () => {
                 }
             })
             if (res.data.resultCode === '40') throw new Error(res.data.resultCode)
-            setCurrentPoint(res.data.currentPoints)
+            setCurrentPoint(BigInt(res.data.currentPoints))
             setCurrentMG8(res.data.mg8Amount)
             setExchangeRatio(res.data.exchangeRatio)
             setDecimal(res.data.decimals)

@@ -4,16 +4,16 @@ import {theme} from "../../../styles/theme";
 import {close} from "../../../assets/images"
 import {Vault, VaultAbi} from "../../../typechain-types/contracts/Vault";
 import Spinner from "../../ui/Spinner";
-import {BrowserProvider, Contract, parseUnits} from "ethers";
+import {BrowserProvider, Contract, formatUnits, parseUnits} from "ethers";
 
 
 interface ClaimDialogProps {
-    receivedMG8: number;
+    receivedMG8: bigint;
     minAmount: bigint
     handleOpenDialog: (refCategory: string) => void;
     handleCloseDialog: (refCategory: string) => void;
     exchangeRatio: number;
-    currentPoint: number;
+    currentPoint: bigint;
     setHash: Dispatch<SetStateAction<string>>
     isNetworkChange: boolean;
     setIsTransactionComplete: Dispatch<SetStateAction<boolean>>
@@ -32,7 +32,7 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
         setHash
     } = props;
 
-    const addCommas = (num: number) => {
+    const addCommas = (num: bigint) => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
     const isButtonActive = minAmount > receivedMG8;
@@ -40,17 +40,18 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
 
     const claim = async () => {
         try {
-            if (!isButtonActive) {
+            if (isButtonActive) {
+                console.log(minAmount, receivedMG8)
                 return;
             }
             const provider = new BrowserProvider(window.ethereum);
             const signer = await provider.getSigner()
             const vault: Vault = new Contract(process.env.REACT_APP_CONTRACT_VAULT, VaultAbi, signer) as unknown as Vault
-            const amount = parseUnits((receivedMG8 / exchangeRatio).toString())
-            const tx = await vault.claimMG8(amount);
-            setHash(tx.hash);
-            setIsTransactionComplete(true)
-            handleOpenDialog('alert')
+            const amount = parseUnits((receivedMG8 / BigInt(exchangeRatio)).toString())
+            // const tx = await vault.claimMG8(amount);
+            // setHash(tx.hash);
+            // setIsTransactionComplete(true)
+            // handleOpenDialog('alert')
         } catch (error) {
             console.error(error)
             handleOpenDialog('alert')
@@ -95,7 +96,7 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
                             <p style={{
                                 fontSize: "1.8rem",
                                 fontWeight: 'bold'
-                            }}> {isNetworkChange ? addCommas(receivedMG8) : '...'} MG8</p>
+                            }}> {isNetworkChange ? formatUnits(receivedMG8).toString() : '...'} MG8</p>
                         </DialogContentInfo>
                     </DialogContentCurrentStatus>
                 </DialogContentWrapper>

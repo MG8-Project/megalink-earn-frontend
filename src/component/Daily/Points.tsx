@@ -7,7 +7,7 @@ import {LOGIN_FAILED, METAMASK_LINK_FAILED} from "../../constants";
 import ApiDaily from "../../apis/ApiDaily";
 import ClaimDialog from "./dialog/ClaimDialog";
 import {theme} from "../../styles/theme";
-import {BrowserProvider, Contract, toBeHex} from "ethers";
+import {BrowserProvider, Contract, formatUnits, toBeHex} from "ethers";
 import {Vault} from "../../typechain-types";
 import {VaultAbi} from "../../typechain-types/contracts/Vault";
 import AlertDialog from "./dialog/AlertDialog";
@@ -28,14 +28,14 @@ interface MyPointsResponse {
 interface PointsProps {
     isClaimable: boolean;
     exchangeRatio: number;
-    currentPoint: number;
+    currentPoint: bigint;
     minAmount: bigint;
     maxAmount: bigint;
     decimal: number;
 }
 
 const Points = (props: PointsProps) => {
-    const {isClaimable, decimal, maxAmount, minAmount, exchangeRatio, currentPoint} = props;
+    const {isClaimable,  maxAmount, minAmount, exchangeRatio, currentPoint} = props;
     const {connectWallet} = useWallet();
     const claimDialogRef = useRef<HTMLDialogElement | null>(null)
     const alertDialogRef = useRef<HTMLDialogElement>(null)
@@ -44,7 +44,7 @@ const Points = (props: PointsProps) => {
     const [loginAttemptFailed, setLoginAttemptFailed] = useState(false);
     const [myPoints, setMyPoints] = useState(0);
 
-    const [receivedMG8, setReceivedMG8] = useState(0)
+    const [receivedMG8, setReceivedMG8] = useState<bigint>(BigInt(0))
     const [hash, setHash] = useState('')
     const [isTransactionComplete, setIsTransactionComplete] = useState(false)
     const [isNetworkChange, setIsNetworkChange] = useState(false)
@@ -136,7 +136,7 @@ const Points = (props: PointsProps) => {
         buttonContent = (<LoginButton onClick={clickLogin}>Login</LoginButton>);
     } else {
         if (isClaimable) {
-            if (currentPoint === 0) {
+            if (currentPoint === BigInt(0)) {
                 buttonContent =
                     <ClaimButton onClick={null} style={{color: theme.colors.bg.icon, fontSize: '18px'}}>No MG8
                         Point</ClaimButton>
@@ -167,7 +167,7 @@ const Points = (props: PointsProps) => {
                          setHash={setHash}
                          minAmount={minAmount}
                          isNetworkChange={isNetworkChange}
-                         receivedMG8={receivedMG8 / (10 ** decimal)}
+                         receivedMG8={receivedMG8}
                          exchangeRatio={exchangeRatio}
                          currentPoint={currentPoint}
                          setIsTransactionComplete={setIsTransactionComplete}
@@ -178,7 +178,7 @@ const Points = (props: PointsProps) => {
                 ref={alertDialogRef}
                 hash={hash}
                 isTransactionComplete={isTransactionComplete}
-                receivedMG8={receivedMG8 / (10 ** decimal)}
+                receivedMG8={BigInt(receivedMG8)}
                 handleCloseDialog={handleCloseDialog}
             />
             {/* {(!isLoggedIn || loginAttemptFailed) && (
