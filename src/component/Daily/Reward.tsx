@@ -114,7 +114,6 @@ const Reward = () => {
                     return;
                 }
 
-                console.log(getAddress(walletAddress))
                 const message = {
                     from: getAddress(walletAddress),
                     to: process.env.REACT_APP_CONTRACT_DAILY_ATTENDANCE,
