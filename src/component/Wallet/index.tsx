@@ -36,27 +36,11 @@ interface ClaimAvailableResponse {
 }
 
 const Wallet = () => {
-    // const {connectWallet} = useWallet();
-    // const walletAddress = useAuthStore((state) => state.userAccount);
+
     const [tokenList, setTokeList] = useState<IToken[]>([])
     const [remainTime, setRemainTime] = useState<number>(0)
     const [isClaimAvailable, setIsClaimAvailable] = useState<boolean>(false)
 
-    // const onWalletConnect = async () => {
-    //     const address = await connectWallet();
-    //     if (address === null) {
-    //         alert(METAMASK_LOCKED_OR_UNINSTALL);
-    //         return;
-    //     }
-    //     useAuthStore.getState().setUserAccount(address);
-    // };
-    //
-    // const onWalletDisconnect = () => {
-    //     //  Disconnect 시 logout
-    //     useAuthStore.getState().logout();
-    //     useAuthStore.getState().setUserAccount(null);
-    //     alert(DISCONNECTED);
-    // };
     const fetchPartnerTokens = async () => {
         try {
             const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/airdrop/partnerToken`
@@ -89,15 +73,6 @@ const Wallet = () => {
         <WalletWrapper>
             <WalletTitle>Get $MG8 if you have one of these coins</WalletTitle>
             <PartnerToken tokenList={tokenList} remainTime={remainTime} isClaimAvailable={isClaimAvailable}/>
-            {/*{!walletAddress ? (*/}
-            {/*    <WalletContainer onClick={onWalletConnect}>*/}
-            {/*        Connect Wallet*/}
-            {/*    </WalletContainer>*/}
-            {/*) : (*/}
-            {/*    <WalletContainer onClick={onWalletDisconnect}>*/}
-            {/*        Connected*/}
-            {/*    </WalletContainer>*/}
-            {/*)}*/}
         </WalletWrapper>
     );
 };

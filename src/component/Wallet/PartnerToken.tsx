@@ -62,12 +62,6 @@ const PartnerToken = (props: PartnerTokenProps) => {
         setIsLoading(false)
     };
 
-    // const onWalletDisconnect = () => {
-    //     //  Disconnect 시 logout
-    //     useAuthStore.getState().logout();
-    //     useAuthStore.getState().setUserAccount(null);
-    //     alert(DISCONNECTED);
-    // };
     const convertNumber = (data: string) => {
         const numData = Number(data)
         if (numData < 1) return numData
@@ -107,30 +101,6 @@ const PartnerToken = (props: PartnerTokenProps) => {
             alert(LOGIN_FAILED);
         }
     };
-    // const userAddress = useAuthStore((state) => state.userAccount);
-    // const [coins, setCoins] = useState(coinList);
-
-    // const fetchBalances = useCallback(async () => {
-    //     if (!userAddress) {
-    //         return;
-    //     }
-    //     const updatedCoins = await Promise.all(
-    //         coins.map(async (item) => {
-    //             const provider = new ethers.JsonRpcProvider(item.url, item.chainId);
-    //             const balance = await provider.getBalance(userAddress);
-    //             const balanceInEther = ethers.formatEther(balance);
-    //             return {...item, balance: balanceInEther};
-    //         })
-    //     );
-    //     setCoins(updatedCoins);
-    // }, [userAddress]);
-    // console.log(coins)
-
-    // useEffect(() => {
-    //     void fetchBalances();
-    // }, [fetchBalances]);
-
-
     const fetchAirDrop = async () => {
         try {
             const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/airdrop/claim`

@@ -7,7 +7,7 @@ import {LOGIN_FAILED, METAMASK_LINK_FAILED} from "../../constants";
 import ApiDaily from "../../apis/ApiDaily";
 import ClaimDialog from "./dialog/ClaimDialog";
 import {theme} from "../../styles/theme";
-import {BrowserProvider, Contract, formatUnits, toBeHex} from "ethers";
+import {BrowserProvider, Contract, toBeHex} from "ethers";
 import {Vault} from "../../typechain-types";
 import {VaultAbi} from "../../typechain-types/contracts/Vault";
 import AlertDialog from "./dialog/AlertDialog";
@@ -26,6 +26,7 @@ interface MyPointsResponse {
 
 
 interface PointsProps {
+    claimableAmount: bigint;
     isClaimable: boolean;
     exchangeRatio: number;
     currentPoint: bigint;
@@ -35,7 +36,7 @@ interface PointsProps {
 }
 
 const Points = (props: PointsProps) => {
-    const {isClaimable,  maxAmount, minAmount, exchangeRatio, currentPoint} = props;
+    const {claimableAmount, isClaimable, maxAmount, minAmount, exchangeRatio, currentPoint} = props;
     const {connectWallet} = useWallet();
     const claimDialogRef = useRef<HTMLDialogElement | null>(null)
     const alertDialogRef = useRef<HTMLDialogElement>(null)
@@ -64,6 +65,7 @@ const Points = (props: PointsProps) => {
                 const res: any = await vault.claimableAmount(await signer.getAddress())
                 setReceivedMG8(maxAmount <= res._mg8Amount ? maxAmount : res._mg8Amount)
             }
+
             setIsNetworkChange(true)
         } catch (error) {
             console.error(error)
@@ -92,6 +94,7 @@ const Points = (props: PointsProps) => {
                 break;
         }
     }
+
     const clickLogin = async () => {
         try {
             let address = walletAddress || await connectWallet();
@@ -156,6 +159,8 @@ const Points = (props: PointsProps) => {
                                          style={{color: theme.colors.bg.icon, fontSize: '20px'}}>Disabled</ClaimButton>
         }
     }
+
+
     return (
         <PointsWrapper>
             <TextWrapper>
@@ -166,6 +171,8 @@ const Points = (props: PointsProps) => {
             <ClaimDialog ref={claimDialogRef}
                          setHash={setHash}
                          minAmount={minAmount}
+                         maxAmount={maxAmount}
+                         claimableAmount={claimableAmount}
                          isNetworkChange={isNetworkChange}
                          receivedMG8={receivedMG8}
                          exchangeRatio={exchangeRatio}
