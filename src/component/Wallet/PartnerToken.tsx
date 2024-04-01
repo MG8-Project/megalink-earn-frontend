@@ -61,7 +61,8 @@ const PartnerToken = (props: PartnerTokenProps) => {
         useAuthStore.getState().setUserAccount(address);
         setIsLoading(false)
     };
-    
+
+
     const convertNumber = (data: string) => {
         const numData = Number(data)
         if (numData < 1) return numData

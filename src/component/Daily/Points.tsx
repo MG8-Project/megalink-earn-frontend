@@ -26,16 +26,17 @@ interface MyPointsResponse {
 
 
 interface PointsProps {
+    claimableAmount: bigint;
     isClaimable: boolean;
     exchangeRatio: number;
-    currentPoint: number;
+    currentPoint: bigint;
     minAmount: bigint;
     maxAmount: bigint;
     decimal: number;
 }
 
 const Points = (props: PointsProps) => {
-    const {isClaimable, decimal, maxAmount, minAmount, exchangeRatio, currentPoint} = props;
+    const {claimableAmount, isClaimable, maxAmount, minAmount, exchangeRatio, currentPoint} = props;
     const {connectWallet} = useWallet();
     const claimDialogRef = useRef<HTMLDialogElement | null>(null)
     const alertDialogRef = useRef<HTMLDialogElement>(null)
@@ -44,7 +45,7 @@ const Points = (props: PointsProps) => {
     const [loginAttemptFailed, setLoginAttemptFailed] = useState(false);
     const [myPoints, setMyPoints] = useState(0);
 
-    const [receivedMG8, setReceivedMG8] = useState(0)
+    const [receivedMG8, setReceivedMG8] = useState<bigint>(BigInt(0))
     const [hash, setHash] = useState('')
     const [isTransactionComplete, setIsTransactionComplete] = useState(false)
     const [isNetworkChange, setIsNetworkChange] = useState(false)
@@ -64,6 +65,7 @@ const Points = (props: PointsProps) => {
                 const res: any = await vault.claimableAmount(await signer.getAddress())
                 setReceivedMG8(maxAmount <= res._mg8Amount ? maxAmount : res._mg8Amount)
             }
+
             setIsNetworkChange(true)
         } catch (error) {
             console.error(error)
@@ -92,6 +94,7 @@ const Points = (props: PointsProps) => {
                 break;
         }
     }
+
     const clickLogin = async () => {
         try {
             let address = walletAddress || await connectWallet();
@@ -136,7 +139,7 @@ const Points = (props: PointsProps) => {
         buttonContent = (<LoginButton onClick={clickLogin}>Login</LoginButton>);
     } else {
         if (isClaimable) {
-            if (currentPoint === 0) {
+            if (currentPoint === BigInt(0)) {
                 buttonContent =
                     <ClaimButton onClick={null} style={{color: theme.colors.bg.icon, fontSize: '18px'}}>No MG8
                         Point</ClaimButton>
@@ -156,6 +159,8 @@ const Points = (props: PointsProps) => {
                                          style={{color: theme.colors.bg.icon, fontSize: '20px'}}>Disabled</ClaimButton>
         }
     }
+
+
     return (
         <PointsWrapper>
             <TextWrapper>
@@ -166,8 +171,10 @@ const Points = (props: PointsProps) => {
             <ClaimDialog ref={claimDialogRef}
                          setHash={setHash}
                          minAmount={minAmount}
+                         maxAmount={maxAmount}
+                         claimableAmount={claimableAmount}
                          isNetworkChange={isNetworkChange}
-                         receivedMG8={receivedMG8 / (10 ** decimal)}
+                         receivedMG8={receivedMG8}
                          exchangeRatio={exchangeRatio}
                          currentPoint={currentPoint}
                          setIsTransactionComplete={setIsTransactionComplete}
@@ -178,7 +185,7 @@ const Points = (props: PointsProps) => {
                 ref={alertDialogRef}
                 hash={hash}
                 isTransactionComplete={isTransactionComplete}
-                receivedMG8={receivedMG8 / (10 ** decimal)}
+                receivedMG8={BigInt(receivedMG8)}
                 handleCloseDialog={handleCloseDialog}
             />
             {/* {(!isLoggedIn || loginAttemptFailed) && (

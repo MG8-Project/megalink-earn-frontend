@@ -36,6 +36,7 @@ interface ClaimAvailableResponse {
 }
 
 const Wallet = () => {
+
     const [tokenList, setTokeList] = useState<IToken[]>([])
     const [remainTime, setRemainTime] = useState<number>(0)
     const [isClaimAvailable, setIsClaimAvailable] = useState<boolean>(false)
