@@ -3,9 +3,6 @@ import { theme } from "../../styles/theme";
 import Mission from "./Mission";
 
 const Spin = () => {
-  const handleClick = () => {
-    window.open(process.env.REACT_APP_URL, "_blank");
-  };
   return (
     <SpinWrapper>
       <TitleContainer>
@@ -17,7 +14,7 @@ const Spin = () => {
           </SecondTitle>
           <SubTitle>Hurry up. Please make a bet. Good luck to you.</SubTitle>
         </SubTitleContainer>
-        <LearnButton onClick={handleClick}>Learn more</LearnButton>
+        <LearnButton>Learn more</LearnButton>
       </TitleContainer>
       <Mission />
     </SpinWrapper>

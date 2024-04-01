@@ -13,37 +13,16 @@ const MissionCard = () => {
   }, 1000);
   function getRemainingTime() {
     const now = new Date();
-    const targetTime = new Date(
-      Date.UTC(
-        now.getUTCFullYear(),
-        now.getUTCMonth(),
-        now.getUTCDate(),
-        now.getUTCHours(),
-        now.getUTCMinutes(),
-        now.getUTCSeconds()
-      )
-    );
-    const targetHourUTC =
-      targetTime.getUTCHours() < 0 || targetTime.getUTCHours() >= 12 ? 0 : 12;
+    const nowUTC = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
 
-    targetTime.setHours(targetHourUTC, 0, 0, 0);
-
-    let difference = targetTime.getTime() - now.getTime();
-    if (difference < 0) {
-      const tomorrow = new Date(
-        Date.UTC(
-          now.getUTCFullYear(),
-          now.getUTCMonth(),
-          now.getUTCDate() + 1,
-          targetHourUTC,
-          0,
-          0,
-          0
-        )
-      );
-      difference = tomorrow.getTime() - now.getTime();
+    let nextChargeTime: Date;
+    if (now.getUTCHours() < 12) {
+      nextChargeTime = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 12, 0, 0));
+    } else {
+      nextChargeTime = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0));
     }
 
+    const difference = nextChargeTime.getTime() - nowUTC;
     const hours = Math.floor(difference / (1000 * 60 * 60));
     const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((difference % (1000 * 60)) / 1000);
