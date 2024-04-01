@@ -34,6 +34,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.UUPSUpgradeable__factory>;
     getContractFactory(
+      name: "ERC20Upgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC20Upgradeable__factory>;
+    getContractFactory(
       name: "ContextUpgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ContextUpgradeable__factory>;
@@ -134,6 +138,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Strings__factory>;
     getContractFactory(
+      name: "ACEToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ACEToken__factory>;
+    getContractFactory(
       name: "DailyAttendance",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.DailyAttendance__factory>;
@@ -166,6 +174,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Ownable2Step__factory>;
     getContractFactory(
+      name: "Tether",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Tether__factory>;
+    getContractFactory(
       name: "Vault",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Vault__factory>;
@@ -196,6 +208,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.UUPSUpgradeable>;
     getContractAt(
+      name: "ERC20Upgradeable",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20Upgradeable>;
+    getContractAt(
       name: "ContextUpgradeable",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
@@ -321,6 +338,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Strings>;
     getContractAt(
+      name: "ACEToken",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ACEToken>;
+    getContractAt(
       name: "DailyAttendance",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
@@ -360,6 +382,11 @@ declare module "hardhat/types/runtime" {
       address: string | ethers.Addressable,
       signer?: ethers.Signer
     ): Promise<Contracts.Ownable2Step>;
+    getContractAt(
+      name: "Tether",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Tether>;
     getContractAt(
       name: "Vault",
       address: string | ethers.Addressable,
@@ -387,6 +414,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.UUPSUpgradeable>;
     deployContract(
+      name: "ERC20Upgradeable",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ERC20Upgradeable>;
+    deployContract(
       name: "ContextUpgradeable",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.ContextUpgradeable>;
@@ -487,6 +518,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.Strings>;
     deployContract(
+      name: "ACEToken",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ACEToken>;
+    deployContract(
       name: "DailyAttendance",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.DailyAttendance>;
@@ -518,6 +553,10 @@ declare module "hardhat/types/runtime" {
       name: "Ownable2Step",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.Ownable2Step>;
+    deployContract(
+      name: "Tether",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.Tether>;
     deployContract(
       name: "Vault",
       signerOrOptions?: ethers.Signer | DeployContractOptions
@@ -549,6 +588,11 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.UUPSUpgradeable>;
     deployContract(
+      name: "ERC20Upgradeable",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ERC20Upgradeable>;
+    deployContract(
       name: "ContextUpgradeable",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
@@ -674,6 +718,11 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.Strings>;
     deployContract(
+      name: "ACEToken",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ACEToken>;
+    deployContract(
       name: "DailyAttendance",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
@@ -713,6 +762,11 @@ declare module "hardhat/types/runtime" {
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.Ownable2Step>;
+    deployContract(
+      name: "Tether",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.Tether>;
     deployContract(
       name: "Vault",
       args: any[],
