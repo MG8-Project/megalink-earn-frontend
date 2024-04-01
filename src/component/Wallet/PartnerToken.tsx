@@ -143,7 +143,7 @@ const PartnerToken = (props: PartnerTokenProps) => {
                         <CardBoxImg src={item.logoUrl} alt=""/>
                         <div>{item.symbol}</div>
                         {isLogin ?
-                            <CardAmountBox>{convertNumber(formatUnits(findBalance(item.symbol), item.decimals))}/{convertNumber(formatUnits(item.minAmount, item.decimals))}</CardAmountBox> : null
+                            <CardAmountBox>{parseFloat(parseFloat(formatUnits(findBalance(item.symbol), item.decimals)).toFixed(2))}/{parseFloat(parseFloat(formatUnits(item.minAmount, item.decimals)).toFixed(2))}</CardAmountBox> : null
                         }
                     </CardBox>
                 ))}
