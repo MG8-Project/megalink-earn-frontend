@@ -14,7 +14,7 @@ const Mission = () => {
             <SpinContainer>
                 {
                 <SpinContainerImage 
-                    src="game/images/btn-connect.png"
+                    src="game/index.html"
                 />
                 }
             </SpinContainer>
