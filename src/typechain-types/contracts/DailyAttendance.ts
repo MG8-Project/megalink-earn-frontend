@@ -23,7 +23,7 @@ import type {
   TypedContractMethod,
 } from "../common";
 
-export const DailyAttendanceAbi =  [
+export const DailyAttendanceAbi = [
   {
     "inputs": [
       {

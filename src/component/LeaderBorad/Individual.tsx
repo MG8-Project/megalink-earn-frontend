@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import API from "../../apis/Api";
 import {API_SUCCESS_CODE, nationList, UNKNOWN} from "../../constants";
 
-import {nextArrow, preArrow} from "../../assets/images";
+import {nextarrow, prearrow} from "../../assets/images";
 import RankingAlert from "./RankingAlert";
 
 export const tableTitle = [
@@ -118,7 +118,7 @@ const IndividualList = () => {
                     </TableStyle>
                     <PaginationWrapper>
                         <ArrowButton onClick={() => setCurrentPage(1)}>
-                            <ButtonImg src={preArrow}/>
+                            <ButtonImg src={prearrow}/>
                         </ArrowButton>
                         {visiblePages.map((data, index) => (
                             <PageButton
@@ -139,7 +139,7 @@ const IndividualList = () => {
                             <PageButton disabled>...</PageButton>
                         )}
                         <ArrowButton onClick={() => setCurrentPage(totalPage)}>
-                            <ButtonImg src={nextArrow}/>
+                            <ButtonImg src={nextarrow}/>
                         </ArrowButton>
                     </PaginationWrapper>
                 </>

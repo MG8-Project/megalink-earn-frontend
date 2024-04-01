@@ -5,7 +5,7 @@ import API from "../../apis/Api";
 import {API_SUCCESS_CODE, nationList} from "../../constants";
 import {ArrowButton, ButtonImg, PageButton, PaginationWrapper,} from "./Individual";
 
-import {nextArrow, preArrow} from "../../assets/images";
+import {nextarrow, prearrow} from "../../assets/images";
 import RankingAlert from "./RankingAlert";
 
 export const tableTitle = [
@@ -116,7 +116,7 @@ const TeamList = () => {
                     </TableStyle>
                     <PaginationWrapper>
                         <ArrowButton onClick={() => setCurrentPage(1)}>
-                            <ButtonImg src={preArrow}/>
+                            <ButtonImg src={prearrow}/>
                         </ArrowButton>
                         {visiblePages.map((data, index) => (
                             <PageButton
@@ -136,7 +136,7 @@ const TeamList = () => {
                             <PageButton disabled>...</PageButton>
                         )}
                         <ArrowButton onClick={() => setCurrentPage(totalPage)}>
-                            <ButtonImg src={nextArrow}/>
+                            <ButtonImg src={nextarrow}/>
                         </ArrowButton>
                     </PaginationWrapper>
                 </>
