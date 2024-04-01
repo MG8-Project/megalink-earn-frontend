@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { theme } from "../../styles/theme";
 import { coinList } from "../../constants";
 import { ethers } from "ethers";
@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useAuthStore } from "../../store/authStore";
 
 interface CardBoxProps {
-  highBalance: boolean;
+  $highBalance: boolean;
 }
 
 const CoinCard = () => {
@@ -39,10 +39,11 @@ const CoinCard = () => {
         <CardBox key={index}>
           <CardBoxImg src={item.image} alt="" />
           <div>{item.title}</div>
-
-          <CardText highBalance={parseFloat(item.balance) < item.amount}>
-            {item.balance}/{item.amount}
-          </CardText>
+          <CardTextBox $highBalance={parseFloat(item.balance) < item.amount}>
+            <CardText $highBalance={parseFloat(item.balance) < item.amount}>
+              {item.balance}/{item.amount}
+            </CardText>
+          </CardTextBox>
         </CardBox>
       ))}
     </CardWrapper>
@@ -66,32 +67,30 @@ const CardBox = styled.div`
   gap: 20px;
   align-items: center;
 `;
+const CardTextBox = styled.div<CardBoxProps>`
+  background: linear-gradient(90deg, #82e8ff, #379fff);
+  border-radius: 100px;
+  border: 1px solid transparent;
+  background-image: linear-gradient(#000000, #000000),
+    linear-gradient(90deg, #82e8ff, #379fff);
+  background-origin: border-box;
+  background-clip: padding-box,
+    border-box
+      ${(props) =>
+        props.$highBalance &&
+        css`
+          border: 1px solid transparent;
+          background-image: linear-gradient(#000000, #000000),
+            linear-gradient(90deg, #333333, #333333);
 
-// const CardTextBox = styled.div<CardBoxProps>`
-//   color: transparent;
-//   background: linear-gradient(90deg, #82e8ff, #379fff);
-//   border-radius: 100px;
-//   border: 1px solid transparent;
-//   background-image: linear-gradient(#000000, #000000),
-//     linear-gradient(90deg, #82e8ff, #379fff);
-//   background-origin: border-box;
-//   background-clip: padding-box, border-box;
-
-//   ${(props) =>
-//     props.highBalance &&
-//     css`
-//       border: 1px solid transparent;
-//       background-image: linear-gradient(#000000, #000000),
-//         linear-gradient(90deg, #333333, #333333);
-//       background-origin: border-box;
-//       background-clip: padding-box, border-box;
-//     `};
-// `;
+          background-origin: border-box;
+          background-clip: padding-box, border-box;
+        `};
+`;
 const CardText = styled.div<CardBoxProps>`
   z-index: 100;
-
   height: 40px;
-  border: 1.5px solid gray;
+  border: ${(props) => (props.$highBalance ? "1px" : "0px")} solid gray;
   border-radius: 20px;
   background-color: black;
   display: flex;
@@ -103,7 +102,8 @@ const CardText = styled.div<CardBoxProps>`
   gap: 20px;
   justify-content: center;
   align-items: center;
-  color: ${(props) => (props.highBalance ? "#999999" : "inherit")};
+  color: ${(props) =>
+    props.$highBalance ? "#999999" : "inherit"}; // 변경된 부분
 `;
 
 const CardBoxImg = styled.img`
