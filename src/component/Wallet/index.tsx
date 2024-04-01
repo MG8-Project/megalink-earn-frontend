@@ -118,16 +118,3 @@ const WalletTitle = styled.h3`
     margin-bottom: 56px;
 `;
 
-const WalletContainer = styled.button`
-    margin-top: 40px;
-    display: flex;
-    font-weight: 400;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    width: 140px;
-    height: 40px;
-    border: 1px solid #ffffff;
-    border-radius: 100px;
-    font-size: 16px;
-`;
