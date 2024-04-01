@@ -24,7 +24,7 @@ const myParticipationTicket = async (userAccount: string) => {
 const dailyPool = async () => {
     return API
         .get(`${statusEndpoint}/dailyPool`)
-        .then((res) => parseInt(res.data));
+        .then((res) => parseFloat(parseFloat(res.data).toFixed(2)));
 }
 
 const myPoint = async (userAccount: string) => {
