@@ -4,7 +4,7 @@ import Mission from "./Mission";
 
 const Spin = () => {
   const handleClick = () => {
-    window.open(process.env.REACT_APP_URL, '_blank');
+    window.open(process.env.REACT_APP_URL, "_blank");
   };
   return (
     <SpinWrapper>
@@ -15,10 +15,7 @@ const Spin = () => {
             Rule: Turn the spin and earn rewards. The pool of rewards offered
             every day is limited.
           </SecondTitle>
-          <SubTitle>
-            Rule: Turn the spin and earn rewards. The pool of rewards offered
-            every day is limited.
-          </SubTitle>
+          <SubTitle>Hurry up. Please make a bet. Good luck to you.</SubTitle>
         </SubTitleContainer>
         <LearnButton onClick={handleClick}>Learn more</LearnButton>
       </TitleContainer>
@@ -65,10 +62,19 @@ const SubTitle = styled.div`
   color: ${theme.colors.textGray};
 `;
 const LearnButton = styled.button`
-  font-weight: 600;
+  display: flex;
   width: 160px;
-  height: 56px;
-  border: 1px solid #ffffff;
+  height: 52px;
+  padding: 10px 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  font-size: 18px;
+  width: 160px;
+  height: 52px;
   border-radius: 100px;
-  font-size: 20px;
+  background: #006ebe;
+  backdrop-filter: blur(4px);
+  border-radius: 100px;
 `;

@@ -5,7 +5,9 @@ import { ethers } from "ethers";
 import { useCallback, useEffect, useState } from "react";
 import { useAuthStore } from "../../store/authStore";
 
-
+interface CardBoxProps {
+  highBalance: boolean;
+}
 
 const CoinCard = () => {
   const userAddress = useAuthStore((state) => state.userAccount);
@@ -15,7 +17,7 @@ const CoinCard = () => {
     if (!userAddress) {
       return;
     }
-  
+
     const updatedCoins = await Promise.all(
       coins.map(async (item) => {
         const provider = new ethers.JsonRpcProvider(item.url, item.chainId);
@@ -25,20 +27,22 @@ const CoinCard = () => {
       })
     );
     setCoins(updatedCoins);
-  }, [userAddress, coins]); 
+  }, [userAddress, coins]);
 
   useEffect(() => {
     fetchBalances();
   }, [fetchBalances]);
 
-  
   return (
     <CardWrapper>
       {coinList.map((item, index) => (
         <CardBox key={index}>
           <CardBoxImg src={item.image} alt="" />
           <div>{item.title}</div>
-          <CardAmountBox>{item.balance}/{item.amount}</CardAmountBox>
+
+          <CardText highBalance={parseFloat(item.balance) < item.amount}>
+            {item.balance}/{item.amount}
+          </CardText>
         </CardBox>
       ))}
     </CardWrapper>
@@ -62,18 +66,46 @@ const CardBox = styled.div`
   gap: 20px;
   align-items: center;
 `;
-const CardAmountBox = styled.div`
-  width: 100px;
+
+// const CardTextBox = styled.div<CardBoxProps>`
+//   color: transparent;
+//   background: linear-gradient(90deg, #82e8ff, #379fff);
+//   border-radius: 100px;
+//   border: 1px solid transparent;
+//   background-image: linear-gradient(#000000, #000000),
+//     linear-gradient(90deg, #82e8ff, #379fff);
+//   background-origin: border-box;
+//   background-clip: padding-box, border-box;
+
+//   ${(props) =>
+//     props.highBalance &&
+//     css`
+//       border: 1px solid transparent;
+//       background-image: linear-gradient(#000000, #000000),
+//         linear-gradient(90deg, #333333, #333333);
+//       background-origin: border-box;
+//       background-clip: padding-box, border-box;
+//     `};
+// `;
+const CardText = styled.div<CardBoxProps>`
+  z-index: 100;
+
   height: 40px;
   border: 1.5px solid gray;
   border-radius: 20px;
   background-color: black;
   display: flex;
+  padding: 10px 24px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   flex-direction: column;
   gap: 20px;
-  justify-content : center;
-  align-items : center;
+  justify-content: center;
+  align-items: center;
+  color: ${(props) => (props.highBalance ? "#999999" : "inherit")};
 `;
+
 const CardBoxImg = styled.img`
   width: 64px;
   margin-top: 40px;
