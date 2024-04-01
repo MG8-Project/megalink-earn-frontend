@@ -14,7 +14,7 @@ const Mission = () => {
             <SpinContainer>
                 {
                 <SpinContainerImage 
-                    src="https://earn-dev.mega8.io/game/"
+                    src="game/images/btn-connect.png"
                 />
                 }
             </SpinContainer>
