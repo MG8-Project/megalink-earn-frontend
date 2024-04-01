@@ -46,8 +46,7 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
             const provider = new BrowserProvider(window.ethereum);
             const signer = await provider.getSigner()
             const vault: Vault = new Contract(process.env.REACT_APP_CONTRACT_VAULT, VaultAbi, signer) as unknown as Vault
-            const amount = parseUnits((claimableAmount / BigInt(exchangeRatio)).toString())
-            const tx = await vault.claimMG8(amount);
+            const tx = await vault.claimMG8(claimableAmount * BigInt(exchangeRatio));
             setHash(tx.hash);
             setIsTransactionComplete(true)
             handleOpenDialog('alert')
