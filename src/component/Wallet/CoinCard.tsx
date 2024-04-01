@@ -90,7 +90,6 @@ const CardTextBox = styled.div<CardBoxProps>`
 const CardText = styled.div<CardBoxProps>`
   z-index: 100;
   height: 40px;
-  border: ${(props) => (props.$highBalance ? "1px" : "0px")} solid gray;
   border-radius: 20px;
   background-color: black;
   display: flex;
@@ -102,8 +101,7 @@ const CardText = styled.div<CardBoxProps>`
   gap: 20px;
   justify-content: center;
   align-items: center;
-  color: ${(props) =>
-    props.$highBalance ? "#999999" : "inherit"}; // 변경된 부분
+  color: ${(props) => (props.$highBalance ? "#999999" : "inherit")};
 `;
 
 const CardBoxImg = styled.img`
