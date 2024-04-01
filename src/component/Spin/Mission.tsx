@@ -14,7 +14,7 @@ const Mission = () => {
             <SpinContainer>
                 {
                 <SpinContainerImage 
-                    src="game"
+                    src="https://cv2.avivgame.com/game.html"
                 />
                 }
             </SpinContainer>
