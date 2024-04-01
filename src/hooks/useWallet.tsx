@@ -89,45 +89,25 @@ export const useWallet = () => {
                     }
                 }
             }
-
-            window.ethereum.on("accountsChanged", (accounts: string[]) => {
-                if (accounts.length === 0) {
-                    logout();
-                    setCurrentAccount(null);
-                } else {
-                    const newAccount = accounts[0];
-                    if (currentAccount == null || newAccount == null) {
-                        logout();
-                        return
-                    }
-
-                    if (getAddress(currentAccount) !== getAddress(newAccount)) {
-                        logout();
-                        setWalletAddress(getAddress(newAccount));
-                        setCurrentAccount(getAddress(newAccount));
-                        try {
-                            login(getAddress(newAccount));
-                        } catch (error) {
-                        }
-                    }
-                }
-            })
         }
-    }, [setWalletAddress, logout, currentAccount, login]);
+    }, [setWalletAddress]);
 
     useEffect(() => {
         const handleAccountsChanged = (accounts: string[]) => {
             if (accounts.length === 0) {
                 logout();
+                window.location.reload();
                 setCurrentAccount(null);
             } else {
                 const newAccount = accounts[0];
                 if (currentAccount == null || newAccount == null) {
                     logout();
+                    window.location.reload();
                     return
                 }
                 if (getAddress(currentAccount) !== getAddress(newAccount)) {
                     logout();
+                    window.location.reload();
                     setWalletAddress(getAddress(newAccount));
                     setCurrentAccount(getAddress(newAccount));
                 }
