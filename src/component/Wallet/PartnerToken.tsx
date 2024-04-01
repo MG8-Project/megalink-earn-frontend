@@ -61,13 +61,7 @@ const PartnerToken = (props: PartnerTokenProps) => {
         useAuthStore.getState().setUserAccount(address);
         setIsLoading(false)
     };
-
-    // const onWalletDisconnect = () => {
-    //     //  Disconnect 시 logout
-    //     useAuthStore.getState().logout();
-    //     useAuthStore.getState().setUserAccount(null);
-    //     alert(DISCONNECTED);
-    // };
+    
     const convertNumber = (data: string) => {
         const numData = Number(data)
         if (numData < 1) return numData
@@ -107,29 +101,6 @@ const PartnerToken = (props: PartnerTokenProps) => {
             alert(LOGIN_FAILED);
         }
     };
-    // const userAddress = useAuthStore((state) => state.userAccount);
-    // const [coins, setCoins] = useState(coinList);
-
-    // const fetchBalances = useCallback(async () => {
-    //     if (!userAddress) {
-    //         return;
-    //     }
-    //     const updatedCoins = await Promise.all(
-    //         coins.map(async (item) => {
-    //             const provider = new ethers.JsonRpcProvider(item.url, item.chainId);
-    //             const balance = await provider.getBalance(userAddress);
-    //             const balanceInEther = ethers.formatEther(balance);
-    //             return {...item, balance: balanceInEther};
-    //         })
-    //     );
-    //     setCoins(updatedCoins);
-    // }, [userAddress]);
-    // console.log(coins)
-
-    // useEffect(() => {
-    //     void fetchBalances();
-    // }, [fetchBalances]);
-
 
     const fetchAirDrop = async () => {
         try {
@@ -187,14 +158,12 @@ const PartnerToken = (props: PartnerTokenProps) => {
                         </> : 'Connect Wallet'}
                     </WalletContainer>
                 ) : (
-                    // <WalletContainer onClick={onWalletDisconnect}>
                     <WalletContainer onClick={isLogin ? (isClaimAvailable ? clickAirdrop : null) : clickLogin}
                                      style={{
                                          color: isLogin ? (isClaimAvailable ? '#fff' : '#3dbd3d') : '#fff',
                                          border: isLogin ? (isClaimAvailable ? '1px solid #fff' : '1px solid #3dbd3d') : '1px solid #fff'
                                      }}>
                         {isLogin ? (isClaimAvailable ? 'Claim' : 'Claimed!') : 'Login'}
-                        {/*{isClaimAvailable() ? "Claim" : "Connected"}*/}
                     </WalletContainer>
                 )}
             </ButtonWrapper>
@@ -232,15 +201,15 @@ const CardWrapper = styled.div`
             "time"
             "button";
     grid-template-columns: 4fr 2fr 1.5fr;
-    width: 90vw;
+    width: 120rem;
     place-items: center;
-    //gap: 24px;
 `;
 
 const TokenWrapper = styled.div`
     grid-area: token;
-    display: flex;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    place-items: center;
     width: 100%;
 `
 const CardBox = styled.div`
