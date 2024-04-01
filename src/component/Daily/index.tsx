@@ -4,7 +4,9 @@ import Reward from "./Reward";
 import Points from "./Points";
 import {useEffect, useState} from "react";
 import API from "../../apis/Api";
-import {formatUnits} from "ethers";
+import {BrowserProvider, Contract, formatUnits} from "ethers";
+import {Vault} from "../../typechain-types";
+import {VaultAbi} from "../../typechain-types/contracts/Vault";
 
 
 interface CurrentClaimResponse {
@@ -40,8 +42,9 @@ interface IsClaimAvailableResponse {
 
 const Daily = () => {
     const [currentMG8, setCurrentMG8] = useState(0);
-    const [currentPoint, setCurrentPoint] = useState(0);
+    const [currentPoint, setCurrentPoint] = useState<bigint>(BigInt(0));
     const [exchangeRatio, setExchangeRatio] = useState(0);
+    const [claimableAmount, setClaimableAmount] = useState<bigint>(BigInt(0));
     const [minAmount, setMinAmount] = useState<bigint>(BigInt(0));
     const [maxAmount, setMaxAmount] = useState<bigint>(BigInt(0));
     const [decimal, setDecimal] = useState(0)
@@ -65,9 +68,8 @@ const Daily = () => {
                 }
             })
             if (res.data.resultCode === '40') throw new Error(res.data.resultCode)
-            setCurrentPoint(res.data.currentPoints)
+            setCurrentPoint(BigInt(res.data.currentPoints))
             setCurrentMG8(res.data.mg8Amount)
-            setExchangeRatio(res.data.exchangeRatio)
             setDecimal(res.data.decimals)
         } catch (error) {
             // console.error(error)
@@ -86,7 +88,23 @@ const Daily = () => {
             console.error(err)
         }
     }
+    const getExchangeRatio = async () => {
+        try {
+            const provider = new BrowserProvider(window.ethereum);
+            const vault: Vault = new Contract(process.env.REACT_APP_CONTRACT_VAULT, VaultAbi, provider) as unknown as Vault
+            // const chainId = await window.ethereum.request({method: "eth_chainId"});
+            const signer = await provider.getSigner(0)
+            const res = await vault.convertPointToMG8Ratio()
+            const getClaimableAmount = await vault.claimableAmount(await signer.getAddress())
+            setExchangeRatio(Number(res))
+            setClaimableAmount(getClaimableAmount._mg8Amount)
+
+        } catch (error) {
+            console.error(error)
+        }
+    }
     useEffect(() => {
+        void getExchangeRatio()
         void fetchCurrentClaim()
         void fetchMinClaim()
         const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/claim/available`;
@@ -116,6 +134,7 @@ const Daily = () => {
                 <ContentWrapper>
                     <Reward/>
                     <Points
+                        claimableAmount={claimableAmount}
                         isClaimable={isClaimable}
                         exchangeRatio={exchangeRatio}
                         minAmount={minAmount}
