@@ -62,6 +62,7 @@ const PartnerToken = (props: PartnerTokenProps) => {
         setIsLoading(false)
     };
 
+
     const convertNumber = (data: string) => {
         const numData = Number(data)
         if (numData < 1) return numData
@@ -101,6 +102,7 @@ const PartnerToken = (props: PartnerTokenProps) => {
             alert(LOGIN_FAILED);
         }
     };
+
     const fetchAirDrop = async () => {
         try {
             const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/airdrop/claim`
@@ -157,14 +159,12 @@ const PartnerToken = (props: PartnerTokenProps) => {
                         </> : 'Connect Wallet'}
                     </WalletContainer>
                 ) : (
-                    // <WalletContainer onClick={onWalletDisconnect}>
                     <WalletContainer onClick={isLogin ? (isClaimAvailable ? clickAirdrop : null) : clickLogin}
                                      style={{
                                          color: isLogin ? (isClaimAvailable ? '#fff' : '#3dbd3d') : '#fff',
                                          border: isLogin ? (isClaimAvailable ? '1px solid #fff' : '1px solid #3dbd3d') : '1px solid #fff'
                                      }}>
                         {isLogin ? (isClaimAvailable ? 'Claim' : 'Claimed!') : 'Login'}
-                        {/*{isClaimAvailable() ? "Claim" : "Connected"}*/}
                     </WalletContainer>
                 )}
             </ButtonWrapper>
@@ -202,15 +202,15 @@ const CardWrapper = styled.div`
             "time"
             "button";
     grid-template-columns: 4fr 2fr 1.5fr;
-    width: 90vw;
+    width: 120rem;
     place-items: center;
-    //gap: 24px;
 `;
 
 const TokenWrapper = styled.div`
     grid-area: token;
-    display: flex;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    place-items: center;
     width: 100%;
 `
 const CardBox = styled.div`
