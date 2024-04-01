@@ -19,7 +19,7 @@ const Spin = () => {
                         every day is limited.
                     </SubTitle>
                 </SubTitleContainer>
-                <LearnButton><Link to={LEARN_URL}>Learn more</Link></LearnButton>
+                <LearnButton><Link to={LEARN_URL} target="_blank">Learn more</Link></LearnButton>
             </TitleContainer>
             <Mission/>
         </SpinWrapper>

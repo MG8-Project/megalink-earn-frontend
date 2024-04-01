@@ -4,7 +4,7 @@ let scale = 0.5;//1080/1080;
 
 
 let API_BASE = "https://spin-api.mega8.io";
-let IMG_BASE = "";
+let IMG_BASE = location.href;
 
 var GameOptions = function (options){
 
