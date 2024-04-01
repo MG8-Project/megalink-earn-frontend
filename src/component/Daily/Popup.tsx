@@ -5,11 +5,11 @@ import FailPopup from "./FailPopup";
 import { theme } from "../../styles/theme";
 import {
   closeBtn,
-  line,
   active,
+  line,
   claim,
-  loading,
   noneActive,
+  loading,
 } from "../../assets/images";
 
 const Popup = () => {
@@ -69,10 +69,10 @@ const Popup = () => {
               <ProgressContainer>
                 <ProgressBox>
                   {/* <ProgressImage>
-                  <img src={active} alt="" width={20} height={20} />
-                  <img src={line} alt="" />
-                  <img src={claim} alt="" width={20} height={20} />
-                </ProgressImage> */}
+                    <img src={active} alt="" width={20} height={20} />
+                    <img src={line} alt="" />
+                    <img src={claim} alt="" width={20} height={20} />
+                  </ProgressImage> */}
                   <ProgressImage>
                     <img src={noneActive} alt="" width={20} height={20} />
                     <img src={line} alt="" />
@@ -86,9 +86,9 @@ const Popup = () => {
               </ProgressContainer>
               <ActiveButton>Activate Claim</ActiveButton>
               {/* <PendingButton>
-          <img src={loading} alt="" width={24} height={24} />
-          Pending
-        </PendingButton> */}
+                <img src={loading} alt="" width={24} height={24} />
+                Pending
+              </PendingButton> */}
             </PopupContainer>
           </PopupWrapper>
           {/* <ReceiptPopup />

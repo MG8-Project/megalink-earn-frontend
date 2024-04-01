@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { noneCheck, redCircle, link } from "../../assets/images";
+import { noneCheck, redCircle } from "../../assets/images";
 
 const FailPopup = () => {
   return (

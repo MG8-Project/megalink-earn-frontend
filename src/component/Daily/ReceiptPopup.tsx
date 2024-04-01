@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { check, circle, link } from "../../assets/images";
-
 const ReceiptPopup = () => {
   return (
     <>

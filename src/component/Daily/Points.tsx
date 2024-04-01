@@ -17,50 +17,11 @@ interface MyPointsResponse {
   msg: string;
 }
 const Points = () => {
-
-    const {connectWallet} = useWallet();
-    const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-    const walletAddress = useAuthStore((state) => state.userAccount);
-    const [loginAttemptFailed, setLoginAttemptFailed] = useState(false);
-    const [myPoints, setMyPoints] = useState(0);
-    
-    const clickLogin = async () => {
-        try {
-            let address = walletAddress || await connectWallet();
-            if (address === null) {
-                alert(METAMASK_LINK_FAILED);
-                return;
-            }
-            const loginResponse: LoginResponse = await ApiPoints.login(address);
-            if (loginResponse.resultCode !== '1') {
-                throw new Error(LOGIN_FAILED);
-            }
-            useAuthStore.getState().login(address);
-        } catch (error) {
-            console.error("An error occurred during login process:", error);
-            setLoginAttemptFailed(true);
-            alert(LOGIN_FAILED);
-        }
-    };
-    const fetchMyPoints = useCallback(async () => {
-        try {
-            const res: MyPointsResponse = await ApiDaily.myPoint(walletAddress)
-            if (res.resultCode !== '1') {
-                return
-            }
-            setMyPoints(res.totalPoints);
-        } catch (error) {
-            console.error('Error fetching total points:', error);
-        }
-    }, [walletAddress]);
-
-    useEffect(() => {
-        void fetchMyPoints();
-        if (isLoggedIn) {
-            const interval = setInterval(fetchMyPoints, 5000);
-            return () => clearInterval(interval);
-        }
-    }, [walletAddress, fetchMyPoints, isLoggedIn]);
+  const { connectWallet } = useWallet();
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const walletAddress = useAuthStore((state) => state.userAccount);
+  const [loginAttemptFailed, setLoginAttemptFailed] = useState(false);
+  const [myPoints, setMyPoints] = useState(0);
 
   const clickLogin = async () => {
     try {
