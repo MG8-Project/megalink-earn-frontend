@@ -2,11 +2,11 @@ import styled from "styled-components";
 import {theme} from "../../styles/theme";
 import Reward from "./Reward";
 import Points from "./Points";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import API from "../../apis/Api";
-import {BrowserProvider, Contract, formatUnits} from "ethers";
-import {Vault} from "../../typechain-types";
-import {VaultAbi} from "../../typechain-types/contracts/Vault";
+import {formatUnits} from "ethers";
+import ApiDaily from "../../apis/ApiDaily";
+import {useAuthStore} from "../../store/authStore";
 
 
 interface CurrentClaimResponse {
@@ -40,17 +40,30 @@ interface IsClaimAvailableResponse {
     }
 }
 
+interface MyPointsResponse {
+    totalPoints: number | null;
+    resultCode: string;
+    msg: string;
+}
+
 const Daily = () => {
+    const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+    const walletAddress = useAuthStore((state) => state.userAccount);
+
+    const [doRender, setDoRender] = useState(false);
     const [currentMG8, setCurrentMG8] = useState(0);
-    const [currentPoint, setCurrentPoint] = useState<bigint>(BigInt(0));
-    const [exchangeRatio, setExchangeRatio] = useState(0);
-    const [claimableAmount, setClaimableAmount] = useState<bigint>(BigInt(0));
     const [minAmount, setMinAmount] = useState<bigint>(BigInt(0));
     const [maxAmount, setMaxAmount] = useState<bigint>(BigInt(0));
     const [decimal, setDecimal] = useState(0)
+    const [exChangeRatioAPI, setExchangeRatioAPI] = useState(0)
     const [isClaimable, setIsClaimable] = useState<boolean>(false);
+    const [myPointsAPI, setMyPointsAPI] = useState(0);
 
     const isAvailableClaim = currentMG8 >= minAmount
+
+    const doRerender = () => {
+        setDoRender(!doRender)
+    }
     const addCommas = (num: number) => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
@@ -68,7 +81,7 @@ const Daily = () => {
                 }
             })
             if (res.data.resultCode === '40') throw new Error(res.data.resultCode)
-            setCurrentPoint(BigInt(res.data.currentPoints))
+            setExchangeRatioAPI(res.data.exchangeRatio)
             setCurrentMG8(res.data.mg8Amount)
             setDecimal(res.data.decimals)
         } catch (error) {
@@ -88,23 +101,19 @@ const Daily = () => {
             console.error(err)
         }
     }
-    const getExchangeRatio = async () => {
-        try {
-            const provider = new BrowserProvider(window.ethereum);
-            const vault: Vault = new Contract(process.env.REACT_APP_CONTRACT_VAULT, VaultAbi, provider) as unknown as Vault
-            // const chainId = await window.ethereum.request({method: "eth_chainId"});
-            const signer = await provider.getSigner(0)
-            const res = await vault.convertPointToMG8Ratio()
-            const getClaimableAmount = await vault.claimableAmount(await signer.getAddress())
-            setExchangeRatio(Number(res))
-            setClaimableAmount(getClaimableAmount._mg8Amount)
 
+    const fetchMyPoints = useCallback(async () => {
+        try {
+            const res: MyPointsResponse = await ApiDaily.myPoint(walletAddress)
+            if (res.resultCode !== '1') {
+                return
+            }
+            setMyPointsAPI(res.totalPoints);
         } catch (error) {
-            console.error(error)
+            console.error('Error fetching total points:', error);
         }
-    }
+    }, [walletAddress]);
     useEffect(() => {
-        void getExchangeRatio()
         void fetchCurrentClaim()
         void fetchMinClaim()
         const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/claim/available`;
@@ -121,7 +130,15 @@ const Daily = () => {
             }
         }
         void fetchIsClaimAvailable()
-    }, [])
+    }, [doRender])
+
+    useEffect(() => {
+        void fetchMyPoints();
+        if (isLoggedIn) {
+            const interval = setInterval(fetchMyPoints, 5000);
+            return () => clearInterval(interval);
+        }
+    }, [walletAddress, fetchMyPoints, isLoggedIn]);
 
 
     return (
@@ -134,24 +151,23 @@ const Daily = () => {
                 <ContentWrapper>
                     <Reward/>
                     <Points
-                        claimableAmount={claimableAmount}
+                        doRerender={doRerender}
+                        myPointsAPI={myPointsAPI}
+                        exChangeRatioAPI={exChangeRatioAPI}
                         isClaimable={isClaimable}
-                        exchangeRatio={exchangeRatio}
                         minAmount={minAmount}
                         maxAmount={maxAmount}
-                        decimal={decimal}
-                        currentPoint={currentPoint}/>
+                        decimal={decimal}/>
                 </ContentWrapper>
-                {isClaimable ? (isAvailableClaim ?
-                        <ContentAlertText>
+                {isClaimable ? (myPointsAPI / exChangeRatioAPI > minAmount ?
+                        <ContentAlertText style={{color: '#b81414'}}>
+                            Insufficient POINT to claim.
+                        </ContentAlertText> : <ContentAlertText>
                             *CLAIM NOTICE : You can claim up to&nbsp;
                             <strong style={{fontWeight: 'bold'}}>
                                 {convertNumber(formatUnits(maxAmount, decimal))}
-                            </strong>p at
+                            </strong>MG8 at
                             once.
-                        </ContentAlertText> :
-                        <ContentAlertText style={{color: '#b81414'}}>
-                            Insufficient POINT to claim.
                         </ContentAlertText>)
                     : null
                 }

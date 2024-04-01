@@ -2,12 +2,11 @@ import styled from "styled-components";
 import {useWallet} from "../../hooks/useWallet";
 import {useAuthStore} from "../../store/authStore";
 import ApiPoints from "../../apis/ApiPoints";
-import {useCallback, useEffect, useRef, useState} from "react";
+import {useRef, useState} from "react";
 import {LOGIN_FAILED, METAMASK_LINK_FAILED} from "../../constants";
-import ApiDaily from "../../apis/ApiDaily";
 import ClaimDialog from "./dialog/ClaimDialog";
 import {theme} from "../../styles/theme";
-import {BrowserProvider, Contract, toBeHex} from "ethers";
+import {BrowserProvider, Contract, formatEther, toBeHex} from "ethers";
 import {Vault} from "../../typechain-types";
 import {VaultAbi} from "../../typechain-types/contracts/Vault";
 import AlertDialog from "./dialog/AlertDialog";
@@ -18,38 +17,39 @@ interface LoginResponse {
     resultCode: string;
 }
 
-interface MyPointsResponse {
-    totalPoints: number | null;
-    resultCode: string;
-    msg: string;
-}
-
 
 interface PointsProps {
-    claimableAmount: bigint;
+    doRerender: () => void
+    myPointsAPI: number;
     isClaimable: boolean;
-    exchangeRatio: number;
-    currentPoint: bigint;
     minAmount: bigint;
     maxAmount: bigint;
     decimal: number;
+    exChangeRatioAPI: number
 }
 
 const Points = (props: PointsProps) => {
-    const {claimableAmount, isClaimable, maxAmount, minAmount, exchangeRatio, currentPoint} = props;
+    const {doRerender, myPointsAPI, exChangeRatioAPI, isClaimable, maxAmount, minAmount} = props;
+
     const {connectWallet} = useWallet();
-    const claimDialogRef = useRef<HTMLDialogElement | null>(null)
-    const alertDialogRef = useRef<HTMLDialogElement>(null)
     const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
     const walletAddress = useAuthStore((state) => state.userAccount);
-    const [loginAttemptFailed, setLoginAttemptFailed] = useState(false);
-    const [myPoints, setMyPoints] = useState(0);
 
-    const [receivedMG8, setReceivedMG8] = useState<bigint>(BigInt(0))
+    const claimDialogRef = useRef<HTMLDialogElement | null>(null)
+    const alertDialogRef = useRef<HTMLDialogElement>(null)
+
+
+    const [loginAttemptFailed, setLoginAttemptFailed] = useState(false);
+
+    const [myPointContract, setMyPointContract] = useState(0);
+
     const [hash, setHash] = useState('')
     const [isTransactionComplete, setIsTransactionComplete] = useState(false)
     const [isNetworkChange, setIsNetworkChange] = useState(false)
     const [isButtonActive, setIsButtonActive] = useState(false)
+
+    const [claimableAmount, setClaimableAmount] = useState<bigint>(BigInt(0));
+    const [exchangeRatioContract, setExchangeRatioContract] = useState(0);
 
     const getClaimableAmount = async () => {
         try {
@@ -62,8 +62,14 @@ const Points = (props: PointsProps) => {
                     params: [{chainId: toBeHex(97)}]
                 })
                 const signer = await provider.getSigner(0)
-                const res: any = await vault.claimableAmount(await signer.getAddress())
-                setReceivedMG8(maxAmount <= res._mg8Amount ? maxAmount : res._mg8Amount)
+                const convertPointToMG8Ratio: any = await vault.convertPointToMG8Ratio()
+                const claimableAmountRes: any = await vault.claimableAmount(await signer.getAddress())
+                const currentPointRes = claimableAmountRes._mg8Amount * convertPointToMG8Ratio
+                // FIXME: 대소 확인 로직
+                setClaimableAmount(claimableAmountRes._mg8Amount)
+                setExchangeRatioContract(Number(convertPointToMG8Ratio))
+                setMyPointContract(parseFloat(formatEther(currentPointRes)));
+                // setReceivedMG8(maxAmount <= res._mg8Amount ? maxAmount : res._mg8Amount)
             }
 
             setIsNetworkChange(true)
@@ -72,8 +78,6 @@ const Points = (props: PointsProps) => {
             setIsNetworkChange(false)
             claimDialogRef.current?.close()
         }
-
-
     }
     const handleOpenDialog = (refCategory: string) => {
         const dialogRef = refCategory === 'claim' ? claimDialogRef : alertDialogRef
@@ -107,39 +111,24 @@ const Points = (props: PointsProps) => {
                 throw new Error(LOGIN_FAILED);
             }
             useAuthStore.getState().login(address);
+            void doRerender()
         } catch (error) {
             console.error("An error occurred during login process:", error);
             setLoginAttemptFailed(true);
             alert(LOGIN_FAILED);
         }
     };
-    const fetchMyPoints = useCallback(async () => {
-        try {
-            const res: MyPointsResponse = await ApiDaily.myPoint(walletAddress)
-            if (res.resultCode !== '1') {
-                return
-            }
-            setMyPoints(res.totalPoints);
-        } catch (error) {
-            console.error('Error fetching total points:', error);
-        }
-    }, [walletAddress]);
-
-    useEffect(() => {
-        void fetchMyPoints();
-        if (isLoggedIn) {
-            const interval = setInterval(fetchMyPoints, 5000);
-            return () => clearInterval(interval);
-        }
-    }, [walletAddress, fetchMyPoints, isLoggedIn]);
 
 
     let buttonContent;
     if (!isLoggedIn || loginAttemptFailed) {
         buttonContent = (<LoginButton onClick={clickLogin}>Login</LoginButton>);
     } else {
+        // FIXME: 최초 disabled 뜨는거 고치기
         if (isClaimable) {
-            if (currentPoint === BigInt(0)) {
+            // FIXME: min > claimableAmout
+            // 테스트끝나면 myPointsAPI < minAMount로 변경하기
+            if (myPointsAPI / exChangeRatioAPI > minAmount) {
                 buttonContent =
                     <ClaimButton onClick={null} style={{color: theme.colors.bg.icon, fontSize: '18px'}}>No MG8
                         Point</ClaimButton>
@@ -159,13 +148,11 @@ const Points = (props: PointsProps) => {
                                          style={{color: theme.colors.bg.icon, fontSize: '20px'}}>Disabled</ClaimButton>
         }
     }
-
-
     return (
         <PointsWrapper>
             <TextWrapper>
                 <div>My Total MG8 Points</div>
-                <PointText>{isLoggedIn ? myPoints : '-'} P</PointText>
+                <PointText>{isLoggedIn ? myPointsAPI : '-'} P</PointText>
             </TextWrapper>
             {buttonContent}
             <ClaimDialog ref={claimDialogRef}
@@ -174,9 +161,8 @@ const Points = (props: PointsProps) => {
                          maxAmount={maxAmount}
                          claimableAmount={claimableAmount}
                          isNetworkChange={isNetworkChange}
-                         receivedMG8={receivedMG8}
-                         exchangeRatio={exchangeRatio}
-                         currentPoint={currentPoint}
+                         exchangeRatio={exchangeRatioContract}
+                         myPointContract={myPointContract}
                          setIsTransactionComplete={setIsTransactionComplete}
                          handleOpenDialog={handleOpenDialog}
                          handleCloseDialog={handleCloseDialog}
@@ -185,7 +171,7 @@ const Points = (props: PointsProps) => {
                 ref={alertDialogRef}
                 hash={hash}
                 isTransactionComplete={isTransactionComplete}
-                receivedMG8={BigInt(receivedMG8)}
+                claimableAmount={claimableAmount}
                 handleCloseDialog={handleCloseDialog}
             />
             {/* {(!isLoggedIn || loginAttemptFailed) && (

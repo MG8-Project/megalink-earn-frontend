@@ -2,6 +2,7 @@ import styled from "styled-components";
 import PartnerToken from "./PartnerToken";
 import API from "../../apis/Api";
 import {useEffect, useState} from "react";
+import { useAuthStore } from "../../store/authStore";
 
 
 export interface IToken {
@@ -36,7 +37,7 @@ interface ClaimAvailableResponse {
 }
 
 const Wallet = () => {
-
+    const isLogin = useAuthStore((state) => state.isLoggedIn);
     const [tokenList, setTokeList] = useState<IToken[]>([])
     const [remainTime, setRemainTime] = useState<number>(0)
     const [isClaimAvailable, setIsClaimAvailable] = useState<boolean>(false)
@@ -66,13 +67,13 @@ const Wallet = () => {
     }
     useEffect(() => {
         void fetchPartnerTokens();
-        void fetchClaimAvailable()
-    }, []);
+        void fetchClaimAvailable();
+    }, [isLogin, isClaimAvailable]);
 
     return (
         <WalletWrapper>
             <WalletTitle>Get $MG8 if you have one of these coins</WalletTitle>
-            <PartnerToken tokenList={tokenList} remainTime={remainTime} isClaimAvailable={isClaimAvailable}/>
+            <PartnerToken tokenList={tokenList} remainTime={remainTime} isClaimAvailable={isClaimAvailable} setIsClaimAvailable={setIsClaimAvailable} isLogin={isLogin}/>
         </WalletWrapper>
     );
 };
