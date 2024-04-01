@@ -92,19 +92,19 @@ export const useWallet = () => {
                     setCurrentAccount(null);
                 } else {
                     const newAccount = accounts[0];
-                    if (currentAccount !== newAccount) {
+                    if (getAddress(currentAccount) !== getAddress(newAccount)) {
                         logout();
-                        setWalletAddress(newAccount);
-                        setCurrentAccount(newAccount);
+                        setWalletAddress(getAddress(newAccount));
+                        setCurrentAccount(getAddress(newAccount));
                         try {
-                            login(newAccount);
+                            login(getAddress(newAccount));
                         } catch (error) {
                         }
                     }
                 }
             })
         }
-    }, [setWalletAddress]);
+    }, [setWalletAddress, logout, currentAccount, login]);
 
     useEffect(() => {
         const handleAccountsChanged = (accounts: string[]) => {
@@ -113,10 +113,10 @@ export const useWallet = () => {
                 setCurrentAccount(null);
             } else {
                 const newAccount = accounts[0];
-                if (currentAccount !== newAccount) {
+                if (getAddress(currentAccount) !== getAddress(newAccount)) {
                     logout();
-                    setWalletAddress(newAccount);
-                    setCurrentAccount(newAccount);
+                    setWalletAddress(getAddress(newAccount));
+                    setCurrentAccount(getAddress(newAccount));
                 }
             }
         };

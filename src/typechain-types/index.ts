@@ -16,6 +16,8 @@ export type { Initializable } from "./@openzeppelin/contracts-upgradeable/proxy/
 export { Initializable__factory } from "./factories/@openzeppelin/contracts-upgradeable/proxy/utils/Initializable__factory";
 export type { UUPSUpgradeable } from "./@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable";
 export { UUPSUpgradeable__factory } from "./factories/@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable__factory";
+export type { ERC20Upgradeable } from "./@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable";
+export { ERC20Upgradeable__factory } from "./factories/@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable__factory";
 export type { ContextUpgradeable } from "./@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable";
 export { ContextUpgradeable__factory } from "./factories/@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable__factory";
 export type { EIP712Upgradeable } from "./@openzeppelin/contracts-upgradeable/utils/cryptography/EIP712Upgradeable";
@@ -66,6 +68,8 @@ export type { ShortStrings } from "./@openzeppelin/contracts/utils/ShortStrings"
 export { ShortStrings__factory } from "./factories/@openzeppelin/contracts/utils/ShortStrings__factory";
 export type { Strings } from "./@openzeppelin/contracts/utils/Strings";
 export { Strings__factory } from "./factories/@openzeppelin/contracts/utils/Strings__factory";
+export type { ACEToken } from "./contracts/ACE.sol/ACEToken";
+export { ACEToken__factory } from "./factories/contracts/ACE.sol/ACEToken__factory";
 export type { DailyAttendance } from "./contracts/DailyAttendance";
 export { DailyAttendance__factory } from "./factories/contracts/DailyAttendance__factory";
 export type { Forwarder } from "./contracts/Forwarder";
@@ -74,5 +78,7 @@ export type { MegalinkToken } from "./contracts/Megalink.sol/MegalinkToken";
 export { MegalinkToken__factory } from "./factories/contracts/Megalink.sol/MegalinkToken__factory";
 export type { Ownable2Step } from "./contracts/Megalink.sol/Ownable2Step";
 export { Ownable2Step__factory } from "./factories/contracts/Megalink.sol/Ownable2Step__factory";
+export type { Tether } from "./contracts/Tether";
+export { Tether__factory } from "./factories/contracts/Tether__factory";
 export type { Vault } from "./contracts/Vault";
 export { Vault__factory } from "./factories/contracts/Vault__factory";
