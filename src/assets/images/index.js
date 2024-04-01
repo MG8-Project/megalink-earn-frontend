@@ -54,5 +54,5 @@ export { default as noneActive } from "./noneActive.svg";
 export { default as check } from "./check.png";
 export { default as circle } from "./circle.png";
 export { default as link } from "./link.svg";
-export { default as noneCheck } from "./noneCheck.png";
+export { default as noneCheck } from "./plus-front-clay.svg";
 export { default as redCircle } from "./redCircle.png";
