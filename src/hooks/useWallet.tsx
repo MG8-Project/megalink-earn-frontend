@@ -20,9 +20,13 @@ export const useWallet = () => {
                 });
                 const provider = new ethers.BrowserProvider(window.ethereum);
                 const accounts = await provider.getSigner(0);
-                setWalletAddress(getAddress(await accounts.getAddress()));
-                setCurrentAccount(getAddress(await accounts.getAddress()));
-                return getAddress(await accounts.getAddress());
+                if (await accounts.getAddress() !== null) {
+                    setWalletAddress(getAddress(await accounts.getAddress()));
+                    setCurrentAccount(getAddress(await accounts.getAddress()));
+                    return getAddress(await accounts.getAddress());
+                }
+
+                return;
             } catch (error: any) {
                 try {
                     switch (error.code) {
@@ -92,6 +96,11 @@ export const useWallet = () => {
                     setCurrentAccount(null);
                 } else {
                     const newAccount = accounts[0];
+                    if (currentAccount == null || newAccount == null) {
+                        logout();
+                        return
+                    }
+
                     if (getAddress(currentAccount) !== getAddress(newAccount)) {
                         logout();
                         setWalletAddress(getAddress(newAccount));
@@ -113,6 +122,10 @@ export const useWallet = () => {
                 setCurrentAccount(null);
             } else {
                 const newAccount = accounts[0];
+                if (currentAccount == null || newAccount == null) {
+                    logout();
+                    return
+                }
                 if (getAddress(currentAccount) !== getAddress(newAccount)) {
                     logout();
                     setWalletAddress(getAddress(newAccount));
