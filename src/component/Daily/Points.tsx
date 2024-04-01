@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import {useWallet} from "../../hooks/useWallet";
-import {useAuthStore} from "../../store/authStore";
+import { useWallet } from "../../hooks/useWallet";
+import { useAuthStore } from "../../store/authStore";
 import ApiPoints from "../../apis/ApiPoints";
 import {useCallback, useEffect, useRef, useState} from "react";
 import {LOGIN_FAILED, METAMASK_LINK_FAILED} from "../../constants";
@@ -15,13 +15,13 @@ import {DOMAIN_SEPARATOR} from "./Reward";
 
 // FIXME: LoginResponse 확인 후 프로퍼티 수정하기
 interface LoginResponse {
-    resultCode: string;
+  resultCode: string;
 }
 
 interface MyPointsResponse {
-    totalPoints: number | null;
-    resultCode: string;
-    msg: string;
+  totalPoints: number | null;
+  resultCode: string;
+  msg: string;
 }
 
 
@@ -184,37 +184,44 @@ const Points = (props: PointsProps) => {
             {/* {(!isLoggedIn || loginAttemptFailed) && (
                 <LoginButton onClick={clickLogin}>Login</LoginButton>
             )} */}
-        </PointsWrapper>
-    );
+    </PointsWrapper>
+  );
 };
 export default Points;
 
 const PointsWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const TextWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    font-weight: 600;
-    font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  font-size: 18px;
 `;
 const PointText = styled.div`
-    font-size: 40px;
+  font-size: 40px;
 `;
 
 const LoginButton = styled.button`
-    margin-top: 36px;
-    font-weight: 600;
-    width: 120px;
-    height: 56px;
-    border: 1px solid #ffffff;
-    border-radius: 100px;
-    font-size: 20px;
+  margin-top: 36px;
+
+  display: flex;
+  width: 160px;
+  height: 52px;
+  padding: 10px 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 100px;
+  background: #006ebe;
+  backdrop-filter: blur(4px);
+  font-size: 18px;
+  font-weight: 500;
 `;
 
 const ClaimButton = styled.button`

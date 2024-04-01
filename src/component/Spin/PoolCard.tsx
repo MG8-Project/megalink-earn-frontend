@@ -12,14 +12,14 @@ const PoolCard = () => {
       const response = await ApiDaily.dailyPool();
       setDailyPool(response);
     } catch (error) {
-      console.error('Error fetching daily pool:', error);
+      console.error("Error fetching daily pool:", error);
     }
   }
-  
+
   useEffect(() => {
     fetchDailyPool();
     const interval = setInterval(fetchDailyPool, 5000);
-    return () => clearInterval(interval); 
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -44,7 +44,6 @@ const CardContainer = styled.div`
 const CardTitle = styled.div`
   font-weight: 600;
   font-size: 20px;
-  margin-bottom: 48px;
 `;
 const CardBox = styled.div`
   display: flex;
@@ -57,12 +56,14 @@ const CardImage = styled.img`
   width: 64px;
 `;
 const PercentText = styled.div`
+  padding-top: 48px;
   font-size: 48px;
-  font-weight: 600;
+  font-weight: 500;
 `;
 
 const CardText = styled.div`
-  margin-top: 56px;
+  padding-top: 56px;
   font-size: 18px;
   font-weight: 400;
+  line-height: 22px;
 `;

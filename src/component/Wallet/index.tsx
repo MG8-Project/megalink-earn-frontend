@@ -105,29 +105,33 @@ const Wallet = () => {
 export default Wallet;
 
 const WalletWrapper = styled.div`
-    width: 1200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 160px;
-    margin-bottom: 160px;
+  width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 160px;
+  margin-bottom: 160px;
 `;
 
 const WalletTitle = styled.h3`
-    font-size: 28px;
-    margin-bottom: 56px;
+  font-size: 28px;
+  margin-bottom: 56px;
 `;
 
 const WalletContainer = styled.button`
-    margin-top: 40px;
-    display: flex;
-    font-weight: 400;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    width: 140px;
-    height: 40px;
-    border: 1px solid #ffffff;
-    border-radius: 100px;
-    font-size: 16px;
+  margin-top: 40px;
+  display: flex;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  display: flex;
+  width: 180px;
+  height: 52px;
+  padding: 10px 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 100px;
+  background: #006ebe;
+  backdrop-filter: blur(4px);
 `;

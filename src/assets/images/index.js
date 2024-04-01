@@ -2,10 +2,11 @@
 export {default as headerLogo} from "./Megalink_Earn.png";
 
 // footer
-export {default as discord} from "./ic_Discord.png";
-export {default as x} from "./ic_X.png";
-export {default as telegram} from "./ic_Telegram.png";
-export {default as footerLogo} from "./Megalink_CI.png";
+export { default as discord } from "./iconDiscord.png";
+export { default as x } from "./iconX.png";
+export { default as telegram } from "./iconTelegram.png";
+export { default as gitbook } from "./gitbook.png";
+export { default as footerLogo } from "./Megalink_CI.png";
 
 // wallet
 export {default as binance} from "./binance.png";
@@ -32,3 +33,15 @@ export {default as close} from "./closeWhite.png";
 //check
 export {default as check} from "./check.png";
 export {default as failed} from "./failed.png";
+// Popup
+
+export { default as closeBtn } from "./close.png";
+export { default as line } from "./line.svg";
+export { default as active } from "./active.svg";
+export { default as claim } from "./claim.svg";
+export { default as noneActive } from "./noneActive.svg";
+export { default as check } from "./check.png";
+export { default as circle } from "./circle.png";
+export { default as link } from "./link.svg";
+export { default as noneCheck } from "./plus-front-clay.svg";
+export { default as redCircle } from "./redCircle.png";

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useInterval } from 'react-use';
+import { useState, useEffect } from "react";
+import { useInterval } from "react-use";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import { clock } from "../../assets/images";
@@ -7,8 +7,7 @@ import { clock } from "../../assets/images";
 const MissionCard = () => {
   const [remainingTime, setRemainingTime] = useState(getRemainingTime());
 
-  useEffect(() => {
-  }, [])
+  useEffect(() => {}, []);
   useInterval(() => {
     setRemainingTime(getRemainingTime());
   }, 1000);
@@ -37,11 +36,11 @@ const MissionCard = () => {
         <CardTitle>Daily Mission</CardTitle>
         <div>
           <TimeContainer>
-              {remainingTime.hours.toString().padStart(2, '0')}
-              <p>:</p> 
-              {remainingTime.minutes.toString().padStart(2, '0')}
-              <p>:</p>
-              {remainingTime.seconds.toString().padStart(2, '0')}
+            {remainingTime.hours.toString().padStart(2, "0")}
+            <p>:</p>
+            {remainingTime.minutes.toString().padStart(2, "0")}
+            <p>:</p>
+            {remainingTime.seconds.toString().padStart(2, "0")}
           </TimeContainer>
           <TimeText>
             <span>Hours</span>
@@ -65,7 +64,9 @@ const CardContainer = styled.div`
 const CardTitle = styled.div`
   font-weight: 600;
   font-size: 20px;
-  margin-bottom: 48px;
+  padding-bottom: 48px;
+  text-align: center;
+  line-height: 100%;
 `;
 const CardBox = styled.div`
   display: flex;
@@ -84,13 +85,15 @@ const TimeText = styled.div`
   font-weight: 400;
   font-size: 16px;
   margin-top: 12px;
+  font-weight: 400;
+  line-height: 20px;
 `;
 
 const TimeContainer = styled.div`
   display: flex;
   gap: 20px;
   font-size: 48px;
-  font-weight: 600;
+  font-weight: 500;
   align-items: center;
 
   > p {
@@ -101,6 +104,8 @@ const TimeContainer = styled.div`
 
 const CardText = styled.div`
   margin-top: 56px;
+  text-align: center;
   font-size: 18px;
   font-weight: 400;
+  line-height: 22px;
 `;
