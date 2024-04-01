@@ -29,7 +29,7 @@ interface PointsProps {
     claimableAmount: bigint;
     isClaimable: boolean;
     exchangeRatio: number;
-    currentPoint: bigint;
+    currentPoint: number;
     minAmount: bigint;
     maxAmount: bigint;
     decimal: number;
@@ -63,6 +63,7 @@ const Points = (props: PointsProps) => {
                 })
                 const signer = await provider.getSigner(0)
                 const res: any = await vault.claimableAmount(await signer.getAddress())
+                console.log(res._mg8Amount)
                 setReceivedMG8(maxAmount <= res._mg8Amount ? maxAmount : res._mg8Amount)
             }
 
@@ -139,7 +140,7 @@ const Points = (props: PointsProps) => {
         buttonContent = (<LoginButton onClick={clickLogin}>Login</LoginButton>);
     } else {
         if (isClaimable) {
-            if (currentPoint === BigInt(0)) {
+            if (currentPoint === 0) {
                 buttonContent =
                     <ClaimButton onClick={null} style={{color: theme.colors.bg.icon, fontSize: '18px'}}>No MG8
                         Point</ClaimButton>

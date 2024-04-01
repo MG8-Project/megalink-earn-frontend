@@ -4,7 +4,7 @@ import Reward from "./Reward";
 import Points from "./Points";
 import {useEffect, useState} from "react";
 import API from "../../apis/Api";
-import {BrowserProvider, Contract, formatUnits} from "ethers";
+import {BrowserProvider, Contract, formatEther, formatUnits} from "ethers";
 import {Vault} from "../../typechain-types";
 import {VaultAbi} from "../../typechain-types/contracts/Vault";
 
@@ -42,7 +42,7 @@ interface IsClaimAvailableResponse {
 
 const Daily = () => {
     const [currentMG8, setCurrentMG8] = useState(0);
-    const [currentPoint, setCurrentPoint] = useState<bigint>(BigInt(0));
+    const [currentPoint, setCurrentPoint] = useState(0);
     const [exchangeRatio, setExchangeRatio] = useState(0);
     const [claimableAmount, setClaimableAmount] = useState<bigint>(BigInt(0));
     const [minAmount, setMinAmount] = useState<bigint>(BigInt(0));
@@ -68,7 +68,7 @@ const Daily = () => {
                 }
             })
             if (res.data.resultCode === '40') throw new Error(res.data.resultCode)
-            setCurrentPoint(BigInt(res.data.currentPoints))
+            // setCurrentPoint(BigInt(res.data.currentPoints))
             setCurrentMG8(res.data.mg8Amount)
             setDecimal(res.data.decimals)
         } catch (error) {
@@ -91,14 +91,15 @@ const Daily = () => {
     const getExchangeRatio = async () => {
         try {
             const provider = new BrowserProvider(window.ethereum);
-            const vault: Vault = new Contract(process.env.REACT_APP_CONTRACT_VAULT, VaultAbi, provider) as unknown as Vault
+            const vault = new Contract(process.env.REACT_APP_CONTRACT_VAULT, VaultAbi, provider)
             // const chainId = await window.ethereum.request({method: "eth_chainId"});
             const signer = await provider.getSigner(0)
-            const res = await vault.convertPointToMG8Ratio()
-            const getClaimableAmount = await vault.claimableAmount(await signer.getAddress())
-            setExchangeRatio(Number(res))
+            const convertPointToMG8Ratio: any = await vault.convertPointToMG8Ratio()
+            const getClaimableAmount: any = await vault.claimableAmount(await signer.getAddress())
+            const currentPoint = getClaimableAmount._mg8Amount * convertPointToMG8Ratio
+            setCurrentPoint(parseFloat(formatEther(currentPoint)));
+            setExchangeRatio(Number(convertPointToMG8Ratio))
             setClaimableAmount(getClaimableAmount._mg8Amount)
-
         } catch (error) {
             console.error(error)
         }

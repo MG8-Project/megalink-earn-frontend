@@ -15,7 +15,7 @@ interface ClaimDialogProps {
     handleOpenDialog: (refCategory: string) => void;
     handleCloseDialog: (refCategory: string) => void;
     exchangeRatio: number;
-    currentPoint: bigint;
+    currentPoint: number;
     setHash: Dispatch<SetStateAction<string>>
     isNetworkChange: boolean;
     setIsTransactionComplete: Dispatch<SetStateAction<boolean>>
@@ -26,7 +26,7 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
         isNetworkChange,
         setIsTransactionComplete,
         receivedMG8,
-        claimableAmount,
+        claimableAmount, // FIXME: receivedMG8와 claimableAmount 은 같음
         minAmount,
         maxAmount,
         handleOpenDialog,
@@ -36,15 +36,15 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
         setHash
     } = props;
 
-    const addCommas = (num: bigint) => {
+    const addCommas = (num: bigint | number) => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-    const isButtonActive = minAmount > receivedMG8;
+    const isButtonActive = minAmount < receivedMG8;
+    console.log(maxAmount, claimableAmount, receivedMG8)
     const max = maxAmount > claimableAmount ? claimableAmount : maxAmount;
     const claim = async () => {
         try {
-            if (isButtonActive) {
-                console.log(minAmount, receivedMG8)
+            if (!isButtonActive) {
                 return;
             }
             const provider = new BrowserProvider(window.ethereum);
@@ -93,7 +93,7 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
                             }}> {isNetworkChange ? addCommas(currentPoint) : '...'} p</p>
                         </DialogContentInfo>
                         <DialogContentInfo>
-                            <p style={{fontSize: "1.5rem", fontWeight: 'normal'}}>Your Will Received</p>
+                            <p style={{fontSize: "1.5rem", fontWeight: 'normal'}}>You Will Received</p>
                             <p style={{
                                 fontSize: "1.8rem",
                                 fontWeight: 'bold'
