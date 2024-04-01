@@ -70,7 +70,8 @@ const Daily = () => {
             setExchangeRatio(res.data.exchangeRatio)
             setDecimal(res.data.decimals)
         } catch (error) {
-            console.error(error)
+            // console.error(error)
+            // FIXME: Error handling
         }
     }
 
