@@ -19,6 +19,8 @@ interface PartnerTokenProps {
     tokenList: IToken[]
     remainTime: number
     isClaimAvailable: boolean
+    setIsClaimAvailable: React.Dispatch<React.SetStateAction<boolean>>
+    isLogin: boolean
 }
 
 interface IBalance {
@@ -46,10 +48,10 @@ interface AirdropResponse {
 }
 
 const PartnerToken = (props: PartnerTokenProps) => {
-    const {isClaimAvailable, remainTime, tokenList} = props;
+    const {isClaimAvailable, remainTime, tokenList, setIsClaimAvailable, isLogin} = props;
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [balaceList, setBalanceList] = useState<IBalance[]>([])
-    const isLogin = useAuthStore((state) => state.isLoggedIn);
+    
     const {walletAddress, connectWallet} = useWallet();
     const onWalletConnect = async () => {
         setIsLoading(true)
@@ -111,6 +113,9 @@ const PartnerToken = (props: PartnerTokenProps) => {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`
                 }
             })
+            if (res && res.data.resultCode === '1') {
+                setIsClaimAvailable(true);
+            }
             console.log(res)
         } catch (err) {
             console.error(err)
@@ -134,7 +139,7 @@ const PartnerToken = (props: PartnerTokenProps) => {
     }
     useEffect(() => {
         void fetchBalances()
-    }, []);
+    }, [isClaimAvailable]);
 
     return (
         <CardWrapper>
