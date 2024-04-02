@@ -55,7 +55,6 @@ const LeaderBoardWrapper = styled.div`
 `;
 
 const TitleContainer = styled.div`
-    margin-top: 160px;
     display: flex;
     align-items: center;
     flex-direction: column;
