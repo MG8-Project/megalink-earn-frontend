@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import {theme} from "../../styles/theme";
 import {useEffect, useState} from "react";
 import {IToken} from "./index";
@@ -11,6 +11,9 @@ import Spinner from "../ui/Spinner";
 import RemainTime from "./RemainTime";
 import ApiPoints from "../../apis/ApiPoints";
 
+interface CardBoxProps {
+    $highBalance: boolean;
+  }
 interface LoginResponse {
     resultCode: string;
 }
@@ -78,14 +81,13 @@ const PartnerToken = (props: PartnerTokenProps) => {
             return 0;
         }
     }
-    const checkBalance = () => {
-        for (let i = 0; i < tokenList.length; i++) {
-            const num = Number(findBalance(tokenList[i].symbol)) / convertNumber(formatUnits(tokenList[i].minAmount, tokenList[i].decimals))
-            if (num < 1) {
-                return false;
-            }
+    const checkBalance = (i: number) => {
+        const num = Number(findBalance(tokenList[i].symbol)) / convertNumber(formatUnits(tokenList[i].minAmount, tokenList[i].decimals))
+        if (num < 1) {
+            return false;
+        } else {
+            return true;
         }
-        return true
     }
     const clickLogin = async () => {
         try {
@@ -115,6 +117,7 @@ const PartnerToken = (props: PartnerTokenProps) => {
             })
             if (res && res.data.resultCode === '1') {
                 setIsClaimAvailable(true);
+                
             }
             console.log(res)
         } catch (err) {
@@ -140,8 +143,6 @@ const PartnerToken = (props: PartnerTokenProps) => {
     useEffect(() => {
         void fetchBalances()
     }, [isClaimAvailable]);
-    console.log(isLogin, isClaimAvailable
-    )
 
     return (
         <CardWrapper>
@@ -150,16 +151,23 @@ const PartnerToken = (props: PartnerTokenProps) => {
                     <CardBox key={index}>
                         <CardBoxImg src={item.logoUrl} alt=""/>
                         <div>{item.symbol}</div>
-                        {isLogin ?
+                        {/* {isLogin ?
                             <CardAmountBox>{parseFloat(parseFloat(formatUnits(findBalance(item.symbol), item.decimals)).toFixed(2))}/{parseFloat(parseFloat(formatUnits(item.minAmount, item.decimals)).toFixed(2))}</CardAmountBox> : null
+                        } */}
+                        {isLogin ?
+                            <CardTextBox $highBalance={checkBalance(index)}>
+                                <CardText $highBalance={checkBalance(index)}>
+                                {parseFloat(parseFloat(formatUnits(findBalance(item.symbol), item.decimals)).toFixed(2))}/{parseFloat(parseFloat(formatUnits(item.minAmount, item.decimals)).toFixed(2))}
+                                </CardText>
+                            </CardTextBox> : null
                         }
                     </CardBox>
                 ))}
 
             </TokenWrapper>
-            {walletAddress !== null && isLogin ? (remainTime === 0 ? <text>Claim Available!</text> :
-                <RemainTime remainTime={remainTime}/>) : <text>Please Login</text>}
             <ButtonWrapper>
+                {walletAddress !== null && isLogin ? (remainTime === 0 ? <text>Claim Available!</text> :
+                    <RemainTime remainTime={remainTime}/>) : <text>Please Login</text>}
                 {!walletAddress ? (
                     <WalletContainer onClick={onWalletConnect}>
                         {isLoading ? <div><Spinner size={15}/>
@@ -168,10 +176,11 @@ const PartnerToken = (props: PartnerTokenProps) => {
                     </WalletContainer>
                 ) : (
                     <WalletContainer onClick={isLogin ? (isClaimAvailable ? clickAirdrop : null) : clickLogin}
-                                     style={{
-                                         color: isLogin ? (isClaimAvailable ? '#fff' : '#3dbd3d') : '#fff',
-                                         border: isLogin ? (isClaimAvailable ? '1px solid #fff' : '1px solid #3dbd3d') : '1px solid #fff'
-                                     }}>
+                                    //  style={{
+                                    //      color: isLogin ? (isClaimAvailable ? '#fff' : '#3dbd3d') : '#fff',
+                                    //      border: isLogin ? (isClaimAvailable ? '1px solid #fff' : '1px solid #3dbd3d') : '1px solid #fff'
+                                    //  }}
+                                     >
                         {isLogin ? (isClaimAvailable ? 'Claim' : 'Claimed!') : 'Login'}
                     </WalletContainer>
                 )}
@@ -183,71 +192,87 @@ const PartnerToken = (props: PartnerTokenProps) => {
 
 export default PartnerToken;
 
-const ButtonWrapper = styled.div`
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`
-const WalletContainer = styled.button`
-    display: flex;
-    font-weight: 400;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    width: 140px;
-    height: 40px;
-    border: 1px solid #ffffff;
-    border-radius: 100px;
-    font-size: 16px;
-`;
 const CardWrapper = styled.div`
-    background-color: ${theme.colors.bg.box};
-    border-radius: 16px;
-    display: grid;
-    grid-template-areas: 
-            "token" 
-            "time"
-            "button";
-    grid-template-columns: 4fr 2fr 1.5fr;
-    width: 120rem;
-    place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
-
+const ButtonWrapper = styled.div`
+  margin: 60px 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+const WalletContainer = styled.button`
+  margin-top: 40px;
+  display: flex;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  display: flex;
+  width: 180px;
+  height: 52px;
+  padding: 10px 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 100px;
+  background: #006ebe;
+  backdrop-filter: blur(4px);
+`;
 const TokenWrapper = styled.div`
-    grid-area: token;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    place-items: center;
-    width: 100%;
-`
+    display: flex;
+    gap: 24px;
+`;
 const CardBox = styled.div`
-    width: 10%;
-    height: 200px;
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
+  width: 384px;
+  height: 230px;
+  border-radius: 16px;
+  background-color: ${theme.colors.bg.box};
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
 `;
+const CardTextBox = styled.div<CardBoxProps>`
+  background: linear-gradient(90deg, #82e8ff, #379fff);
+  border-radius: 100px;
+  border: 1px solid transparent;
+  background-image: linear-gradient(#000000, #000000),
+    linear-gradient(90deg, #82e8ff, #379fff);
+  background-origin: border-box;
+  background-clip: padding-box,
+    border-box
+      ${(props) =>
+        props.$highBalance &&
+        css`
+          border: 1px solid transparent;
+          background-image: linear-gradient(#000000, #000000),
+            linear-gradient(90deg, #333333, #333333);
 
-const CardAmountBox = styled.div`
-    width: 100px;
-    height: 40px;
-    border: 1.5px solid gray;
-    border-radius: 20px;
-    background-color: black;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    justify-content: center;
-    align-items: center;
+          background-origin: border-box;
+          background-clip: padding-box, border-box;
+        `};
 `;
-
+const CardText = styled.div<CardBoxProps>`
+  z-index: 100;
+  height: 40px;
+  border-radius: 20px;
+  background-color: black;
+  display: flex;
+  padding: 10px 24px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  color: ${(props) => (props.$highBalance ? "#999999" : "inherit")};
+`;
 const CardBoxImg = styled.img`
-    width: 64px;
-    height: 64px;
-    margin-top: 20px;
+  width: 64px;
+  margin-top: 40px;
 `;
 const TokenAlertText = styled.div`
     padding: 15px 0;
