@@ -51,7 +51,7 @@ const PartnerToken = (props: PartnerTokenProps) => {
     const {isClaimAvailable, remainTime, tokenList, setIsClaimAvailable, isLogin} = props;
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [balaceList, setBalanceList] = useState<IBalance[]>([])
-    
+
     const {walletAddress, connectWallet} = useWallet();
     const onWalletConnect = async () => {
         setIsLoading(true)
@@ -140,6 +140,8 @@ const PartnerToken = (props: PartnerTokenProps) => {
     useEffect(() => {
         void fetchBalances()
     }, [isClaimAvailable]);
+    console.log(isLogin, isClaimAvailable
+    )
 
     return (
         <CardWrapper>
@@ -155,7 +157,8 @@ const PartnerToken = (props: PartnerTokenProps) => {
                 ))}
 
             </TokenWrapper>
-            {walletAddress !== null && isLogin ? <RemainTime remainTime={remainTime}/> : <>Please Login</>}
+            {walletAddress !== null && isLogin ? (remainTime === 0 ? <>Claim Available!</> :
+                <RemainTime remainTime={remainTime}/>) : <>Please Login</>}
             <ButtonWrapper>
                 {!walletAddress ? (
                     <WalletContainer onClick={onWalletConnect}>
