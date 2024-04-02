@@ -1,4 +1,4 @@
-import {ace, binance, discord, mega8, mg8gray, telegram, wemix, x,} from "../assets/images";
+import {ace, binance, discord, mega8, mg8gray, telegram, wemix, x, gitbook} from "../assets/images";
 import {hexlify} from "ethers";
 //footer
 export const FooterList = [
@@ -8,44 +8,62 @@ export const FooterList = [
 
 export const FooterSns = [
     {
-        id: 1,
-        linkUrl: "https://discord.gg/fEsTxNUYth",
-        imgSrc: discord,
-        text: "Discord",
+      id: 1,
+      linkUrl: "https://discord.gg/fEsTxNUYth",
+      imgSrc: discord,
+      text: "Discord",
     },
     {
-        id: 2,
-        linkUrl: "https://twitter.com/MegalinkMG8",
-        imgSrc: x,
-        text: "Twitter",
+      id: 2,
+      linkUrl: "https://twitter.com/MegalinkMG8",
+      imgSrc: x,
+      text: "Twitter",
     },
     {
-        id: 3,
-        linkUrl: "https://t.me/MegalinkMG8",
-        imgSrc: telegram,
-        text: "Telegram",
+      id: 3,
+      linkUrl: "https://t.me/MegalinkMG8",
+      imgSrc: telegram,
+      text: "Telegram",
     },
-];
+    {
+      id: 4,
+      linkUrl: "https://docs.mega8.io/",
+      imgSrc: gitbook,
+      text: "Gitbook",
+    },
+  ];
+  
 
-export const coinList = [
+  export const coinList = [
     {
-        id: 1, image: binance,
-        amount: 1,
-        url: "https://bsc-dataseed.binance.org/",
-        chainId: 56, balance: '0', title: "BNB"
+      id: 1,
+      image: binance,
+      amount: 1,
+      url: "https://bsc-dataseed.binance.org/",
+      chainId: 56,
+      balance: "0",
+      title: "BNB",
     },
     {
-        id: 2,
-        image: ace,
-        amount: 30,
-        url: "https://rpc-endurance.fusionist.io",
-        chainId: 648,
-        balance: '0',
-        title: "ACE"
+      id: 2,
+      image: ace,
+      amount: 30,
+      url: "https://rpc-endurance.fusionist.io",
+      chainId: 648,
+      balance: "0",
+      title: "ACE",
     },
-    {id: 3, image: wemix, amount: 150, url: "https://api.wemix.com/", chainId: 1111, balance: '0', title: "WEMIX"},
-];
-
+    {
+      id: 3,
+      image: wemix,
+      amount: 150,
+      url: "https://api.wemix.com/",
+      chainId: 1111,
+      balance: "0",
+      title: "WEMIX",
+    },
+  ];
+  
 export const statusList = [
     {id: 1, title: "Total Transcations", content: "12,345,678,901,234"},
     {id: 2, title: "Total Wallets", content: "12,345,678,901,234"},

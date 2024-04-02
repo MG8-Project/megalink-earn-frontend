@@ -61,38 +61,50 @@ const Header = () => {
 export default Header;
 
 const HeaderWrapper = styled.div`
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-    background-color: #000000;
+  z-index: 999;
+  display: flex;
+  position: fixed;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  background-color: #000000;
+  height: 80px;
+  li {
+    cursor: pointer;
     height: 80px;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      border-bottom: 2px solid #d9d9d9;
+    }
+  }
 `;
 
 const HeaderLogo = styled.img`
-    width: 210px;
-    height: 48px;
+  width: 210px;
+  height: 48px;
+  cursor: pointer;
 `;
 
 const HeaderUl = styled.ul`
-    display: flex;
-    width: 277px;
-    font-size: 18px;
-    justify-content: space-between;
-
-    > li {
-    }
+  display: flex;
+  width: 277px;
+  font-size: 18px;
+  justify-content: space-between;
 `;
 
 const WalletContainer = styled.button`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-weight: 400;
-    width: 140px;
-    height: 40px;
-    border: 1px solid #ffffff;
-    border-radius: 100px;
-    font-size: 16px;
+  display: flex;
+  width: 148px;
+  height: 40px;
+  padding: 12px 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 100px;
+  background: #006ebe;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 100%;
 `;

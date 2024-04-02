@@ -4,6 +4,10 @@ import { theme } from "../../styles/theme";
 import { footerLogo } from "../../assets/images";
 import { FooterList, FooterSns } from "../../constants";
 
+interface textProps {
+  $isWebsite: boolean;
+}
+
 const Footer = () => {
   return (
     <FooterWrapper>
@@ -12,8 +16,10 @@ const Footer = () => {
           {FooterList.map((item, index) => (
             <FooterContentBox key={index}>
               <FooterBoldText>{item.title}</FooterBoldText>
-              <a href={item.link}>
-                <FooterContentText>{item.content}</FooterContentText>
+              <a href={item.link} target={"_blank"}>
+                <FooterContentText $isWebsite={item.content === "Website"}>
+                  {item.content}
+                </FooterContentText>
               </a>
             </FooterContentBox>
           ))}
@@ -21,12 +27,12 @@ const Footer = () => {
           <FooterContentBox>
             <FooterBoldText>Community</FooterBoldText>
             <ImgBoxWrapper>
-              {FooterSns.map((sns, index) => (
-                <ImgBox key={index}>
-                  <a href={sns.linkUrl}>
+              {FooterSns.map((sns) => (
+                <a href={sns.linkUrl} target={"_blank"}>
+                  <CommunityBox>
                     <CommunityImg src={sns.imgSrc} alt={sns.text} />
-                  </a>
-                </ImgBox>
+                  </CommunityBox>
+                </a>
               ))}
             </ImgBoxWrapper>
           </FooterContentBox>
@@ -75,10 +81,15 @@ const FooterBottom = styled.div`
 
 const FooterBottomText = styled.div`
   color: ${theme.colors.footerText};
+  font-size: 14px;
 `;
-const FooterContentText = styled.p`
+const FooterContentText = styled.p<textProps>`
   font-size: 16px;
   font-weight: 400;
+  width: ${(props) => (props.$isWebsite ? "58px" : "auto")};
+  &:hover {
+    border-bottom: 1px solid #ffffff;
+  }
 `;
 
 const FooterCi = styled.img`
@@ -96,6 +107,7 @@ const FooterContentBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+  width: auto;
 `;
 
 const ImgBoxWrapper = styled.div`
@@ -103,8 +115,53 @@ const ImgBoxWrapper = styled.div`
   gap: 12px;
 `;
 
-const ImgBox = styled.div``;
+const CommunityBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.12);
+  background-color: #333;
+  cursor: pointer;
+
+  &:hover {
+    background: linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.12) 0%,
+        rgba(255, 255, 255, 0.12) 100%
+      ),
+      #333;
+  }
+  @media ${theme.mq.tablet} {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+  }
+  @media ${theme.mq.mobile} {
+    width: unset;
+    height: unset;
+    display: block;
+    background: none;
+    box-shadow: unset;
+    border-top: 0;
+    a {
+      font-size: 14px;
+      line-height: 1.28;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+`;
 
 const CommunityImg = styled.img`
-  width: 48px;
+  width: 24px;
+  height: 24px;
+  @media ${theme.mq.tablet} {
+    width: 20px;
+    height: 20px;
+  }
 `;
