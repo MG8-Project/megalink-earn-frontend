@@ -22,7 +22,6 @@ const MissionCard = () => {
     // } else {
     //   nextChargeTime = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0));
     // }
-    
     // 현재 UTC 시간이 오전 7시 이전인 경우
     if (now.getUTCHours() < 7) {
       nextChargeTime = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 7, 0, 0));
