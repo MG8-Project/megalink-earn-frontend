@@ -1,29 +1,26 @@
 import styled from "styled-components";
-// import { noneCheck, redCircle } from "../../assets/images";
 import { noneCheck, redCircle } from "../../assets/images";
 
 const FailPopup = () => {
   return (
-    <>
-      <PopupWrapper>
-        <PopupContainer>
-          <TopContnet>
-            <ContentWrapper>
-              <img src={redCircle} alt="" width={72} height={72} />
-              <CheckImage src={noneCheck} alt="" />
-            </ContentWrapper>
+    <PopupWrapper>
+      <PopupContainer>
+        <TopContnet>
+          <ContentWrapper>
+            <img src={redCircle} alt="" width={72} height={72} />
+            <CheckImage src={noneCheck} alt="" />
+          </ContentWrapper>
 
-            <TopContentTitle>Transaction Fail</TopContentTitle>
-            <ReceiveText>
-              There seems to be some heavy traffic on BSC network.​​
-              <MiddleText>Plz try a few moments later.​</MiddleText>
-            </ReceiveText>
-          </TopContnet>
+          <TopContentTitle>Transaction Fail</TopContentTitle>
+          <ReceiveText>
+            There seems to be some heavy traffic on BSC network.​​
+            <MiddleText>Plz try a few moments later.​</MiddleText>
+          </ReceiveText>
+        </TopContnet>
 
-          <ActiveButton>OK</ActiveButton>
-        </PopupContainer>
-      </PopupWrapper>
-    </>
+        <ActiveButton>OK</ActiveButton>
+      </PopupContainer>
+    </PopupWrapper>
   );
 };
 

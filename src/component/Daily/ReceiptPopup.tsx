@@ -1,43 +1,41 @@
 import styled from "styled-components";
-import { check, link } from "../../assets/images";
+import { check, link, circle } from "../../assets/images";
 const ReceiptPopup = () => {
   return (
-    <>
-      <PopupWrapper>
-        <PopupContainer>
-          <TopContnet>
-            <Circle>
-              <ContentWrapper>
-                <img src={"../../assets/images/circle.png"} alt="" width={72} height={72} />
-                <CheckImage src={check} alt="" width={36} height={36} />
-              </ContentWrapper>
-            </Circle>
+    <PopupWrapper>
+      <PopupContainer>
+        <TopContnet>
+          <Circle>
+            <ContentWrapper>
+              <img src={circle} alt="" width={72} height={72} />
+              <CheckImage src={check} alt="" width={36} height={36} />
+            </ContentWrapper>
+          </Circle>
 
-            <TopContentTitle>Transaction Receipt</TopContentTitle>
-            <ReceiveText>
-              You will receive xx,xxx,xxx <span>MG8</span>
-            </ReceiveText>
-          </TopContnet>
+          <TopContentTitle>Transaction Receipt</TopContentTitle>
+          <ReceiveText>
+            You will receive xx,xxx,xxx <span>MG8</span>
+          </ReceiveText>
+        </TopContnet>
 
-          <MiddleContnet>
-            <MiddleText>
-              *If not, plz check your transaction request status ​through the
-              link below​
-            </MiddleText>
-            <ViewText>
-              <span>View on Bscscan:</span>
+        <MiddleContnet>
+          <MiddleText>
+            *If not, plz check your transaction request status ​through the
+            link below​
+          </MiddleText>
+          <ViewText>
+            <span>View on Bscscan:</span>
+            <span>
+              0xfe9aef...
               <span>
-                0xfe9aef...
-                <span>
-                  <img src={link} alt="" width={20} height={20} />
-                </span>
+                <img src={link} alt="" width={20} height={20} />
               </span>
-            </ViewText>
-          </MiddleContnet>
-          <ActiveButton>OK</ActiveButton>
-        </PopupContainer>
-      </PopupWrapper>
-    </>
+            </span>
+          </ViewText>
+        </MiddleContnet>
+        <ActiveButton>OK</ActiveButton>
+      </PopupContainer>
+    </PopupWrapper>
   );
 };
 
