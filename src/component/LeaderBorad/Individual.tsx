@@ -152,7 +152,6 @@ export default IndividualList;
 
 const IndividualListWrapper = styled.div`
     margin-top: 32px;
-    margin-bottom: 32px;
     background-color: ${theme.colors.bg.box};
     padding: 16px 0 16px 0;
     width: 1200px;
