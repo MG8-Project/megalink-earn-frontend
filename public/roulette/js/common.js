@@ -391,7 +391,7 @@ function setCookie(cookie_name, value, days) {
 	// 설정 일수만큼 현재시간에 만료값으로 지정
 
 	var cookie_value = escape(value) + ((days == null) ? '' : '; expires=' + exdate.toUTCString());
-	document.cookie = cookie_name + '=' + cookie_value;
+	document.cookie = cookie_name + '=' + cookie_value + "; SameSite=None; Secure";
 }
 
 function getCookie(cookie_name) {
@@ -453,11 +453,14 @@ function join(userAccount, userName, country, callbackSuccess, callbackFail)
 		callbackFail();
 		return;
 	}
-
+	
+	// console.log('join')
 
 	XmlReq.post("/infiniteSpin/user/join", {userAccount:userAccount, userName:userName, userNation:country}, function(){
 
 		var result = JSON.parse(this.responseText);
+
+		// console.log(result)
 
 		if(result.resultCode == 1)
 		{
@@ -483,10 +486,13 @@ function checkDup(userName, callbackDup, callbackNot){
 
 	let userAccount = getCookie("userAccount");
 	
+	// console.log('check dup')
+	
 	XmlReq.post("/infiniteSpin/user/dup", {userName:userName, userAccount:userAccount}, function(){
 
 
 		var result = JSON.parse(this.responseText);
+		// console.log(result)
 
 		if(result.resultCode == 1)
 		{
@@ -558,7 +564,7 @@ function checkLogin(userAccount, callbackLogin, callbackIdle){
 
 		var result = JSON.parse(this.responseText);
 
-		console.log(result)
+		// console.log(result)
 
 		if(result.resultCode == 1)
 		{
@@ -603,7 +609,7 @@ function getInfo(userAccount, accessToken, callbackLogin, callbackIdle) {
 
 	let checkClearInfo = function(){
 
-		console.log("checkclear", clearInfo)
+		// console.log("checkclear", clearInfo)
 
 		if(clearInfo >= 5 && !cleared)
 		{
@@ -623,7 +629,7 @@ function getInfo(userAccount, accessToken, callbackLogin, callbackIdle) {
 
 		var result = JSON.parse(this.responseText);
 
-		console.log(result)
+		// console.log(result)
 		
 		/** 
 		 * todayCheck: Number(1: 오늘 출석함, 2: 출석 안함), 
@@ -636,7 +642,7 @@ function getInfo(userAccount, accessToken, callbackLogin, callbackIdle) {
 		if(result.resultCode == 1)
 		{
 
-			let todayIdx = getTodayIdx();
+			let todayIdx = result.todayIndex;// getTodayIdx();
 
 			if(result.todayCheck == 1)
 			{
@@ -686,7 +692,7 @@ function getInfo(userAccount, accessToken, callbackLogin, callbackIdle) {
 
 		var result = JSON.parse(this.responseText);
 
-		console.log(result)
+		// console.log(result)
 
 
 
@@ -730,7 +736,7 @@ function getInfo(userAccount, accessToken, callbackLogin, callbackIdle) {
 
 		var result = JSON.parse(this.responseText);
 
-		console.log(result)
+		// console.log(result)
 
 		if(result.resultCode == 1 )
 		{
@@ -763,7 +769,7 @@ function getInfo(userAccount, accessToken, callbackLogin, callbackIdle) {
 
 		var result = JSON.parse(this.responseText);
 
-		console.log(result)
+		// console.log(result)
 
 		if(result.resultCode == 1 )
 		{
@@ -771,6 +777,11 @@ function getInfo(userAccount, accessToken, callbackLogin, callbackIdle) {
 			gameOptions.userInfo.userBroochStep = result.brchStp;
 			gameOptions.userInfo.userBroochLevel = result.brchLvl;
 			gameOptions.userInfo.userBroochBonus = result.brchBns;
+
+			if(gameOptions.userInfo.userBroochLevel >= 10)
+			{
+				$(".btn-buy-brooch-step").addClass("disabled");
+			}
 
 			setBroochStep();
 			$(".brooch").attr("class", "brooch brooch-lv-" + gameOptions.userInfo.userBroochLevel)
@@ -809,115 +820,27 @@ function getInfo(userAccount, accessToken, callbackLogin, callbackIdle) {
 
 		clearInfo++;
 		checkClearInfo();
-	});
+	}, callbackIdle);
 
-	/*
-	//내 자산확인(열쇠, 상자, 티켓 갯수 등)
-	XmlReq.get("/infiniteSpin/asset/myAssets", {}, function(){
+	
 
-		var result = JSON.parse(this.responseText);
+	window.addEventListener("visibilitychange", bindVisibilityChange)
 
-
-		if(result.resultCode == 1)
-		{
-			gameOptions.userInfo.userName = result.userName;
-			gameOptions.userInfo.userBoxCount = result.boxCnt;
-			gameOptions.userInfo.userKeyCount = result.keyCnt;
-			gameOptions.userInfo.userTicketCount = result.ticketCnt;
-			gameOptions.userInfo.userTicketTime = result.ticketChargeTime;
-			gameOptions.userInfo.teamCode = result.teamCode;
-			gameOptions.userInfo.inviterUserName = result.inviterUserName;
-
-			if(gameOptions.userInfo.inviterUserName)
-			{
-				$(".txt-invitee").html(gameOptions.userInfo.inviterUserName)
-				$(".section-add-invitee").hide();
-				$(".section-view-invitee").css("display","");
-			}
-
-
-
-			$("[name=myName]").val(gameOptions.userInfo.userName)
-			$(".myUserName").html(gameOptions.userInfo.userName)
-
-			
-
-			if(gameOptions.userInfo.teamCode) {
-
-				$("[name=invTeamCode]").val(gameOptions.userInfo.teamCode)
-				$("[name=MyTeamCode]").val(gameOptions.userInfo.teamCode)
-				$(".my-team-rank").show();
-				
-				XmlReq.post("/infiniteSpin/team/info", {teamCode:gameOptions.userInfo.teamCode}, function(){
-
-
-					var result = JSON.parse(this.responseText);
-					console.log(resul)
-
-					if(result.resultCode == 1)
-					{
-						
-						gameOptions.userInfo.teamInfo = result.teamInfo;
-
-						bindTeamInfo();
-
-						clearInfo++;
-						checkClearInfo();
-			
-					}
-					else
-					{
-						alert(result.msg);
-						callbackIdle();
-						loadingOff();
-					}
-			
-			
-			
-			
-				})	
-
-			}
-			else {
-				
-				clearInfo++;
-				checkClearInfo();
-			}
-			
-			if(gameState == GAME_STATE_OPEN) {
-				setTicketCount(gameOptions.userInfo.userTicketCount);
-				setTicketTimer(gameOptions.userInfo.userTicketTime/1000);
-
-
-				setBoxCnt();
-				setKeyCnt();
-
-			} else {
-
-				clearInfo++;
-				checkClearInfo();
-
-			}
-			
-			
-		}
-		else
-		{
-			alert(result.msg);
-			callbackIdle();
-			loadingOff();
-		}
-
-
-
-
-	})*/
 
 
 }
 
+function bindVisibilityChange(e){
 
-function updateAssets(callback){
+	if(e.target.visibilityState != 'hidden')
+	{
+		updateAssets(function(){}, function(){})
+	}
+
+}
+
+
+function updateAssets(callback, callbackIdle){
 
 	loadingOn();
 
@@ -926,7 +849,7 @@ function updateAssets(callback){
 
 		var result = JSON.parse(this.responseText);
 
-		console.log(result)
+		// console.log(result)
 		
 		/** 
 		 * userName
@@ -945,7 +868,7 @@ function updateAssets(callback){
 			gameOptions.userInfo.userTicketTime = result.ticketChargeTime;
 			gameOptions.userInfo.teamCode = result.teamCode;
 			gameOptions.userInfo.inviterUserName = result.inviterUserName;
-
+			
 			if(gameOptions.userInfo.inviterUserName)
 			{
 				$(".txt-invitee").html(gameOptions.userInfo.inviterUserName)
@@ -970,7 +893,7 @@ function updateAssets(callback){
 
 
 					var result = JSON.parse(this.responseText);
-					console.log(result)
+					// console.log(result)
 
 					if(result.resultCode == 1)
 					{
@@ -1053,12 +976,13 @@ function updateAssets(callback){
 	loadingOn();
 
 	
+	window.removeEventListener("visibilitychange", bindVisibilityChange)
 
 	XmlReq.post("/infiniteSpin/user/logout", {accessToken:gameOptions.userInfo.accessToken, refreshToken:gameOptions.userInfo.refreshToken}, function(){
 
 		var result = JSON.parse(this.responseText);
 
-		console.log(result)
+		// console.log(result)
 
 		if(result.resultCode == 1 )
 		{		
@@ -1318,14 +1242,14 @@ window.alert = function(msg) {
       
 function connect(callback) {
 
-	if(window.opener) {
-		alert("opener")
-		window.opener.getMessage("LOGIN PROCESS");
-	} else if(window.parent && window.parent.getMessage) {
+	// if(window.opener) {
+	// 	alert("opener")
+	// 	window.opener.getMessage("LOGIN PROCESS");
+	// } else if(window.parent && window.parent.getMessage) {
 		
-		//alert("parent")
-		window.parent.getMessage("LOGIN PROCESS P");
-	}
+	// 	//alert("parent")
+	// 	window.parent.getMessage("LOGIN PROCESS P");
+	// }
 
 	if(gameOptions.connectLink)
 	{
@@ -1333,8 +1257,9 @@ function connect(callback) {
 		.then((res) => {
         
 			setCookie("userAccount", res[0], 365);
+			gameOptions.userInfo.userAccount = res[0];
 	
-			console.log('request accounts', res[0]); 
+			// console.log('request accounts', res[0]); 
 			
 			loadingOff();
 			
@@ -1378,8 +1303,9 @@ function connect(callback) {
       .then((res) => {
         
         setCookie("userAccount", res[0], 365);
+		gameOptions.userInfo.userAccount = res[0];
 
-        console.log('request accounts', res[0]); 
+        // console.log('request accounts', res[0]); 
         
         loadingOff();
 		

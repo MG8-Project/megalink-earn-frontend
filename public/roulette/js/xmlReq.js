@@ -11,14 +11,17 @@ let XmlReq = {
         )
         {
 
-            console.log("401, error")
+            // console.log("401, error")
 
             XmlReq.post("/infiniteSpin/user/tokenRefresh", {"accessToken":gameOptions.userInfo.accessToken, "refreshToken":gameOptions.userInfo.refreshToken}, function(){
 
                 var result = JSON.parse(this.responseText);
+                // console.log(result)
                 
                 if(result.accessToken)
                 {
+
+                    console.log("refresh success")
 
                   gameOptions.userInfo.accessToken = result.accessToken;
                   
@@ -30,6 +33,7 @@ let XmlReq = {
                 else
                 {
                   alert(result.msg);
+
                   loadingOff();
                 }
         
@@ -51,6 +55,8 @@ let XmlReq = {
 
         if (this.readyState == 4) {
 
+            
+
             if(this.status == 200)
             {
 
@@ -64,15 +70,16 @@ let XmlReq = {
             {
 
 
-                console.log("401")
 
                 XmlReq.post("/infiniteSpin/user/tokenRefresh", {"accessToken":gameOptions.userInfo.accessToken, "refreshToken":gameOptions.userInfo.refreshToken}, function(){
 
                     var result = JSON.parse(this.responseText);
+                    // console.log("tokenRefresh", result)
                     
                     if(result.accessToken)
                     {
 
+                        // console.log("refresh success")
                       gameOptions.userInfo.accessToken = result.accessToken;
                       
                       setCookie("token", gameOptions.userInfo.accessToken, 365);
@@ -82,6 +89,13 @@ let XmlReq = {
                     }
                     else
                     {
+
+
+                       setCookie("token", null, -1);
+                       setCookie("refreshToken", null, -1);
+
+                       location.reload();
+
                       alert(result.msg);
                       loadingOff();
                     }
@@ -92,6 +106,17 @@ let XmlReq = {
                   })
                 
             }
+            else if(this.status == 202)
+            {
+                gameOptions.enable = true;
+                enableInteractive();
+                
+                var result = JSON.parse(this.responseText);
+                loadingOff();
+                alert(result.msg)
+
+
+            }
             else 
             {
                 
@@ -101,8 +126,8 @@ let XmlReq = {
                 
                 if(url == "/infiniteSpin/user/tokenRefresh")
                 {
-                    console.log("refresh ERROR, state 4")
-                    console.log({"accessToken":gameOptions.userInfo.accessToken, "refreshToken":gameOptions.userInfo.refreshToken})
+                    // console.log("refresh ERROR, state 4")
+                    // console.log({"accessToken":gameOptions.userInfo.accessToken, "refreshToken":gameOptions.userInfo.refreshToken})
 
                     setCookie("userAccount", null, -1);
                     setCookie("token", null, -1);
@@ -118,10 +143,10 @@ let XmlReq = {
         } else {
            
             
-            if(url == "/infiniteSpin/user/tokenRefresh")
-            {
-                console.log("refresh ERROR")
-            }
+            // if(url == "/infiniteSpin/user/tokenRefresh")
+            // {
+            //     console.log("refresh ERROR")
+            // }
         }
 
 

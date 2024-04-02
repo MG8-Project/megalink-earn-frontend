@@ -15,7 +15,7 @@ function getUTCTime(){
 
 function getTodayIdx(){
 
-    return (new Date(Date.now() + (((new Date).getTimezoneOffset()) * 60 * 1000) + 9 * 60 * 1000 * 60).getDay() + 3) % 7;
+    return (new Date(Date.now() + (((new Date).getTimezoneOffset()) * 60 * 1000) + 9 * 60 * 1000 * 60).getDay() - 1) % 7;
 
 }
 

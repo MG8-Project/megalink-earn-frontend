@@ -85,7 +85,8 @@ function closeBoxPop(){
   
     gameOptions.boxPop.content.setScale(0)
     gameOptions.boxPop.alpha = 1;
-  
+    gameOptions.boxPop.content.result.txt.text = "";
+
     scene.tweens.add({
       targets:[gameOptions.boxPop.content],
       scale:1.1,
@@ -174,7 +175,7 @@ function closeBoxPop(){
         let type = result.reward.type
         
     
-        gameOptions.boxPop.content.box.amount = 3 + reward * 100;
+        gameOptions.boxPop.content.box.amount = Math.min(6, 3 + Math.ceil(reward/1000));
       
         
       
@@ -243,7 +244,7 @@ function closeBoxPop(){
                               // gameOptions.boxPop.content.box.effect.setActive(true);
       
       
-                              gameOptions.boxPop.content.result.txt.text = reward + " " + type;
+                              gameOptions.boxPop.content.result.txt.text = currencyFormatting(reward) + " " + type;
                                                   
                             
                       
@@ -418,7 +419,6 @@ function closeBoxPop(){
     
     gameOptions.userInfo.userTicketCount = ticketCount;
   
-    console.log(gameOptions.userInfo);
   
     // gameOptions.ticketMeter.txt.text = "+" + gameOptions.userInfo.userTicketCount
     gameOptions.ticketStatus.txt.text = gameOptions.userInfo.userTicketCount + "/";
@@ -497,7 +497,7 @@ function closeBoxPop(){
     spinTimeout = setTimeout('rotateWheel('+spinRate+')', spinRate);
   }
   
-  function stopRotateWheel(earnedPoints) {
+  function stopRotateWheel(boostedPoints, currentPoints) {
     gameOptions.enable = true;
     gameOptions.spin_btn.setTexture('spin_button');
     pointTxtBtn.setScale(1);
@@ -587,7 +587,7 @@ function closeBoxPop(){
   
         gameOptions.GuideUsePoint.icoP.alpha = 1;
         gameOptions.GuideUsePoint.icoB.alpha = 0;
-        gameOptions.GuideUsePoint.txt.text = earnedPoints;//resultPoint;
+        gameOptions.GuideUsePoint.txt.text = boostedPoints;//resultPoint;
         gameOptions.GuideUsePoint.postfixP.alpha = 1;
   
         if(resultPoint*1 < 0)
@@ -599,8 +599,13 @@ function closeBoxPop(){
             gameOptions.sounds['Get_Coin'].play();
         }
   
-        gameOptions.userInfo.userPoint += earnedPoints;//resultPoint * 1;
-  
+        gameOptions.userInfo.userPoint += boostedPoints;//resultPoint * 1;
+        
+        if(currentPoints)
+        {
+          gameOptions.userInfo.userPoint = Math.floor(currentPoints)
+        }
+
         if(gameOptions.userInfo.userPoint < 0)
         {
           gameOptions.userInfo.userPoint = 0;
@@ -751,7 +756,7 @@ function closeBoxPop(){
 
   function loadItems_bak(o) {
   
-      console.log("load items")
+      // console.log("load items")
   
           
 
@@ -821,14 +826,14 @@ function closeBoxPop(){
     loadingOn();
     
     let ri_id;
-    let earnedPoints
+    let earnedPoints;
+    let boostedPoints;
+    let currentPoints;
   
     let callback = function(){
   
   
       
-  
-  
       loadingOff();
   
       var remain_cnt_dump = 0;
@@ -836,10 +841,11 @@ function closeBoxPop(){
       //console.log(result['items']);
       //console.log(this.responseText);
 
-      console.log(result)
+      // console.log(result)
 
-      if(true)//result.resultCode == '1' || result.resultCode == '2')
+      if(result.resultCode == '1' || result.resultCode == '2')
 		  {
+
 
         let resultType = 1;//result.res;
 
@@ -848,6 +854,18 @@ function closeBoxPop(){
       ri_id = result['ri_id'];
 
       earnedPoints = result.earnedPoints
+      boostedPoints = result.boostedPoints
+      currentPoints = result.currentPoints
+
+      if(result.ticketChargeTime)
+      {
+        gameOptions.userInfo.userTicketTime = result.ticketChargeTime
+        setTicketTimer(gameOptions.userInfo.userTicketTime/1000);
+      }
+
+     
+
+      
 
       if(!earnedPoints)
       {
@@ -857,10 +875,14 @@ function closeBoxPop(){
       let totalTcktsCnt = result.ticketCount
       //let ticketChargeTime = result.ticketChargeTime
       
+      
+        
+      // gameOptions.userInfo.userTicketCount--;
+    
+      // setTicketCount(gameOptions.userInfo.userTicketCount)
         
 			gameOptions.userInfo.userTicketCount = totalTcktsCnt;
 			//gameOptions.userInfo.userTicketTime = ticketChargeTime;
-
       
       setTicketCount(gameOptions.userInfo.userTicketCount)
       //setTicketTimer(gameOptions.userInfo.userTicketTime/1000);
@@ -888,7 +910,7 @@ function closeBoxPop(){
         {
           resultNo = i;
 
-          console.log(resultNo)
+          // console.log(resultNo)
 
           send_type = options[i]['ri_send_type'];
 
@@ -1044,7 +1066,7 @@ function closeBoxPop(){
           },
           onComplete: function(){
             spinSound.stop();
-            stopRotateWheel(earnedPoints > 0 ? Math.floor(earnedPoints * gameOptions.userInfo.bonusRate()) : earnedPoints);
+            stopRotateWheel(earnedPoints > 0 ? Math.floor(boostedPoints) : earnedPoints, currentPoints);
   
           }
       });
@@ -1156,9 +1178,6 @@ function closeBoxPop(){
       return;
     }
   
-    gameOptions.userInfo.userTicketCount--;
-  
-    setTicketCount(gameOptions.userInfo.userTicketCount)
   
   
     spin(false);
@@ -1694,7 +1713,7 @@ function closeBoxPop(){
 
             var result = JSON.parse(this.responseText);
             
-            console.log(result)
+            // console.log(result)
 
             if(result.resultCode == 1)
             {
@@ -1745,7 +1764,7 @@ function closeBoxPop(){
 
 
             var result = JSON.parse(this.responseText);
-            console.log(result)
+            // console.log(result)
 
             if(result.resultCode == 1)
             {
@@ -1976,7 +1995,7 @@ function closeBoxPop(){
           scale: { min: 0.7, max: 1.3 },
           frequency: 300000,
           lifespan: 3000,
-          quantity: 8,//amount*3,
+          quantity: amount*3,
           emitting:false
   
         });
@@ -2166,7 +2185,7 @@ function closeBoxPop(){
     
           var result = JSON.parse(this.responseText);
           
-          console.log(result)
+          // console.log(result)
     
           if(result.resultCode == 1)
           {
@@ -2900,7 +2919,7 @@ function closeBoxPop(){
     this.load.image('ico-key', IMG_BASE + '/images/common/pop/box/ico-key.png');
     this.load.image('pop-back', IMG_BASE + '/images/common/pop/box/pop-back.png');
   
-    this.load.image('brooch-bonus-box', IMG_BASE + '/images/common/pop/brooch-bonus-box.png');
+    this.load.image('brooch-bonus-box', IMG_BASE + '/images/common/pop/brooch-bonus-box-long.png');
   
     this.load.image('btn-pop-close', IMG_BASE + '/images/common/pop/btn-pop-close.png');
   

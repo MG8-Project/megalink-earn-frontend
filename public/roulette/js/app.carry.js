@@ -366,7 +366,9 @@ window.onload=function(){
 
     $(".btn-copy-team-inv").on("click", function(e){
       e.preventDefault();
-      gameOptions.sounds['Click'].play();
+
+      if(gameOptions.sounds['Click'])
+        gameOptions.sounds['Click'].play();
       
       copyToClipboard($("[name=invTeamCode]").val(), false, "Team Code has been copied");
 
@@ -378,7 +380,7 @@ window.onload=function(){
       if(gameOptions.sounds['Click'])
         gameOptions.sounds['Click'].play();
       
-      location.href = location.origin + location.pathname;
+      location.href = location.origin;// + location.pathname;
 
     })
 
@@ -801,18 +803,21 @@ window.onload=function(){
         }
 
         checkDup(userName, function(){
-
-          alert("Name you entered is already exists.");
           
+          $(".txt-join-warning").html("Name you entered is already exists.")
 
         }, function(){
 
           let userAccount = getCookie("userAccount");
-          setCookie("userAccount", '', -1);
-
+          gameOptions.userInfo.userAccount = "";
+          
+          console.log(userAccount)
+          
           join(userAccount, userName, nation, function(userAccount){
 
             checkLogin(userAccount, function(){
+			  
+				setCookie("userAccount", '', -1);
 
               gameOptions.loginStateChangeCallback();
               
@@ -1006,6 +1011,12 @@ window.onresize = resizeAction
       return;
     }
 
+    if(gameOptions.userInfo.userBroochLevel >= 10)
+    {
+
+      return;
+    }
+
     gameOptions.broochEnabled = false;
 
 
@@ -1063,13 +1074,25 @@ window.onresize = resizeAction
         if(gameState == GAME_STATE_OPEN) {
           
           gameOptions.broochMeter.txt.text = gameOptions.userInfo.userBroochBonus;
+          
+          gameOptions.broochMeter.txt.x = (gameOptions.broochMeter.txt.displayWidth + gameOptions.broochMeter.txtTale.displayWidth) * (-0.5 + (gameOptions.broochMeter.txt.displayWidth/(gameOptions.broochMeter.txt.displayWidth + gameOptions.broochMeter.txtTale.displayWidth))) 
+          gameOptions.broochMeter.txtTale.x = gameOptions.broochMeter.txt.x + 1;
+      
+          
           $(".bonus-meter").html("+" + gameOptions.userInfo.userBroochBonus + "%");
+          
 
         }
         gameOptions.userInfo.userBroochLevel = result.broochLevel;
       
         if(prevLv != gameOptions.userInfo.userBroochLevel)//gameOptions.userInfo.userBroochStep >= 10)
         {
+
+          if(gameOptions.userInfo.userBroochLevel >= 10)
+          {
+            $(".btn-buy-brooch-step").addClass("disabled");
+          }
+          
 
           //let prevLv = gameOptions.userInfo.userBroochLevel;
           

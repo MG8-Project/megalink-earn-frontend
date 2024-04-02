@@ -124,7 +124,7 @@ let introScene = {
         gameOptions.cs = this.add.image(gameOptions.width/2, gameOptions.height * 1148/2560, 'comingsoon');
 
 
-        let graphics = this.add.graphics();
+        let graphics = this.add.graphics().setAlpha(0);
         
         let startTimeTxt = this.add.text(gameOptions.width/2, gameOptions.height * 1546/2560, "2024-00-00 00:00 ~ \r\n2024-00-00 00:00 UTC+9", { 
             
@@ -136,8 +136,8 @@ let introScene = {
             
             align:"center",
 
-            color: "#ffffff"})
-
+            color: "#ffffff"}).setAlpha(0);
+        
         startTimeTxt.setOrigin(0.5)
         startTimeTxt.setFontFamily("Noto Sans KR")
 
