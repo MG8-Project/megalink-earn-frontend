@@ -162,3 +162,5 @@ export const BNB_MAINNET = {
   rpcUrls: ["https://bsc-dataseed.binance.org/"],
   blockExplorerUrls: ["https://bscscan.com/"],
 };
+
+export const LEARN_URL = 'https://docs.mega8.io/earn/infinite-spin'

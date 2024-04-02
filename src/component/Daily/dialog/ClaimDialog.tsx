@@ -1,156 +1,110 @@
-import { Dispatch, forwardRef, SetStateAction } from "react";
+import {Dispatch, forwardRef, SetStateAction} from "react";
 import styled from "styled-components";
-import { theme } from "../../../styles/theme";
-import { close } from "../../../assets/images";
-import { Vault, VaultAbi } from "../../../typechain-types/contracts/Vault";
+import {theme} from "../../../styles/theme";
+import {close} from "../../../assets/images"
+import {Vault, VaultAbi} from "../../../typechain-types/contracts/Vault";
 import Spinner from "../../ui/Spinner";
-import { BrowserProvider, Contract, parseUnits } from "ethers";
+import {BrowserProvider, Contract, formatUnits} from "ethers";
+import ClaimDialogProgressbar from "./ui/DialogProgressbar";
+import {addCommas} from "../index";
+
 
 interface ClaimDialogProps {
-  receivedMG8: number;
-  minAmount: bigint;
-  handleOpenDialog: (refCategory: string) => void;
-  handleCloseDialog: (refCategory: string) => void;
-  exchangeRatio: number;
-  currentPoint: number;
-  setHash: Dispatch<SetStateAction<string>>;
-  isNetworkChange: boolean;
-  setIsTransactionComplete: Dispatch<SetStateAction<boolean>>;
+    exchangeRatio: number;
+    myPointContract: number;
+    minAmount: bigint;
+    claimableAmount: bigint;
+    isNetworkChange: boolean;
+    handleOpenDialog: (refCategory: string) => void;
+    handleCloseDialog: (refCategory: string) => void;
+    setHash: Dispatch<SetStateAction<string>>
+    setIsTransactionComplete: Dispatch<SetStateAction<boolean>>
 }
 
 const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
-  const {
-    isNetworkChange,
-    setIsTransactionComplete,
-    receivedMG8,
-    minAmount,
-    handleOpenDialog,
-    handleCloseDialog,
-    exchangeRatio,
-    currentPoint,
-    setHash,
-  } = props;
+    const {
+        exchangeRatio,
+        myPointContract,
+        minAmount,
+        claimableAmount,
+        isNetworkChange,
+        handleOpenDialog,
+        handleCloseDialog,
+        setHash,
+        setIsTransactionComplete
+    } = props;
 
-  const addCommas = (num: number) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
-  const isButtonActive = minAmount > receivedMG8;
-
-  const claim = async () => {
-    try {
-      if (!isButtonActive) {
-        return;
-      }
-      const provider = new BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      const vault: Vault = new Contract(
-        process.env.REACT_APP_CONTRACT_VAULT,
-        VaultAbi,
-        signer
-      ) as unknown as Vault;
-      const amount = parseUnits((receivedMG8 / exchangeRatio).toString());
-      const tx = await vault.claimMG8(amount);
-      setHash(tx.hash);
-      setIsTransactionComplete(true);
-      handleOpenDialog("alert");
-    } catch (error) {
-      console.error(error);
-      handleOpenDialog("alert");
+    const isButtonActive = minAmount < claimableAmount;
+    const claim = async () => {
+        try {
+            if (!isButtonActive) {
+                return;
+            }
+            const provider = new BrowserProvider(window.ethereum);
+            const signer = await provider.getSigner()
+            const vault: Vault = new Contract(process.env.REACT_APP_CONTRACT_VAULT, VaultAbi, signer) as unknown as Vault
+            const tx = await vault.claimMG8(claimableAmount * BigInt(exchangeRatio));
+            setHash(tx.hash);
+            setIsTransactionComplete(true)
+            handleOpenDialog('alert')
+        } catch (error) {
+            console.error(error)
+            handleOpenDialog('alert')
+        }
     }
-  };
-  const handleClick = () => {
-    void claim();
-  };
-
-  return (
-    <DialogWrapper ref={ref}>
-      <DialogContent>
-        {isNetworkChange ? null : (
-          <SpinnerWrapper>
-            <Spinner size={50} />
-            <p style={{ color: "#fff" }}> 네트워크를 변경중입니다...</p>
-            <SpinnerButton onClick={() => handleCloseDialog("claim")}>
-              취소
-            </SpinnerButton>
-          </SpinnerWrapper>
-        )}
-        <DialogIcon>
-          <CloseImg src={close} onClick={() => handleCloseDialog("claim")} />
-        </DialogIcon>
-        <DialogTitleWrapper>
-          <DialogTitle>Transaction Request</DialogTitle>
-          <DialogSubTitle>MG8 Point Claim</DialogSubTitle>
-        </DialogTitleWrapper>
-        <DialogContentWrapper>
-          <DialogContentInfo>
-            <p>MG8 Point Convert Info</p>
-            <p>1p = {isNetworkChange ? exchangeRatio : "..."}MG8</p>
-          </DialogContentInfo>
-          <DialogContentCurrentStatus>
-            <DialogContentInfo>
-              <p style={{ fontSize: "1.5rem", fontWeight: "normal" }}>
-                Your Current Point
-              </p>
-              <p
-                style={{
-                  fontSize: "1.8rem",
-                  fontWeight: "bold",
-                }}
-              >
-                {" "}
-                {isNetworkChange ? addCommas(currentPoint) : "..."} p
-              </p>
-            </DialogContentInfo>
-            <DialogContentInfo>
-              <p style={{ fontSize: "1.5rem", fontWeight: "normal" }}>
-                Your Will Received
-              </p>
-              <p
-                style={{
-                  fontSize: "1.8rem",
-                  fontWeight: "bold",
-                }}
-              >
-                {" "}
-                {isNetworkChange ? addCommas(receivedMG8) : "..."} MG8
-              </p>
-            </DialogContentInfo>
-          </DialogContentCurrentStatus>
-        </DialogContentWrapper>
-        <DialogProgressWrapper>
-          {/*{isActivate ? null : <SpinnerWrapper> <Spinner/></SpinnerWrapper>}*/}
-          <p
-            style={{ fontSize: "1.5rem", fontWeight: "normal", color: "#fff" }}
-          >
-            *Gas fee will be paid in BNB
-          </p>
-          <DialogProgressbar>
-            <DialogProgressStatusCircle style={{ background: "#fff" }} />
-            <DialogProgressLine />
-            <DialogProgressStatusCircle
-              style={{ background: isNetworkChange ? "#fff" : "transparent" }}
-            />
-          </DialogProgressbar>
-          <DialogProgressbar>
-            <DialogProgressStatusText>Activate</DialogProgressStatusText>
-            <DialogProgressLineInvisible />
-            <DialogProgressStatusTextRight>Claim</DialogProgressStatusTextRight>
-          </DialogProgressbar>
-        </DialogProgressWrapper>
-        <DialogButtonWrapper>
-          <DialogButton
-            onClick={isNetworkChange ? handleClick : null}
-            style={{
-              color: isButtonActive ? "#fff" : theme.colors.bg.iconHover,
-            }}
-          >
-            {isNetworkChange ? "Claim All" : "Active Claim"}
-          </DialogButton>
-        </DialogButtonWrapper>
-      </DialogContent>
-    </DialogWrapper>
-  );
-});
+    const handleClick = () => {
+        void claim();
+    }
+    return (
+        <DialogWrapper ref={ref}>
+            <DialogContent>
+                {isNetworkChange ? null :
+                    <SpinnerWrapper>
+                        <Spinner size={50}/>
+                        <p style={{color: '#fff'}}> 네트워크를 변경중입니다...</p>
+                        <SpinnerButton onClick={() => handleCloseDialog('claim')}>취소</SpinnerButton>
+                    </SpinnerWrapper>}
+                <DialogIcon>
+                    <CloseImg src={close} onClick={() => handleCloseDialog('claim')}/>
+                </DialogIcon>
+                <DialogTitleWrapper>
+                    <DialogTitle>Transaction Request</DialogTitle>
+                    <DialogSubTitle>MG8 Point Claim</DialogSubTitle>
+                </DialogTitleWrapper>
+                <DialogContentWrapper>
+                    <DialogContentInfo>
+                        <p>MG8 Point Convert Info</p>
+                        <p> 1p = {isNetworkChange ? exchangeRatio : '...'}MG8 </p>
+                    </DialogContentInfo>
+                    <DialogContentCurrentStatus>
+                        <DialogContentInfo>
+                            <p style={{fontSize: "1.5rem", fontWeight: 'normal'}}>Your Current Point</p>
+                            <p style={{
+                                fontSize: "1.8rem",
+                                fontWeight: 'bold'
+                            }}> {isNetworkChange ? addCommas(myPointContract) : '...'} p</p>
+                        </DialogContentInfo>
+                        <DialogContentInfo>
+                            <p style={{fontSize: "1.5rem", fontWeight: 'normal'}}>You Will Received</p>
+                            <p style={{
+                                fontSize: "1.8rem",
+                                fontWeight: 'bold'
+                            }}> {isNetworkChange ? formatUnits(claimableAmount).toString() : '...'} MG8</p>
+                        </DialogContentInfo>
+                    </DialogContentCurrentStatus>
+                </DialogContentWrapper>
+                <ClaimDialogProgressbar isNetworkChange={isNetworkChange}/>
+                <DialogButtonWrapper>
+                    <DialogButton
+                        onClick={isNetworkChange ? handleClick : null}
+                        style={{color: isButtonActive ? '#fff' : theme.colors.bg.iconHover}}>
+                        {isNetworkChange ? 'Claim All' : 'Active Claim'}
+                    </DialogButton>
+                </DialogButtonWrapper>
+            </DialogContent>
+        </DialogWrapper>
+    )
+})
 
 export default ClaimDialog;
 
@@ -255,49 +209,6 @@ const DialogContentCurrentStatus = styled.section`
   gap: 20px;
 `;
 
-const DialogProgressWrapper = styled.section`
-  grid-area: progress;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-`;
-const DialogProgressbar = styled.section`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-const DialogProgressStatusCircle = styled.div`
-  border-radius: 100%;
-  border: 5px solid ${theme.colors.bg.iconHover};
-  padding: 10px;
-  transition: all 0.5s ease-in-out;
-`;
-const DialogProgressLine = styled.div`
-  width: 250px;
-  height: 5px;
-  background: ${theme.colors.bg.iconHover};
-`;
-const DialogProgressStatusText = styled.div`
-  border: none;
-  padding: 10px;
-  font-size: 1.4rem;
-  color: #fff;
-`;
-const DialogProgressStatusTextRight = styled.div`
-  border: none;
-  padding: 10px;
-  font-size: 1.4rem;
-  color: #fff;
-  margin-right: 5px;
-`;
-const DialogProgressLineInvisible = styled.div`
-  width: 215px;
-  height: 5px;
-  background: transparent;
-`;
 const DialogButtonWrapper = styled.section`
   display: flex;
   justify-content: center;

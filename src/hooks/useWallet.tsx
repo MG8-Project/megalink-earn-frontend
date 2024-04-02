@@ -20,9 +20,13 @@ export const useWallet = () => {
                 });
                 const provider = new ethers.BrowserProvider(window.ethereum);
                 const accounts = await provider.getSigner(0);
-                setWalletAddress(getAddress(await accounts.getAddress()));
-                setCurrentAccount(getAddress(await accounts.getAddress()));
-                return getAddress(await accounts.getAddress());
+                if (await accounts.getAddress() !== null) {
+                    setWalletAddress(getAddress(await accounts.getAddress()));
+                    setCurrentAccount(getAddress(await accounts.getAddress()));
+                    return getAddress(await accounts.getAddress());
+                }
+
+                return;
             } catch (error: any) {
                 try {
                     switch (error.code) {
@@ -85,24 +89,6 @@ export const useWallet = () => {
                     }
                 }
             }
-
-            window.ethereum.on("accountsChanged", (accounts: string[]) => {
-                if (accounts.length === 0) {
-                    logout();
-                    setCurrentAccount(null);
-                } else {
-                    const newAccount = accounts[0];
-                    if (currentAccount !== newAccount) {
-                        logout();
-                        setWalletAddress(newAccount);
-                        setCurrentAccount(newAccount);
-                        try {
-                            login(newAccount);
-                        } catch (error) {
-                        }
-                    }
-                }
-            })
         }
     }, [setWalletAddress]);
 
@@ -110,13 +96,20 @@ export const useWallet = () => {
         const handleAccountsChanged = (accounts: string[]) => {
             if (accounts.length === 0) {
                 logout();
+                window.location.reload();
                 setCurrentAccount(null);
             } else {
                 const newAccount = accounts[0];
-                if (currentAccount !== newAccount) {
+                if (currentAccount == null || newAccount == null) {
                     logout();
-                    setWalletAddress(newAccount);
-                    setCurrentAccount(newAccount);
+                    window.location.reload();
+                    return
+                }
+                if (getAddress(currentAccount) !== getAddress(newAccount)) {
+                    logout();
+                    window.location.reload();
+                    setWalletAddress(getAddress(newAccount));
+                    setCurrentAccount(getAddress(newAccount));
                 }
             }
         };
