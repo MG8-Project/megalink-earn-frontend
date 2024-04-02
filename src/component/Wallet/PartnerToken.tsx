@@ -157,14 +157,14 @@ const PartnerToken = (props: PartnerTokenProps) => {
                 ))}
 
             </TokenWrapper>
-            {walletAddress !== null && isLogin ? (remainTime === 0 ? <>Claim Available!</> :
-                <RemainTime remainTime={remainTime}/>) : <>Please Login</>}
+            {walletAddress !== null && isLogin ? (remainTime === 0 ? <text>Claim Available!</text> :
+                <RemainTime remainTime={remainTime}/>) : <text>Please Login</text>}
             <ButtonWrapper>
                 {!walletAddress ? (
                     <WalletContainer onClick={onWalletConnect}>
-                        {isLoading ? <><Spinner size={15}/>
+                        {isLoading ? <div><Spinner size={15}/>
                             <div style={{marginLeft: '10px'}}>Checking...</div>
-                        </> : 'Connect Wallet'}
+                        </div> : 'Connect Wallet'}
                     </WalletContainer>
                 ) : (
                     <WalletContainer onClick={isLogin ? (isClaimAvailable ? clickAirdrop : null) : clickLogin}

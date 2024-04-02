@@ -51,7 +51,7 @@ const IndividualList = () => {
     };
 
     const isListEmpty = personalListData.length === 0
-    
+
     const fetchIndividualList = async (currentPage: number) => {
         try {
             const endPoint = `${process.env.REACT_APP_API_PERSONAL}/personalRnk?size=5&&page=${currentPage}`;
@@ -94,7 +94,7 @@ const IndividualList = () => {
             {isListEmpty ?
                 <RankingAlert text={'There is No Ranking Data Yet'}/>
                 :
-                <>
+                <div style={{width: '100%'}}>
                     <TableStyle>
                         <TheadStyle>
                             <tr>
@@ -142,7 +142,7 @@ const IndividualList = () => {
                             <ButtonImg src={nextarrow}/>
                         </ArrowButton>
                     </PaginationWrapper>
-                </>
+                </div>
             }
         </IndividualListWrapper>
     );
