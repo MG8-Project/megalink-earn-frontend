@@ -10,7 +10,19 @@ import {
   PaginationWrapper,
 } from "./Individual";
 
-import { nextarrow, prearrow } from "../../assets/images";
+import {
+  nextarrow,
+  prearrow,
+  gold,
+  silver,
+  bronze,
+  next,
+  pre,
+  preArrowHover,
+  preHover,
+  nextArrowHover,
+  nextHover,
+} from "../../assets/images";
 import RankingAlert from "./RankingAlert";
 
 export const tableTitle = [
@@ -45,6 +57,11 @@ const TeamList = () => {
   const handleChangePage = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
+  // 페이지네이션 화살표
+  const isPreArrowClickable = currentPage !== 1;
+  const isPreClickable = currentPage > 1;
+  const isNextArrowClickable = currentPage !== totalPage;
+  const isNextClickable = totalPage > currentPage;
 
   const convertNation = (nationCode: number) => {
     if (nationCode === undefined || nationCode === 0) return "Others";
@@ -58,17 +75,18 @@ const TeamList = () => {
 
   const fetchTeamList = async (currentPage: number) => {
     try {
-      const endPoint = `${process.env.REACT_APP_API_PERSONAL}/teamRnk?size=5&&page=${currentPage}`;
+      const endPoint = `${process.env.REACT_APP_API_PERSONAL}/teamRnk?size=20&&page=${currentPage}`;
       const res: TeamResponseType = await API.get(endPoint);
       if (res.status !== API_SUCCESS_CODE) throw new Error(String(res.status));
       setTeamListData(res.data.teamRnkLst);
-      setTotalPage(Math.ceil(res.data.totalSize / 5));
+      setTotalPage(Math.ceil(res.data.totalSize / 20));
     } catch (err) {
       switch (err) {
         default:
       }
     }
   };
+
   useEffect(() => {
     void fetchTeamList(currentPage);
   }, [currentPage]);
@@ -110,29 +128,43 @@ const TeamList = () => {
             </TheadStyle>
             <tbody>
               {teamListData.map((item, index) => (
-                <tr key={index}>
-                  <StyledTd>{item.rank}</StyledTd>
+                <StyledTr key={index}>
+                  <StyledTd>
+                    {item.rank}
+                    {item.rank === 1 && <RankImage src={gold} alt="" />}
+                    {item.rank === 2 && <RankImage src={silver} alt="" />}
+                    {item.rank === 3 && <RankImage src={bronze} alt="" />}
+                  </StyledTd>
                   <StyledTd>{item.name}</StyledTd>
                   <StyledTd>{convertNation(item.nation)}</StyledTd>
                   <StyledTd>{item.booster}%</StyledTd>
-                  <StyledTd>{addComma(String(item.totalpoints))}</StyledTd>
-                </tr>
+                  <StyledTdEnd>
+                    {addComma(String(item.totalpoints))}
+                  </StyledTdEnd>
+                </StyledTr>
               ))}
             </tbody>
           </TableStyle>
           <PaginationWrapper>
             <ArrowButton onClick={() => setCurrentPage(1)}>
-              <ButtonImg src={prearrow} />
+              <ButtonImg src={isPreArrowClickable ? preArrowHover : prearrow} />
+            </ArrowButton>
+            <ArrowButton
+              onClick={() =>
+                setCurrentPage((prevPage) => Math.max(prevPage - 1, 1))
+              }
+            >
+              <ButtonImg src={isPreClickable ? preHover : pre} />
             </ArrowButton>
             {visiblePages.map((data, index) => (
               <PageButton
                 key={index}
                 onClick={() => handleChangePage(data)}
                 style={{
-                  background:
+                  color:
                     data === currentPage
-                      ? theme.colors.bg.dotsActive
-                      : theme.colors.bg.main,
+                      ? theme.colors.text
+                      : theme.colors.textGray,
                 }}
               >
                 {data}
@@ -141,8 +173,17 @@ const TeamList = () => {
             {visiblePages.length < totalPage && (
               <PageButton disabled>...</PageButton>
             )}
+            <ArrowButton
+              onClick={() =>
+                setCurrentPage((nextPage) => Math.min(nextPage + 1, totalPage))
+              }
+            >
+              <ButtonImg src={isNextClickable ? nextHover : next} />
+            </ArrowButton>
             <ArrowButton onClick={() => setCurrentPage(totalPage)}>
-              <ButtonImg src={nextarrow} />
+              <ButtonImg
+                src={isNextArrowClickable ? nextArrowHover : nextarrow}
+              />
             </ArrowButton>
           </PaginationWrapper>
         </>
@@ -180,10 +221,30 @@ const TheadStyle = styled.thead`
 const StyledTd = styled.td`
   font-size: 16px;
   font-weight: 400;
+  position: relative;
   padding: 16px 0px 16px 0px;
+`;
+const StyledTr = styled.tr`
+  height: 52px;
+`;
+
+const StyledTdEnd = styled.td`
+  font-size: 16px;
+  font-weight: 400;
+  padding: 16px 64px 16px 0;
+  text-align: end;
 `;
 const StyledTh = styled.th`
   font-size: 16px;
   font-weight: 400;
   padding: 8px 32px;
+`;
+
+const RankImage = styled.img`
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  left: 50%;
+  top: 25%;
+  transform: translate(-50%, -25%);
 `;

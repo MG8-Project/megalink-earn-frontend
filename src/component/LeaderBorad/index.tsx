@@ -46,6 +46,7 @@ const LeaderBoard = () => {
 export default LeaderBoard;
 
 const LeaderBoardWrapper = styled.div`
+  margin: 160px 0px;
   width: 100%;
   display: flex;
   align-items: center;
