@@ -24,25 +24,25 @@ const Mission = () => {
 export default Mission;
 
 const CardWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 `;
 
 const MissionWrapper = styled.div`
-    margin-top: 80px;
-    width: 1200px;
-    display: flex;
-    gap: 24px;
+  margin-top: 80px;
+  width: 1200px;
+  display: flex;
+  gap: 24px;
 `;
 
 const SpinContainer = styled.div`
-    /* width: 588px;
+  /* width: 588px;
     height: 1112px;
     border-radius: 16px; */
 `;
 const SpinContainerImage = styled.iframe`
-    width: 588px;
-    height: 1112px;
-    border-radius: 16px;
+  width: 588px;
+  height: 1112px;
+  border-radius: 16px;
 `;

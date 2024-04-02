@@ -36,17 +36,23 @@ const MissionCard = () => {
         <CardImage src={clock} alt="" />
         <CardTitle>Daily Mission</CardTitle>
         <div>
-          <TimeContainer>
-              {remainingTime.hours.toString().padStart(2, '0')}
-              <p>:</p> 
-              {remainingTime.minutes.toString().padStart(2, '0')}
-              <p>:</p>
-              {remainingTime.seconds.toString().padStart(2, '0')}
+        <TimeContainer>
+            <TimeWidth>
+              {remainingTime.hours.toString().padStart(2, "0")}
+            </TimeWidth>
+            <p>:</p>
+            <TimeWidth>
+              {remainingTime.minutes.toString().padStart(2, "0")}
+            </TimeWidth>
+            <p>:</p>
+            <TimeWidth>
+              {remainingTime.seconds.toString().padStart(2, "0")}
+            </TimeWidth>
           </TimeContainer>
           <TimeText>
-            <span>Hours</span>
-            <span>Minutes</span>
-            <span>Seconds</span>
+            <TimeWidth>Hours</TimeWidth>
+            <TimeWidth>Minutes</TimeWidth>
+            <TimeWidth>Seconds</TimeWidth>
           </TimeText>
         </div>
         <CardText>Participate twice a day for 12 hours</CardText>
@@ -65,7 +71,9 @@ const CardContainer = styled.div`
 const CardTitle = styled.div`
   font-weight: 600;
   font-size: 20px;
-  margin-bottom: 48px;
+  padding-bottom: 48px;
+  text-align: center;
+  line-height: 100%;
 `;
 const CardBox = styled.div`
   display: flex;
@@ -76,6 +84,10 @@ const CardBox = styled.div`
 const CardImage = styled.img`
   margin-bottom: 16px;
 `;
+const TimeWidth = styled.div`
+  width: 68px;
+  text-align: center;
+`;
 
 const TimeText = styled.div`
   display: flex;
@@ -84,13 +96,15 @@ const TimeText = styled.div`
   font-weight: 400;
   font-size: 16px;
   margin-top: 12px;
+  font-weight: 400;
+  line-height: 20px;
 `;
 
 const TimeContainer = styled.div`
   display: flex;
   gap: 20px;
   font-size: 48px;
-  font-weight: 600;
+  font-weight: 500;
   align-items: center;
 
   > p {
@@ -101,6 +115,8 @@ const TimeContainer = styled.div`
 
 const CardText = styled.div`
   margin-top: 56px;
+  text-align: center;
   font-size: 18px;
   font-weight: 400;
+  line-height: 22px;
 `;
