@@ -23,9 +23,20 @@ export { default as ticket } from "./ticket.png";
 export { default as clock } from "./clock.png";
 export { default as spinFrame } from "./Frame_1707484677.png";
 
+// rank
+export { default as gold } from "./1.png";
+export { default as silver } from "./2.png";
+export { default as bronze } from "./3.png";
+
 // arrow
 export { default as prearrow } from "./prearrow.png";
 export { default as nextarrow } from "./nextarrow.png";
+export { default as next } from "./next.png";
+export { default as pre } from "./pre.png";
+export { default as preHover } from "./preHover.png";
+export { default as nextHover } from "./nextHover.png";
+export { default as nextArrowHover } from "./nextArrowHover.png";
+export { default as preArrowHover } from "./preArrowHover.png";
 
 // close
 export { default as close } from "./closeWhite.png";
@@ -39,8 +50,8 @@ export { default as line } from "./line.svg";
 export { default as active } from "./active.svg";
 export { default as claim } from "./claim.svg";
 export { default as noneActive } from "./noneActive.svg";
-export { default as check } from "./check.png";
 export { default as circle } from "./circle.png";
 export { default as link } from "./link.svg";
 export { default as noneCheck } from "./plus-front-clay.svg";
 export { default as redCircle } from "./redCircle.png";
+export { default as loading } from "./Loading.png";
