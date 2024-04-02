@@ -12,11 +12,7 @@ const Mission = () => {
         <PoolCard />
       </CardWrapper>
       <SpinContainer>
-        {
-          <SpinContainerImage 
-            src="https://cv2.avivgame.com/game.html"
-          />
-        }
+        {<SpinContainerImage src="https://cv2.avivgame.com/game.html" />}
       </SpinContainer>
     </MissionWrapper>
   );
@@ -28,7 +24,6 @@ const CardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  margin-bottom: 160px;
 `;
 
 const MissionWrapper = styled.div`

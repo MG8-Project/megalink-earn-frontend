@@ -11,11 +11,16 @@ const Body = () => {
       <Spin />
       <Daily />
       <LeaderBoard />
-      <Wallet />
+      {/* <Wallet /> */}
       <Status />
     </BodyWrapper>
   );
 };
 
 export default Body;
-const BodyWrapper = styled.main``;
+const BodyWrapper = styled.main`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 320px;
+`;
