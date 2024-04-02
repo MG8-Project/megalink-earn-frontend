@@ -13,13 +13,38 @@ const MissionCard = () => {
   }, 1000);
   function getRemainingTime() {
     const now = new Date();
-    const nowUTC = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+    const nowUTC = Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate(),
+      now.getUTCHours(),
+      now.getUTCMinutes(),
+      now.getUTCSeconds()
+    );
 
     let nextChargeTime: Date;
     if (now.getUTCHours() < 12) {
-      nextChargeTime = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 12, 0, 0));
+      nextChargeTime = new Date(
+        Date.UTC(
+          now.getUTCFullYear(),
+          now.getUTCMonth(),
+          now.getUTCDate(),
+          12,
+          0,
+          0
+        )
+      );
     } else {
-      nextChargeTime = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0));
+      nextChargeTime = new Date(
+        Date.UTC(
+          now.getUTCFullYear(),
+          now.getUTCMonth(),
+          now.getUTCDate() + 1,
+          0,
+          0,
+          0
+        )
+      );
     }
 
     const difference = nextChargeTime.getTime() - nowUTC;
@@ -36,16 +61,22 @@ const MissionCard = () => {
         <CardTitle>Daily Mission</CardTitle>
         <div>
           <TimeContainer>
-            {remainingTime.hours.toString().padStart(2, "0")}
+            <TimeWidth>
+              {remainingTime.hours.toString().padStart(2, "0")}
+            </TimeWidth>
             <p>:</p>
-            {remainingTime.minutes.toString().padStart(2, "0")}
+            <TimeWidth>
+              {remainingTime.minutes.toString().padStart(2, "0")}
+            </TimeWidth>
             <p>:</p>
-            {remainingTime.seconds.toString().padStart(2, "0")}
+            <TimeWidth>
+              {remainingTime.seconds.toString().padStart(2, "0")}
+            </TimeWidth>
           </TimeContainer>
           <TimeText>
-            <span>Hours</span>
-            <span>Minutes</span>
-            <span>Seconds</span>
+            <TimeWidth>Hours</TimeWidth>
+            <TimeWidth>Minutes</TimeWidth>
+            <TimeWidth>Seconds</TimeWidth>
           </TimeText>
         </div>
         <CardText>Participate twice a day for 12 hours</CardText>
@@ -76,6 +107,10 @@ const CardBox = styled.div`
 `;
 const CardImage = styled.img`
   margin-bottom: 16px;
+`;
+const TimeWidth = styled.div`
+  width: 68px;
+  text-align: center;
 `;
 
 const TimeText = styled.div`

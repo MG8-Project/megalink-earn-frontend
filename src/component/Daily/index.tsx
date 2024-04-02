@@ -146,6 +146,7 @@ const Daily = () => {
 export default Daily;
 
 const DailyWrapper = styled.div`
+  margin: 160px 0px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -153,7 +154,6 @@ const DailyWrapper = styled.div`
   flex-direction: column;
 `;
 const TitleContainer = styled.div`
-  margin-top: 160px;
   display: flex;
   align-items: center;
   flex-direction: column;
