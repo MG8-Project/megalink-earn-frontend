@@ -98,46 +98,46 @@ const Status = () => {
 export default Status;
 
 const StatusWrapper = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 160px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin: 160px 0px;
 `;
 
 const StatusTitle = styled.h3`
-    font-weight: 600;
-    font-size: 48px;
+  font-weight: 600;
+  font-size: 48px;
 `;
 
 const StatusListWrapper = styled.div`
-    margin-top: 80px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
+  margin-top: 80px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
 `;
 const StatusListContainer = styled.div`
-    width: 588px;
-    height: 128px;
-    border-radius: 16px;
-    background-color: ${theme.colors.bg.box};
-    padding: 24px 32px 32px 24px;
+  width: 588px;
+  height: 128px;
+  border-radius: 16px;
+  background-color: ${theme.colors.bg.box};
+  padding: 24px 32px 32px 24px;
 `;
 
 const StatusListContentBox = styled.div`
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const ListTitle = styled.div`
-    color: ${theme.colors.textGray};
-    font-weight: 400;
-    font-size: 16px;
+  color: ${theme.colors.textGray};
+  font-weight: 400;
+  font-size: 16px;
 `;
 const ListContent = styled.div`
-    display: flex;
-    font-weight: 600;
-    font-size: 28px;
-    margin-top: 40px;
+  display: flex;
+  font-weight: 500;
+  font-size: 28px;
+  margin-top: 40px;
 `;

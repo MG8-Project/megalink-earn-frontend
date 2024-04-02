@@ -68,5 +68,5 @@ const CardImage = styled.img`
 
 const CardText = styled.div`
   font-size: 48px;
-  font-weight: 600;
+  font-weight: 500;
 `;

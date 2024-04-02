@@ -37,7 +37,7 @@ const AlertDialog = forwardRef((props: AlertDialogProps, ref: any) => {
                 <div>Transaction Failed</div>
                 <StyledImg src={failed}/>
                 {/*FIXME: 문구 바꾸기*/}
-                <div style={{fontSize: '1.7rem', marginTop: '20px'}}>There seems to be some heavy traffic on BSC
+                <div style={{fontSize: '1.7rem', marginTop: '20px'}}>There seems to be some heavy traffic on Polygon
                     network.
                 </div>
                 <div style={{fontSize: '1.7rem'}}>Plz try a few moments later</div>
