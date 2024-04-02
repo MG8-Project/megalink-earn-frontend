@@ -71,7 +71,7 @@ canvas{
 .inv-wrap .btn-copy-team-inv{cursor:pointer;margin-top:0.66em;width:16.666em;height:3em;}
 .inv-wrap .btn-play{cursor:pointer;margin-top:0.66em;width:16.666em;height:3em;}
 
-.inv-wrap .schedule-info{display:none;}
+/* .inv-wrap .schedule-info{display:none;} */
 
 .modal{
     position:fixed;
@@ -382,6 +382,7 @@ b{font-weight:900;margin:0 0.1em 0 0.7em;}
 .brooch-box-stars .btn-buy-brooch-step span{display:inline-block;font-size:1.166em;vertical-align:middle;font-family:"강원교육튼튼";margin-left:0.2285em;color: rgba(255, 255, 255, 0.8);
     text-shadow: 0px 2px 2px rgba(255,255,255,0.9), 0px 3px 2px rgba(0,0,0,0.5);}
 
+.brooch-box-stars .btn-buy-brooch-step.disabled {filter:grayscale(1);cursor:default;}
 
 
 .btn-create-team{display:inline-block;line-height: 0;text-align:center;width:7.966em;height:2.6166em;cursor:pointer;-webkit-appearance:none;appearance:none;box-shadow:none;border:0px;background:url('../images/common/pop/leaderboard-tabhead-on.png') center no-repeat; background-size:100%;}
