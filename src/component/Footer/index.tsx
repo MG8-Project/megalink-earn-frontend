@@ -4,6 +4,10 @@ import { theme } from "../../styles/theme";
 import { footerLogo } from "../../assets/images";
 import { FooterList, FooterSns } from "../../constants";
 
+interface textProps {
+  $isWebsite: boolean;
+}
+
 const Footer = () => {
   return (
     <FooterWrapper>
@@ -12,8 +16,10 @@ const Footer = () => {
           {FooterList.map((item, index) => (
             <FooterContentBox key={index}>
               <FooterBoldText>{item.title}</FooterBoldText>
-              <a href={item.link}>
-                <FooterContentText>{item.content}</FooterContentText>
+              <a href={item.link} target={"_blank"}>
+                <FooterContentText $isWebsite={item.content === "Website"}>
+                  {item.content}
+                </FooterContentText>
               </a>
             </FooterContentBox>
           ))}
@@ -77,9 +83,13 @@ const FooterBottomText = styled.div`
   color: ${theme.colors.footerText};
   font-size: 14px;
 `;
-const FooterContentText = styled.p`
+const FooterContentText = styled.p<textProps>`
   font-size: 16px;
   font-weight: 400;
+  width: ${(props) => (props.$isWebsite ? "58px" : "auto")};
+  &:hover {
+    border-bottom: 1px solid #ffffff;
+  }
 `;
 
 const FooterCi = styled.img`
@@ -97,6 +107,7 @@ const FooterContentBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+  width: auto;
 `;
 
 const ImgBoxWrapper = styled.div`
