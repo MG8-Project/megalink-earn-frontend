@@ -12,7 +12,6 @@ import {VaultAbi} from "../../typechain-types/contracts/Vault";
 import AlertDialog from "./dialog/AlertDialog";
 import {DOMAIN_SEPARATOR} from "./Reward";
 
-// FIXME: LoginResponse 확인 후 프로퍼티 수정하기
 interface LoginResponse {
     resultCode: string;
 }
@@ -65,8 +64,9 @@ const Points = (props: PointsProps) => {
                 const convertPointToMG8Ratio: any = await vault.convertPointToMG8Ratio()
                 const claimableAmountRes: any = await vault.claimableAmount(await signer.getAddress())
                 const currentPointRes = claimableAmountRes._mg8Amount * convertPointToMG8Ratio
-                // FIXME: 대소 확인 로직
-                setClaimableAmount(claimableAmountRes._mg8Amount)
+                const maxClaimableAmount = maxAmount > claimableAmountRes._mg8Amount ? claimableAmountRes._mg8Amount : maxAmount
+                
+                setClaimableAmount(maxClaimableAmount)
                 setExchangeRatioContract(Number(convertPointToMG8Ratio))
                 setMyPointContract(parseFloat(formatEther(currentPointRes)));
                 // setReceivedMG8(maxAmount <= res._mg8Amount ? maxAmount : res._mg8Amount)
@@ -79,6 +79,7 @@ const Points = (props: PointsProps) => {
             claimDialogRef.current?.close()
         }
     }
+
     const handleOpenDialog = (refCategory: string) => {
         const dialogRef = refCategory === 'claim' ? claimDialogRef : alertDialogRef
         void getClaimableAmount()
@@ -122,30 +123,26 @@ const Points = (props: PointsProps) => {
 
     let buttonContent;
     if (!isLoggedIn || loginAttemptFailed) {
-        buttonContent = (<LoginButton onClick={clickLogin}>Login</LoginButton>);
+        buttonContent = <LoginButton onClick={clickLogin}>Login</LoginButton>;
     } else {
-        // FIXME: 최초 disabled 뜨는거 고치기
-        if (isClaimable) {
-            // FIXME: min > claimableAmout
-            // 테스트끝나면 myPointsAPI < minAMount로 변경하기
-            if (myPointsAPI / exChangeRatioAPI > minAmount) {
-                buttonContent =
-                    <ClaimButton onClick={null} style={{color: theme.colors.bg.icon, fontSize: '18px'}}>No MG8
-                        Point</ClaimButton>
-            } else {
-                if (isButtonActive) {
-                    buttonContent = <ClaimButton onClick={() => handleOpenDialog('claim')}
-                                                 style={{color: '#fff', fontSize: '20px'}}>Claim
-                        All</ClaimButton>
-                } else {
-                    buttonContent =
-                        <ClaimButton onClick={() => setIsButtonActive(true)} style={{color: '#fff', fontSize: '17px'}}>Activate
-                            Claim</ClaimButton>
-                }
-            }
-        } else {
+        if (!isClaimable) {
             buttonContent = <ClaimButton onClick={null}
-                                         style={{color: theme.colors.bg.icon, fontSize: '20px'}}>Disabled</ClaimButton>
+                                         style={{color: theme.colors.bg.icon, fontSize: '20px'}}>Disabled</ClaimButton>;
+        } else if (myPointsAPI / exChangeRatioAPI < minAmount) {
+            buttonContent =
+                <ClaimButton onClick={null} style={{color: theme.colors.bg.icon, fontSize: '18px'}}>
+                    No MG8 Point
+                </ClaimButton>;
+        } else if (isButtonActive) {
+            buttonContent =
+                <ClaimButton onClick={() => handleOpenDialog('claim')} style={{color: '#fff', fontSize: '20px'}}>
+                    Claim All
+                </ClaimButton>;
+        } else {
+            buttonContent =
+                <ClaimButton onClick={() => setIsButtonActive(true)} style={{color: '#fff', fontSize: '17px'}}>
+                    Activate Claim
+                </ClaimButton>;
         }
     }
     return (
@@ -158,7 +155,6 @@ const Points = (props: PointsProps) => {
             <ClaimDialog ref={claimDialogRef}
                          setHash={setHash}
                          minAmount={minAmount}
-                         maxAmount={maxAmount}
                          claimableAmount={claimableAmount}
                          isNetworkChange={isNetworkChange}
                          exchangeRatio={exchangeRatioContract}

@@ -4,40 +4,37 @@ import {theme} from "../../../styles/theme";
 import {close} from "../../../assets/images"
 import {Vault, VaultAbi} from "../../../typechain-types/contracts/Vault";
 import Spinner from "../../ui/Spinner";
-import {BrowserProvider, Contract, formatUnits, parseUnits} from "ethers";
+import {BrowserProvider, Contract, formatUnits} from "ethers";
+import ClaimDialogProgressbar from "./ui/DialogProgressbar";
+import {addCommas} from "../index";
 
 
 interface ClaimDialogProps {
-    minAmount: bigint;
-    maxAmount: bigint;
-    claimableAmount: bigint;
-    handleOpenDialog: (refCategory: string) => void;
-    handleCloseDialog: (refCategory: string) => void;
     exchangeRatio: number;
     myPointContract: number;
-    setHash: Dispatch<SetStateAction<string>>
+    minAmount: bigint;
+    claimableAmount: bigint;
     isNetworkChange: boolean;
+    handleOpenDialog: (refCategory: string) => void;
+    handleCloseDialog: (refCategory: string) => void;
+    setHash: Dispatch<SetStateAction<string>>
     setIsTransactionComplete: Dispatch<SetStateAction<boolean>>
 }
 
 const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
     const {
-        isNetworkChange,
-        setIsTransactionComplete,
-        claimableAmount, // FIXME: receivedMG8와 claimableAmount 은 같음
+        exchangeRatio,
+        myPointContract,
         minAmount,
-        maxAmount,
+        claimableAmount,
+        isNetworkChange,
         handleOpenDialog,
         handleCloseDialog,
-        exchangeRatio,
         setHash,
-        myPointContract
+        setIsTransactionComplete
     } = props;
-    const addCommas = (num: bigint | number) => {
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
+
     const isButtonActive = minAmount < claimableAmount;
-    const max = maxAmount > claimableAmount ? claimableAmount : maxAmount;
     const claim = async () => {
         try {
             if (!isButtonActive) {
@@ -92,26 +89,11 @@ const ClaimDialog = forwardRef((props: ClaimDialogProps, ref: any) => {
                             <p style={{
                                 fontSize: "1.8rem",
                                 fontWeight: 'bold'
-                            }}> {isNetworkChange ? formatUnits(max).toString() : '...'} MG8</p>
+                            }}> {isNetworkChange ? formatUnits(claimableAmount).toString() : '...'} MG8</p>
                         </DialogContentInfo>
                     </DialogContentCurrentStatus>
                 </DialogContentWrapper>
-                <DialogProgressWrapper>
-                    {/*{isActivate ? null : <SpinnerWrapper> <Spinner/></SpinnerWrapper>}*/}
-                    <p style={{fontSize: "1.5rem", fontWeight: 'normal', color: '#fff'}}>*Gas fee will be paid in
-                        BNB</p>
-                    <DialogProgressbar>
-                        <DialogProgressStatusCircle style={{background: '#fff'}}/>
-                        <DialogProgressLine/>
-                        <DialogProgressStatusCircle
-                            style={{background: isNetworkChange ? '#fff' : 'transparent'}}/>
-                    </DialogProgressbar>
-                    <DialogProgressbar>
-                        <DialogProgressStatusText>Activate</DialogProgressStatusText>
-                        <DialogProgressLineInvisible/>
-                        <DialogProgressStatusTextRight>Claim</DialogProgressStatusTextRight>
-                    </DialogProgressbar>
-                </DialogProgressWrapper>
+                <ClaimDialogProgressbar isNetworkChange={isNetworkChange}/>
                 <DialogButtonWrapper>
                     <DialogButton
                         onClick={isNetworkChange ? handleClick : null}
@@ -228,49 +210,7 @@ const DialogContentCurrentStatus = styled.section`
     gap: 20px;
 `
 
-const DialogProgressWrapper = styled.section`
-    grid-area: progress;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-`
-const DialogProgressbar = styled.section`
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`
-const DialogProgressStatusCircle = styled.div`
-    border-radius: 100%;
-    border: 5px solid ${theme.colors.bg.iconHover};
-    padding: 10px;
-    transition: all 0.5s ease-in-out;
-`
-const DialogProgressLine = styled.div`
-    width: 250px;
-    height: 5px;
-    background: ${theme.colors.bg.iconHover};
-`
-const DialogProgressStatusText = styled.div`
-    border: none;
-    padding: 10px;
-    font-size: 1.4rem;
-    color: #fff;
-`
-const DialogProgressStatusTextRight = styled.div`
-    border: none;
-    padding: 10px;
-    font-size: 1.4rem;
-    color: #fff;
-    margin-right: 5px;
-`
-const DialogProgressLineInvisible = styled.div`
-    width: 215px;
-    height: 5px;
-    background: transparent;
-`
+
 const DialogButtonWrapper = styled.section`
     display: flex;
     justify-content: center;
