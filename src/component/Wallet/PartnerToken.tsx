@@ -142,7 +142,7 @@ const PartnerToken = (props: PartnerTokenProps) => {
     }
     useEffect(() => {
         void fetchBalances()
-    }, [isClaimAvailable]);
+    }, [isClaimAvailable, isLogin]);
 
     return (
         <CardWrapper>
