@@ -1,24 +1,26 @@
 import styled from "styled-components";
-import { theme } from "../../styles/theme";
+import {theme} from "../../styles/theme";
 import Mission from "./Mission";
+import {Link} from "react-router-dom";
+import {LEARN_URL} from "../../constants";
 
 const Spin = () => {
-  return (
-    <SpinWrapper>
-      <TitleContainer>
-        <MainTitle>$MG8 Spin</MainTitle>
-        <SubTitleContainer>
-          <SecondTitle>
-            Rule: Turn the spin and earn rewards. The pool of rewards offered
-            every day is limited.
-          </SecondTitle>
-          <SubTitle>Hurry up. Please make a bet. Good luck to you.</SubTitle>
-        </SubTitleContainer>
-        <LearnButton>Learn more</LearnButton>
-      </TitleContainer>
-      <Mission />
-    </SpinWrapper>
-  );
+    return (
+        <SpinWrapper>
+            <TitleContainer>
+                <MainTitle>$MG8 Spin</MainTitle>
+                <SubTitleContainer>
+                    <SecondTitle>
+                        Rule: Turn the spin and earn rewards. The pool of rewards offered
+                        every day is limited.
+                    </SecondTitle>
+                    <SubTitle>Hurry up. Please make a bet. Good luck to you.</SubTitle>
+                </SubTitleContainer>
+                <LearnButton><Link to={LEARN_URL} target="_blank">Learn more</Link></LearnButton>
+            </TitleContainer>
+            <Mission/>
+        </SpinWrapper>
+    );
 };
 
 export default Spin;
