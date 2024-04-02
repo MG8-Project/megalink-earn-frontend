@@ -9,67 +9,94 @@ const Header = () => {
   const { connectWallet } = useWallet();
   const walletAddress = useAuthStore((state) => state.userAccount);
 
-    const onWalletConnect = async () => {
-        const address = await connectWallet();
-        if (address === null) {
-            alert(METAMASK_LOCKED_OR_UNINSTALL);
-            return;
-        }
-        // 아래 alert와 비슷한 역할을 하는것 같은데 우선 console.log로 작성되어있어 따로 alert로 변경하진 않았습니다.
-        useAuthStore.getState().setUserAccount(address);
-    };
-
-    const onWalletDisconnect = () => {
-        //  Disconnect 시 logout
-        useAuthStore.getState().logout();
-        // useAuthStore.getState().setUserAccount(null);
-        // 같은 메서드인데 다른 컴포넌트에서는 alert여서 일단 alert로 통일 시켜놓았습니다.
-        alert(DISCONNECTED);
-    };
-    const clickMenu = (id: string) => {
-        const destinationSection = document.getElementById(id);
-        if (destinationSection) {
-            destinationSection.scrollIntoView({behavior: "smooth"})
-        }
+  const onWalletConnect = async () => {
+    const address = await connectWallet();
+    if (address === null) {
+      alert(METAMASK_LOCKED_OR_UNINSTALL);
+      return;
     }
-    return (
-        <HeaderWrapper>
-            <HeaderLogo src={headerLogo} alt=""/>
-            <div>
-                <HeaderUl>
-                    <li style={{cursor: "pointer"}}>
-                        <Link to={"/"}>Home</Link>
-                    </li>
-                    <li style={{cursor: "pointer"}} onClick={() => clickMenu('leaderboard')}>LeaderBoard</li>
-                </HeaderUl>
-            </div>
-            {!walletAddress ? (
-                <WalletContainer onClick={onWalletConnect}>
-                    Connect Wallet
-                </WalletContainer>
-            ) : (
-                <WalletContainer onClick={onWalletDisconnect}>
-                    Connected
-                </WalletContainer>
-            )}
-        </HeaderWrapper>
-    );
+    // 아래 alert와 비슷한 역할을 하는것 같은데 우선 console.log로 작성되어있어 따로 alert로 변경하진 않았습니다.
+    useAuthStore.getState().setUserAccount(address);
+  };
+
+  const onWalletDisconnect = () => {
+    //  Disconnect 시 logout
+    useAuthStore.getState().logout();
+    // useAuthStore.getState().setUserAccount(null);
+    // 같은 메서드인데 다른 컴포넌트에서는 alert여서 일단 alert로 통일 시켜놓았습니다.
+    alert(DISCONNECTED);
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  const clickMenu = (id: string) => {
+    const destinationSection = document.getElementById(id);
+    if (destinationSection) {
+      const headerHeight = 160;
+      const destinationOffset = destinationSection.offsetTop - headerHeight;
+      window.scrollTo({ top: destinationOffset, behavior: "smooth" });
+    }
+  };
+  return (
+    <HeaderWrapper>
+      <div onClick={scrollToTop}>
+        <HeaderLogo src={headerLogo} alt="" />
+      </div>
+
+      <div>
+        <HeaderUl>
+          <li style={{ cursor: "pointer" }} onClick={scrollToTop}>
+            Home
+          </li>
+          <li
+            style={{ cursor: "pointer" }}
+            onClick={() => clickMenu("leaderboard")}
+          >
+            LeaderBoard
+          </li>
+        </HeaderUl>
+      </div>
+      {!walletAddress ? (
+        <WalletContainer onClick={onWalletConnect}>
+          Connect Wallet
+        </WalletContainer>
+      ) : (
+        <WalletContainer onClick={onWalletDisconnect}>
+          Connected
+        </WalletContainer>
+      )}
+    </HeaderWrapper>
+  );
 };
 
 export default Header;
 
 const HeaderWrapper = styled.div`
+  z-index: 999;
   display: flex;
+  position: fixed;
   justify-content: space-around;
   align-items: center;
   width: 100%;
   background-color: #000000;
   height: 80px;
+  li {
+    cursor: pointer;
+    height: 80px;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      border-bottom: 2px solid #d9d9d9;
+    }
+  }
 `;
 
 const HeaderLogo = styled.img`
   width: 210px;
   height: 48px;
+  cursor: pointer;
 `;
 
 const HeaderUl = styled.ul`
@@ -77,20 +104,19 @@ const HeaderUl = styled.ul`
   width: 277px;
   font-size: 18px;
   justify-content: space-between;
-
-  > li {
-  }
 `;
 
 const WalletContainer = styled.button`
   display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-weight: 400;
-  width: 140px;
+  width: 148px;
   height: 40px;
-  border: 1px solid #ffffff;
+  padding: 12px 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   border-radius: 100px;
+  background: #006ebe;
   font-size: 16px;
+  font-weight: 500;
+  line-height: 100%;
 `;
