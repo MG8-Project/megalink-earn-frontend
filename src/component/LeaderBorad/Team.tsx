@@ -156,7 +156,6 @@ const TeamList = () => {
 export default TeamList;
 const TeamListWrapper = styled.div`
   margin-top: 32px;
-  margin-bottom: 32px;
   background-color: ${theme.colors.bg.box};
   padding: 16px 32px 32px 32px;
   width: 1200px;
