@@ -24,6 +24,7 @@ const Spin = () => {
 export default Spin;
 
 const SpinWrapper = styled.div`
+  margin: 240px 0px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -31,7 +32,6 @@ const SpinWrapper = styled.div`
   flex-direction: column;
 `;
 const TitleContainer = styled.div`
-  margin-top: 160px;
   display: flex;
   align-items: center;
   flex-direction: column;

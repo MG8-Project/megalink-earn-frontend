@@ -6,13 +6,12 @@ import TeamList from "./Team";
 import { INDIVIDUAL, TEAM } from "../../constants";
 
 const LeaderBoard = () => {
-
-    const [activeTab, setActiveTab] = useState(INDIVIDUAL);
-    const isTabIndividual = activeTab === INDIVIDUAL;
-    return (
-        <LeaderBoardWrapper id='leaderboard'>
-            <TitleContainer>
-                <MainTitle>MG8 24h Leaderboard</MainTitle>
+  const [activeTab, setActiveTab] = useState(INDIVIDUAL);
+  const isTabIndividual = activeTab === INDIVIDUAL;
+  return (
+    <LeaderBoardWrapper id="leaderboard">
+      <TitleContainer>
+        <MainTitle>MG8 24h Leaderboard</MainTitle>
 
         <SecondTitle>
           Check the scores you have earned and compare them with the
@@ -47,6 +46,7 @@ const LeaderBoard = () => {
 export default LeaderBoard;
 
 const LeaderBoardWrapper = styled.div`
+  margin: 160px 0px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -55,7 +55,6 @@ const LeaderBoardWrapper = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  margin-top: 160px;
   display: flex;
   align-items: center;
   flex-direction: column;

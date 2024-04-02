@@ -9,7 +9,7 @@ import {
   line,
   claim,
   noneActive,
-  loading,
+  // loading,
 } from "../../assets/images";
 
 const Popup = () => {
