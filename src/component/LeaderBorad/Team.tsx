@@ -93,7 +93,7 @@ const TeamList = () => {
         <TeamListWrapper>
             {isListEmpty ? <RankingAlert text={'There is No Ranking Data Yet'}/>
                 :
-                <>
+                <div style={{width: '100%'}}>
                     <TableStyle>
                         <TheadStyle>
                             <tr>
@@ -139,7 +139,7 @@ const TeamList = () => {
                             <ButtonImg src={nextarrow}/>
                         </ArrowButton>
                     </PaginationWrapper>
-                </>
+                </div>
             }
 
         </TeamListWrapper>
