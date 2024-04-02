@@ -1011,6 +1011,12 @@ window.onresize = resizeAction
       return;
     }
 
+    if(gameOptions.userInfo.userBroochLevel >= 10)
+    {
+
+      return;
+    }
+
     gameOptions.broochEnabled = false;
 
 
@@ -1081,6 +1087,12 @@ window.onresize = resizeAction
       
         if(prevLv != gameOptions.userInfo.userBroochLevel)//gameOptions.userInfo.userBroochStep >= 10)
         {
+
+          if(gameOptions.userInfo.userBroochLevel >= 10)
+          {
+            $(".btn-buy-brooch-step").addClass("disabled");
+          }
+          
 
           //let prevLv = gameOptions.userInfo.userBroochLevel;
           

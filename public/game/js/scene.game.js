@@ -86,8 +86,7 @@ function closeBoxPop(){
     gameOptions.boxPop.content.setScale(0)
     gameOptions.boxPop.alpha = 1;
     gameOptions.boxPop.content.result.txt.text = "";
-	
-  
+
     scene.tweens.add({
       targets:[gameOptions.boxPop.content],
       scale:1.1,
@@ -844,7 +843,7 @@ function closeBoxPop(){
 
       // console.log(result)
 
-      if(true)//result.resultCode == '1' || result.resultCode == '2')
+      if(result.resultCode == '1' || result.resultCode == '2')
 		  {
 
 

@@ -778,6 +778,11 @@ function getInfo(userAccount, accessToken, callbackLogin, callbackIdle) {
 			gameOptions.userInfo.userBroochLevel = result.brchLvl;
 			gameOptions.userInfo.userBroochBonus = result.brchBns;
 
+			if(gameOptions.userInfo.userBroochLevel >= 10)
+			{
+				$(".btn-buy-brooch-step").addClass("disabled");
+			}
+
 			setBroochStep();
 			$(".brooch").attr("class", "brooch brooch-lv-" + gameOptions.userInfo.userBroochLevel)
 			$(".bonus-meter").html("+" + gameOptions.userInfo.userBroochBonus + "%");
@@ -815,115 +820,27 @@ function getInfo(userAccount, accessToken, callbackLogin, callbackIdle) {
 
 		clearInfo++;
 		checkClearInfo();
-	});
+	}, callbackIdle);
 
-	/*
-	//내 자산확인(열쇠, 상자, 티켓 갯수 등)
-	XmlReq.get("/infiniteSpin/asset/myAssets", {}, function(){
+	
 
-		var result = JSON.parse(this.responseText);
+	window.addEventListener("visibilitychange", bindVisibilityChange)
 
-
-		if(result.resultCode == 1)
-		{
-			gameOptions.userInfo.userName = result.userName;
-			gameOptions.userInfo.userBoxCount = result.boxCnt;
-			gameOptions.userInfo.userKeyCount = result.keyCnt;
-			gameOptions.userInfo.userTicketCount = result.ticketCnt;
-			gameOptions.userInfo.userTicketTime = result.ticketChargeTime;
-			gameOptions.userInfo.teamCode = result.teamCode;
-			gameOptions.userInfo.inviterUserName = result.inviterUserName;
-
-			if(gameOptions.userInfo.inviterUserName)
-			{
-				$(".txt-invitee").html(gameOptions.userInfo.inviterUserName)
-				$(".section-add-invitee").hide();
-				$(".section-view-invitee").css("display","");
-			}
-
-
-
-			$("[name=myName]").val(gameOptions.userInfo.userName)
-			$(".myUserName").html(gameOptions.userInfo.userName)
-
-			
-
-			if(gameOptions.userInfo.teamCode) {
-
-				$("[name=invTeamCode]").val(gameOptions.userInfo.teamCode)
-				$("[name=MyTeamCode]").val(gameOptions.userInfo.teamCode)
-				$(".my-team-rank").show();
-				
-				XmlReq.post("/infiniteSpin/team/info", {teamCode:gameOptions.userInfo.teamCode}, function(){
-
-
-					var result = JSON.parse(this.responseText);
-					console.log(resul)
-
-					if(result.resultCode == 1)
-					{
-						
-						gameOptions.userInfo.teamInfo = result.teamInfo;
-
-						bindTeamInfo();
-
-						clearInfo++;
-						checkClearInfo();
-			
-					}
-					else
-					{
-						alert(result.msg);
-						callbackIdle();
-						loadingOff();
-					}
-			
-			
-			
-			
-				})	
-
-			}
-			else {
-				
-				clearInfo++;
-				checkClearInfo();
-			}
-			
-			if(gameState == GAME_STATE_OPEN) {
-				setTicketCount(gameOptions.userInfo.userTicketCount);
-				setTicketTimer(gameOptions.userInfo.userTicketTime/1000);
-
-
-				setBoxCnt();
-				setKeyCnt();
-
-			} else {
-
-				clearInfo++;
-				checkClearInfo();
-
-			}
-			
-			
-		}
-		else
-		{
-			alert(result.msg);
-			callbackIdle();
-			loadingOff();
-		}
-
-
-
-
-	})*/
 
 
 }
 
+function bindVisibilityChange(e){
 
-function updateAssets(callback){
+	if(e.target.visibilityState != 'hidden')
+	{
+		updateAssets(function(){}, function(){})
+	}
+
+}
+
+
+function updateAssets(callback, callbackIdle){
 
 	loadingOn();
 
@@ -1059,6 +976,7 @@ function updateAssets(callback){
 	loadingOn();
 
 	
+	window.removeEventListener("visibilitychange", bindVisibilityChange)
 
 	XmlReq.post("/infiniteSpin/user/logout", {accessToken:gameOptions.userInfo.accessToken, refreshToken:gameOptions.userInfo.refreshToken}, function(){
 
