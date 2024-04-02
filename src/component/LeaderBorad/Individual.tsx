@@ -50,7 +50,7 @@ const IndividualList = () => {
   const [personalListData, setPersonalListData] = useState<
     Array<PersonalListDataType>
   >([]);
-
+  
   // 페이지네이션 화살표
   const isPreArrowClickable = currentPage !== 1;
   const isPreClickable = currentPage > 1;

@@ -87,6 +87,7 @@ const TeamList = () => {
     }
   };
 
+
   useEffect(() => {
     void fetchTeamList(currentPage);
   }, [currentPage]);
