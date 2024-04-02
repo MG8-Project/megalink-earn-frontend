@@ -10,7 +10,7 @@ import {
   PaginationWrapper,
 } from "./Individual";
 
-import { nextArrow, preArrow } from "../../assets/images";
+import { nextarrow, prearrow } from "../../assets/images";
 import RankingAlert from "./RankingAlert";
 
 export const tableTitle = [
@@ -115,16 +115,14 @@ const TeamList = () => {
                   <StyledTd>{item.name}</StyledTd>
                   <StyledTd>{convertNation(item.nation)}</StyledTd>
                   <StyledTd>{item.booster}%</StyledTd>
-                  <StyledTdEnd>
-                    {addComma(String(item.totalpoints))}
-                  </StyledTdEnd>
+                  <StyledTd>{addComma(String(item.totalpoints))}</StyledTd>
                 </tr>
               ))}
             </tbody>
           </TableStyle>
           <PaginationWrapper>
             <ArrowButton onClick={() => setCurrentPage(1)}>
-              <ButtonImg src={preArrow} />
+              <ButtonImg src={prearrow} />
             </ArrowButton>
             {visiblePages.map((data, index) => (
               <PageButton
@@ -144,7 +142,7 @@ const TeamList = () => {
               <PageButton disabled>...</PageButton>
             )}
             <ArrowButton onClick={() => setCurrentPage(totalPage)}>
-              <ButtonImg src={nextArrow} />
+              <ButtonImg src={nextarrow} />
             </ArrowButton>
           </PaginationWrapper>
         </>
@@ -156,8 +154,9 @@ const TeamList = () => {
 export default TeamList;
 const TeamListWrapper = styled.div`
   margin-top: 32px;
+  margin-bottom: 32px;
   background-color: ${theme.colors.bg.box};
-  padding: 16px 32px 32px 32px;
+  padding: 16px 0 16px 0;
   width: 1200px;
   border-radius: 16px;
   display: flex;
@@ -182,12 +181,6 @@ const StyledTd = styled.td`
   font-size: 16px;
   font-weight: 400;
   padding: 16px 0px 16px 0px;
-`;
-const StyledTdEnd = styled.td`
-  font-size: 16px;
-  font-weight: 400;
-  padding: 16px 32px 16px 0;
-  text-align: end;
 `;
 const StyledTh = styled.th`
   font-size: 16px;

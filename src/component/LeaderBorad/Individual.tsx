@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import API from "../../apis/Api";
 import { API_SUCCESS_CODE, nationList, UNKNOWN } from "../../constants";
 
-import { nextArrow, preArrow } from "../../assets/images";
+import { nextarrow, prearrow } from "../../assets/images";
 import RankingAlert from "./RankingAlert";
 
 export const tableTitle = [
@@ -120,14 +120,14 @@ const IndividualList = () => {
                     {convertNation(item.nationCode)}
                   </StyledTd>
                   <StyledTd>{item.level}</StyledTd>
-                  <StyledTdEnd>{item.point}</StyledTdEnd>
+                  <StyledTd>{item.point}</StyledTd>
                 </tr>
               ))}
             </tbody>
           </TableStyle>
           <PaginationWrapper>
             <ArrowButton onClick={() => setCurrentPage(1)}>
-              <ButtonImg src={preArrow} />
+              <ButtonImg src={prearrow} />
             </ArrowButton>
             {visiblePages.map((data, index) => (
               <PageButton
@@ -147,7 +147,7 @@ const IndividualList = () => {
               <PageButton disabled>...</PageButton>
             )}
             <ArrowButton onClick={() => setCurrentPage(totalPage)}>
-              <ButtonImg src={nextArrow} />
+              <ButtonImg src={nextarrow} />
             </ArrowButton>
           </PaginationWrapper>
         </>
@@ -160,8 +160,9 @@ export default IndividualList;
 
 const IndividualListWrapper = styled.div`
   margin-top: 32px;
+  margin-bottom: 32px;
   background-color: ${theme.colors.bg.box};
-  padding: 16px 32px 32px 32px;
+  padding: 16px 0 16px 0;
   width: 1200px;
   border-radius: 16px;
   display: flex;
@@ -181,27 +182,16 @@ const TheadStyle = styled.thead`
   color: ${theme.colors.textGray};
   line-height: 20px;
 `;
-const StyledTr = styled.track`
-  font-size: 16px;
-  font-weight: 400;
-  padding: 16px 0 16px 0;
-`;
 
 const StyledTd = styled.td`
   font-size: 16px;
   font-weight: 400;
   padding: 16px 0 16px 0;
 `;
-const StyledTdEnd = styled.td`
-  font-size: 16px;
-  font-weight: 400;
-  padding: 16px 32px 16px 0;
-  text-align: end;
-`;
 const StyledTh = styled.th`
   font-size: 16px;
   font-weight: 400;
-  padding: 16px 32px;
+  padding: 8px 32px;
 `;
 
 export const PaginationWrapper = styled.div`
