@@ -9,6 +9,7 @@ const Spin = () => {
     <SpinWrapper>
       <TitleContainer>
         <MainTitle>$MG8 Spin</MainTitle>
+        <Subtitle>Play Slots to Win 10 BNB & $MG8 Airdrop! </Subtitle>
         <SubTitleContainer>
           <SecondTitle>
             Rule: Turn the spin and earn rewards. The pool of rewards offered
@@ -18,7 +19,7 @@ const Spin = () => {
         </SubTitleContainer>
         <LearnButton>
           <Link to={LEARN_URL} target="_blank">
-            Learn more
+            How to play
           </Link>
         </LearnButton>
       </TitleContainer>
@@ -40,7 +41,6 @@ const TitleContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 40px;
 `;
 
 const MainTitle = styled.div`
@@ -48,11 +48,24 @@ const MainTitle = styled.div`
   font-size: 48px;
 `;
 
+const Subtitle = styled.div`
+  padding-top: 40px;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: normal;
+  background: linear-gradient(104deg, #82e8ff 0%, #379fff 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+`;
+
 const SecondTitle = styled.div`
   font-weight: 400;
   font-size: 20px;
 `;
 const SubTitleContainer = styled.div`
+  padding-top: 24px;
+  padding-bottom: 40px;
   display: flex;
   flex-direction: column;
   gap: 12px;

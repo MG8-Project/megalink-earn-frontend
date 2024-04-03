@@ -55,6 +55,7 @@ export default CoinCard;
 const CardWrapper = styled.div`
   display: flex;
   gap: 24px;
+  margin-top: 60px;
 `;
 
 const CardBox = styled.div`
@@ -68,7 +69,7 @@ const CardBox = styled.div`
   align-items: center;
 `;
 
-//bordergradients
+//border gradients
 const CardTextBox = styled.div<CardBoxProps>`
   background: linear-gradient(90deg, #82e8ff, #379fff);
   border-radius: 100px;

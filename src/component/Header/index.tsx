@@ -119,4 +119,11 @@ const WalletContainer = styled.button`
   font-size: 16px;
   font-weight: 500;
   line-height: 100%;
+  color: #fff;
+
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 100%;
 `;

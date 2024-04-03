@@ -26,7 +26,7 @@ const Wallet = () => {
 
   return (
     <WalletWrapper>
-      <WalletTitle>Get $MG8 if you have one of these coins</WalletTitle>
+      <WalletTitle>Coming Back in 2 Weeks to Participate</WalletTitle>
       <CoinCard />
       {!walletAddress ? (
         <WalletContainer onClick={onWalletConnect}>
@@ -51,7 +51,6 @@ const WalletWrapper = styled.div`
 
 const WalletTitle = styled.h3`
   font-size: 28px;
-  margin-bottom: 56px;
 `;
 
 const WalletContainer = styled.button`
