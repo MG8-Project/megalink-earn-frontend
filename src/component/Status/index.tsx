@@ -29,7 +29,6 @@ const Status = () => {
         BNBRewarded: '0'
     });
 
-    // 여러 depth 의 삼항연산자로 된 jsx 렌더링 부분을 따로 함수로 빼서 switch 문으로 변경
     const renderListContent = (id: number, status: StatusState) => {
         switch (id) {
             case 1:
@@ -55,7 +54,6 @@ const Status = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            // ApiStatus 요청실패에 따른 에러처리는 해당 훅의 메서드들이 수행해주기 때문에 여기 코드에서 필요없는 try catch 구문 제거
             const response = await ApiStatus.status();
             setStatus({
                 totalTransactions: response.totalTransactions,
@@ -98,46 +96,46 @@ const Status = () => {
 export default Status;
 
 const StatusWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  margin: 160px 0px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: 160px 0px;
 `;
 
 const StatusTitle = styled.h3`
-  font-weight: 600;
-  font-size: 48px;
+    font-weight: 600;
+    font-size: 48px;
 `;
 
 const StatusListWrapper = styled.div`
-  margin-top: 80px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
+    margin-top: 80px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
 `;
 const StatusListContainer = styled.div`
-  width: 588px;
-  height: 128px;
-  border-radius: 16px;
-  background-color: ${theme.colors.bg.box};
-  padding: 24px 32px 32px 24px;
+    width: 588px;
+    height: 128px;
+    border-radius: 16px;
+    background-color: ${theme.colors.bg.box};
+    padding: 24px 32px 32px 24px;
 `;
 
 const StatusListContentBox = styled.div`
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 `;
 
 const ListTitle = styled.div`
-  color: ${theme.colors.textGray};
-  font-weight: 400;
-  font-size: 16px;
+    color: ${theme.colors.textGray};
+    font-weight: 400;
+    font-size: 16px;
 `;
 const ListContent = styled.div`
-  display: flex;
-  font-weight: 500;
-  font-size: 28px;
-  margin-top: 40px;
+    display: flex;
+    font-weight: 500;
+    font-size: 28px;
+    margin-top: 40px;
 `;
