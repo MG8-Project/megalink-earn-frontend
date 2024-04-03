@@ -24,30 +24,29 @@ const Header = () => {
     useAuthStore.getState().logout();
     // useAuthStore.getState().setUserAccount(null);
     // 같은 메서드인데 다른 컴포넌트에서는 alert여서 일단 alert로 통일 시켜놓았습니다.
+    window.location.reload();
     alert(DISCONNECTED);
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
   const clickMenu = (id: string) => {
     const destinationSection = document.getElementById(id);
     if (destinationSection) {
-      const headerHeight = 160;
-      const destinationOffset = destinationSection.offsetTop - headerHeight;
-      window.scrollTo({ top: destinationOffset, behavior: "smooth" });
+      destinationSection.scrollIntoView({ behavior: "smooth" });
     }
+  };
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
   return (
     <HeaderWrapper>
-      <div onClick={scrollToTop}>
-        <HeaderLogo src={headerLogo} alt="" />
-      </div>
-
+      <HeaderLogo src={headerLogo} alt="" onClick={scrollToTop} />
       <div>
         <HeaderUl>
           <li style={{ cursor: "pointer" }} onClick={scrollToTop}>
-            Home
+            <Link to={"/"}>Home</Link>
           </li>
           <li
             style={{ cursor: "pointer" }}
