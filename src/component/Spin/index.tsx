@@ -9,6 +9,7 @@ const Spin = () => {
         <SpinWrapper>
             <TitleContainer>
                 <MainTitle>$MG8 Spin</MainTitle>
+                <Subtitle>Play Slots to Win 10 BNB & $MG8 Airdrop! </Subtitle>
                 <SubTitleContainer>
                     <SecondTitle>
                         Rule: Turn the spin and earn rewards. The pool of rewards offered
@@ -16,7 +17,7 @@ const Spin = () => {
                     </SecondTitle>
                     <SubTitle>Hurry up. Please make a bet. Good luck to you.</SubTitle>
                 </SubTitleContainer>
-                <LearnButton><Link to={LEARN_URL} target="_blank">Learn more</Link></LearnButton>
+                <LearnButton><Link to={LEARN_URL} target="_blank">How to play</Link></LearnButton>
             </TitleContainer>
             <Mission/>
         </SpinWrapper>
@@ -26,7 +27,6 @@ const Spin = () => {
 export default Spin;
 
 const SpinWrapper = styled.div`
-  margin: 240px 0px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -37,7 +37,6 @@ const TitleContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 40px;
 `;
 
 const MainTitle = styled.div`
@@ -45,11 +44,24 @@ const MainTitle = styled.div`
   font-size: 48px;
 `;
 
+const Subtitle = styled.div`
+  padding-top: 40px;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: normal;
+  background: linear-gradient(104deg, #82e8ff 0%, #379fff 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+`;
+
 const SecondTitle = styled.div`
   font-weight: 400;
   font-size: 20px;
 `;
 const SubTitleContainer = styled.div`
+  padding-top: 24px;
+  padding-bottom: 40px;
   display: flex;
   flex-direction: column;
   gap: 12px;

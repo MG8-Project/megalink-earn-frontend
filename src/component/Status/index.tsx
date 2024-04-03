@@ -4,8 +4,6 @@ import {theme} from "../../styles/theme";
 import ApiStatus from "../../apis/ApiStatus";
 import {useEffect, useState} from "react";
 
-// StatusState 를 response 데이터의 타입에 활용하기 위해 좀 더 명시적으로 타입을 정의
-// 만약 이렇게 상세하게 명시해주지 않고 포괄적인 타입을 사용하고자 한다면 해당 interface 에 정의되어 있던 [key: string] : string 을 Record<string, string>으로 축약하여 사용 가능
 interface StatusState {
     totalTransactions: string,
     totalWallets: string,
@@ -46,7 +44,7 @@ const Status = () => {
             case 7:
                 return `${status.MG8Dropped} MG8`
             case 8:
-                return `${status.BNBRewarded} BNB`
+                return `${status.BNBRewarded}`
             default:
                 return '0'
         }
@@ -96,46 +94,48 @@ const Status = () => {
 export default Status;
 
 const StatusWrapper = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    margin: 160px 0px;
+  padding-top: 240px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const StatusTitle = styled.h3`
-    font-weight: 600;
-    font-size: 48px;
+  font-weight: 600;
+  font-size: 48px;
 `;
 
 const StatusListWrapper = styled.div`
-    margin-top: 80px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
+  margin-top: 60px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
 `;
 const StatusListContainer = styled.div`
-    width: 588px;
-    height: 128px;
-    border-radius: 16px;
-    background-color: ${theme.colors.bg.box};
-    padding: 24px 32px 32px 24px;
+  width: 282px;
+  height: 104px;
+  border-radius: 16px;
+  background-color: ${theme.colors.bg.box};
+  padding: 24px 38px 24px 24px;
 `;
 
 const StatusListContentBox = styled.div`
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 `;
 
 const ListTitle = styled.div`
-    color: ${theme.colors.textGray};
-    font-weight: 400;
-    font-size: 16px;
+  color: ${theme.colors.textGray};
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
 `;
 const ListContent = styled.div`
-    display: flex;
-    font-weight: 500;
-    font-size: 28px;
-    margin-top: 40px;
+  text-align: left;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 100%;
 `;

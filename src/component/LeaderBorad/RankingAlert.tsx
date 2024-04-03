@@ -10,7 +10,9 @@ const RankingAlert = (props: RankingAlertDataType) => {
 }
 
 const RankingAlertWrapper = styled.div`
-    width: 100%;
-    padding: 20px;
-`
+  width: 100%;
+  padding: 174px;
+  font-weight: 400;
+  font-size: 20px;
+`;
 export default RankingAlert

@@ -98,7 +98,13 @@ export const LOGIN_FAILED = "Failed to login. You should join first.";
 export const LOGIN_SUCCESS = "Successfully logged in.";
 export const DISCONNECTED = "Disconnected"
 
-export const OPBNB_TESTNET = {
+export const OPBNB_CONFIG = process.env.REACT_APP_ENVIRONMENT === 'production' ? {
+    chainId: hexlify('0xcc'), // 204
+    chainName: 'opBNB Mainnet',
+    symbol: 'BNB',
+    rpcUrls: ['https://opbnb-mainnet-rpc.bnbchain.org'],
+    blockExplorerUrls: ['https://mainnet.opbnbscan.com/']
+} : {
     chainId: hexlify('0x15eb'), // 5611
     chainName: 'opBNB Testnet',
     symbol: 'tBNB',
@@ -106,15 +112,13 @@ export const OPBNB_TESTNET = {
     blockExplorerUrls: ['https://testnet.opbnbscan.com/']
 }
 
-export const OPBNB_MAINNET = {
-    chainId: hexlify('0xcc'), // 204
-    chainName: 'opBNB Mainnet',
+export const BNB_CONFIG = process.env.REACT_APP_ENVIRONMENT === 'production' ? {
+    chainId: hexlify('0x38'), // 56
+    chainName: 'BNB Smart Chain Mainnet',
     symbol: 'BNB',
-    rpcUrls: ['https://opbnb-mainnet-rpc.bnbchain.org'],
-    blockExplorerUrls: ['https://mainnet.opbnbscan.com/']
-}
-
-export const BNB_TESTNET = {
+    rpcUrls: ['https://bsc-dataseed.binance.org/'],
+    blockExplorerUrls: ['https://bscscan.com/']
+} : {
     chainId: hexlify('0x61'), // 97
     chainName: 'BNB Smart Chain Testnet',
     symbol: 'tBNB',
@@ -122,12 +126,5 @@ export const BNB_TESTNET = {
     blockExplorerUrls: ['https://testnet.bscscan.com/']
 }
 
-export const BNB_MAINNET = {
-    chainId: hexlify('0x38'), // 56
-    chainName: 'BNB Smart Chain Mainnet',
-    symbol: 'BNB',
-    rpcUrls: ['https://bsc-dataseed.binance.org/'],
-    blockExplorerUrls: ['https://bscscan.com/']
-}
 // url
 export const LEARN_URL = 'https://docs.mega8.io/earn/infinite-spin'

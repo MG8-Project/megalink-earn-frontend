@@ -2,7 +2,7 @@ import styled from "styled-components";
 import PartnerToken from "./PartnerToken";
 import API from "../../apis/Api";
 import {useEffect, useState} from "react";
-import {useAuthStore} from "../../store/authStore";
+import { useAuthStore } from "../../store/authStore";
 
 export interface IToken {
     "symbol": "string",
@@ -64,7 +64,7 @@ const Wallet = () => {
             console.error(err)
         }
     }
-
+    
     useEffect(() => {
         void fetchPartnerTokens();
         void fetchClaimAvailable();
@@ -72,12 +72,10 @@ const Wallet = () => {
 
     return (
         <WalletWrapper>
-            <WalletTitle>Get $MG8 if you have one of these coins</WalletTitle>
-            <PartnerToken tokenList={tokenList}
-                          remainTime={remainTime}
-                          isClaimAvailable={isClaimAvailable}
-                          setIsClaimAvailable={setIsClaimAvailable}
-                          isLogin={isLogin}/>
+            <WalletTitle>
+                Get ready for an exclusive airdrop event in 2 weeks!
+            </WalletTitle>
+            <PartnerToken tokenList={tokenList} remainTime={remainTime} isClaimAvailable={isClaimAvailable} setIsClaimAvailable={setIsClaimAvailable} isLogin={isLogin}/>
         </WalletWrapper>
     );
 };
@@ -85,13 +83,11 @@ const Wallet = () => {
 export default Wallet;
 
 const WalletWrapper = styled.div`
-    margin: 160px 0px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const WalletTitle = styled.h3`
-    font-size: 28px;
-    margin-bottom: 56px;
+  font-size: 28px;
 `;

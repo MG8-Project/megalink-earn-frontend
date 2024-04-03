@@ -3,7 +3,7 @@ import {useWallet} from "../../hooks/useWallet";
 import {useAuthStore} from "../../store/authStore";
 import ApiPoints from "../../apis/ApiPoints";
 import {useRef, useState} from "react";
-import {ALERT, API_RESULT_CODE_SUCCESS, CLAIM, LOGIN_FAILED, METAMASK_LINK_FAILED} from "../../constants";
+import {LOGIN_FAILED, METAMASK_LINK_FAILED} from "../../constants";
 import ClaimDialog from "./dialog/ClaimDialog";
 import {theme} from "../../styles/theme";
 import {BrowserProvider, Contract, formatEther, toBeHex} from "ethers";
@@ -65,7 +65,7 @@ const Points = (props: PointsProps) => {
                 const claimableAmountRes: any = await vault.claimableAmount(await signer.getAddress())
                 const currentPointRes = claimableAmountRes._mg8Amount * convertPointToMG8Ratio
                 const maxClaimableAmount = maxAmount > claimableAmountRes._mg8Amount ? claimableAmountRes._mg8Amount : maxAmount
-
+                
                 setClaimableAmount(maxClaimableAmount)
                 setExchangeRatioContract(Number(convertPointToMG8Ratio))
                 setMyPointContract(parseFloat(formatEther(currentPointRes)));
@@ -80,16 +80,16 @@ const Points = (props: PointsProps) => {
     }
 
     const handleOpenDialog = (refCategory: string) => {
-        const dialogRef = refCategory === CLAIM ? claimDialogRef : alertDialogRef
+        const dialogRef = refCategory === 'claim' ? claimDialogRef : alertDialogRef
         void getClaimableAmount()
         dialogRef.current?.showModal()
     }
     const handleCloseDialog = (refCategory: string) => {
         switch (refCategory) {
-            case CLAIM:
+            case 'claim':
                 claimDialogRef.current?.close()
                 break;
-            case ALERT:
+            case 'alert':
                 alertDialogRef.current?.close()
                 break;
             default:
@@ -107,7 +107,7 @@ const Points = (props: PointsProps) => {
                 return;
             }
             const loginResponse: LoginResponse = await ApiPoints.login(address);
-            if (loginResponse.resultCode !== API_RESULT_CODE_SUCCESS) {
+            if (loginResponse.resultCode !== '1') {
                 throw new Error(LOGIN_FAILED);
             }
             useAuthStore.getState().login(address);
@@ -134,7 +134,7 @@ const Points = (props: PointsProps) => {
                 </ClaimButton>;
         } else if (isButtonActive) {
             buttonContent =
-                <ClaimButton onClick={() => handleOpenDialog(CLAIM)} style={{color: '#fff', fontSize: '20px'}}>
+                <ClaimButton onClick={() => handleOpenDialog('claim')} style={{color: '#fff', fontSize: '20px'}}>
                     Claim All
                 </ClaimButton>;
         } else {
@@ -169,55 +169,55 @@ const Points = (props: PointsProps) => {
                 claimableAmount={claimableAmount}
                 handleCloseDialog={handleCloseDialog}
             />
-            {/* {(!isLoggedIn || loginAttemptFailed) && (
-                <LoginButton onClick={clickLogin}>Login</LoginButton>
-            )} */}
         </PointsWrapper>
     );
 };
 export default Points;
 
 const PointsWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  width: 352px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const TextWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    font-weight: 600;
-    font-size: 18px;
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 600;
+  font-size: 18px;
 `;
 const PointText = styled.div`
-    font-size: 40px;
+  color: #fff;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 100%;
+  padding-top: 16px;
 `;
 
 const LoginButton = styled.button`
-    margin-top: 36px;
-
-    display: flex;
-    width: 160px;
-    height: 52px;
-    padding: 10px 12px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    border-radius: 100px;
-    background: #006ebe;
-    backdrop-filter: blur(4px);
-    font-size: 18px;
-    font-weight: 500;
+  margin-top: 36px;
+  display: flex;
+  width: 160px;
+  height: 52px;
+  padding: 10px 12px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  background: #006ebe;
+  backdrop-filter: blur(4px);
+  font-size: 18px;
+  font-weight: 500;
 `;
 
 const ClaimButton = styled.button`
-    margin-top: 36px;
-    font-weight: 600;
-    width: 150px;
-    height: 56px;
-    border: 1px solid gray;
-    border-radius: 100px;
-    color: gray;
+  margin-top: 32px;
+  font-weight: 600;
+  width: 150px;
+  height: 56px;
+  border: 1px solid gray;
+  border-radius: 100px;
+  color: gray;
 `;
