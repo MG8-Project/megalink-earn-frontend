@@ -31,19 +31,27 @@ const Header = () => {
     const clickMenu = (id: string) => {
         const destinationSection = document.getElementById(id);
         if (destinationSection) {
-            destinationSection.scrollIntoView({behavior: "smooth"})
+          const headerHeight = 200;
+          const destinationOffset = destinationSection.offsetTop - headerHeight;
+          window.scrollTo({ top: destinationOffset, behavior: "smooth" });
         }
-    }
+      };
+      const scrollToTop = () => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      };
     return (
         <HeaderWrapper>
-            <HeaderLogo src={headerLogo} alt=""/>
+            <HeaderLogo src={headerLogo} alt="" onClick={scrollToTop} />
             <div>
                 <HeaderUl>
-                    <li style={{cursor: "pointer"}}>
-                        <Link to={"/"}>Home</Link>
-                    </li>
-                    <li style={{cursor: "pointer"}} onClick={() => clickMenu('leaderboard')}>LeaderBoard</li>
-                </HeaderUl>
+                <li style={{ cursor: "pointer" }} onClick={scrollToTop}>
+                  <Link to={"/"}>Home</Link>
+                </li>
+                <li style={{cursor: "pointer"}} onClick={() => clickMenu('leaderboard')}>LeaderBoard</li>
+              </HeaderUl>
             </div>
             {!walletAddress ? (
                 <WalletContainer onClick={onWalletConnect}>
@@ -69,16 +77,6 @@ const HeaderWrapper = styled.div`
   width: 100%;
   background-color: #000000;
   height: 80px;
-  li {
-    cursor: pointer;
-    height: 80px;
-    display: flex;
-    align-items: center;
-
-    &:hover {
-      border-bottom: 2px solid #d9d9d9;
-    }
-  }
 `;
 
 const HeaderLogo = styled.img`
@@ -92,8 +90,17 @@ const HeaderUl = styled.ul`
   width: 277px;
   font-size: 18px;
   justify-content: space-between;
-`;
+  li {
+    cursor: pointer;
+    height: 80px;
+    display: flex;
+    align-items: center;
 
+    &:hover {
+      box-shadow: inset 0 -2px 0 #d9d9d9;
+    }
+  }
+`;
 const WalletContainer = styled.button`
   display: flex;
   width: 148px;
@@ -105,6 +112,13 @@ const WalletContainer = styled.button`
   border-radius: 100px;
   background: #006ebe;
   font-size: 16px;
+  font-weight: 500;
+  line-height: 100%;
+  color: #fff;
+
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
   font-weight: 500;
   line-height: 100%;
 `;

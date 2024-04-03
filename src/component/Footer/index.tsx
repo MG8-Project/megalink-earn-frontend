@@ -3,10 +3,7 @@ import styled from "styled-components";
 import { theme } from "../../styles/theme";
 import { footerLogo } from "../../assets/images";
 import { FooterList, FooterSns } from "../../constants";
-
-interface textProps {
-  $isWebsite: boolean;
-}
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -16,11 +13,12 @@ const Footer = () => {
           {FooterList.map((item, index) => (
             <FooterContentBox key={index}>
               <FooterBoldText>{item.title}</FooterBoldText>
-              <a href={item.link} target={"_blank"}>
-                <FooterContentText $isWebsite={item.content === "Website"}>
+
+              <FooterContentText>
+                <Link to={item.link} target={"_blank"}>
                   {item.content}
-                </FooterContentText>
-              </a>
+                </Link>
+              </FooterContentText>
             </FooterContentBox>
           ))}
 
@@ -28,11 +26,11 @@ const Footer = () => {
             <FooterBoldText>Community</FooterBoldText>
             <ImgBoxWrapper>
               {FooterSns.map((sns) => (
-                <a href={sns.linkUrl} target={"_blank"}>
+                <Link to={sns.linkUrl} target={"_blank"}>
                   <CommunityBox>
                     <CommunityImg src={sns.imgSrc} alt={sns.text} />
                   </CommunityBox>
-                </a>
+                </Link>
               ))}
             </ImgBoxWrapper>
           </FooterContentBox>
@@ -57,6 +55,7 @@ const FooterWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 160px;
 `;
 
 const FooterContainer = styled.div`
@@ -83,12 +82,14 @@ const FooterBottomText = styled.div`
   color: ${theme.colors.footerText};
   font-size: 14px;
 `;
-const FooterContentText = styled.p<textProps>`
+const FooterContentText = styled.div`
   font-size: 16px;
   font-weight: 400;
-  width: ${(props) => (props.$isWebsite ? "58px" : "auto")};
-  &:hover {
-    border-bottom: 1px solid #ffffff;
+  line-height: 20px;
+  a {
+    &:hover {
+      text-decoration: underline;
+    }
   }
 `;
 

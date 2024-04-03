@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { check, link, circle } from "../../assets/images";
-const ReceiptPopup = () => {
+const SuccessPopup = () => {
   return (
     <PopupWrapper>
       <PopupContainer>
@@ -39,7 +39,7 @@ const ReceiptPopup = () => {
   );
 };
 
-export default ReceiptPopup;
+export default SuccessPopup;
 
 const PopupWrapper = styled.div`
   display: inline-flex;

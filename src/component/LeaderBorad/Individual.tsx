@@ -18,6 +18,7 @@ import {
   nextHover,
 } from "../../assets/images";
 import RankingAlert from "./RankingAlert";
+import { useAuthStore } from "../../store/authStore";
 
 export const tableTitle = [
   { id: 0, title: "Rank" },
@@ -34,7 +35,6 @@ interface PersonalListDataType {
   point: number;
   level: number;
 }
-
 interface IndividualResponseType {
   status: number;
   data: {
@@ -44,9 +44,12 @@ interface IndividualResponseType {
 }
 
 const IndividualList = () => {
+  const isLoggedIn = useAuthStore(state => state.isLoggedIn);
+  const walletAddress = useAuthStore(state => state.userAccount);
   const [totalPage, setTotalPage] = useState(0);
   const [visiblePages, setVisiblePages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [personalData, setPersonalData] = useState<PersonalListDataType>(null);
   const [personalListData, setPersonalListData] = useState<
     Array<PersonalListDataType>
   >([]);
@@ -111,6 +114,23 @@ const IndividualList = () => {
     };
     visiblePages();
   }, [currentPage, totalPage]);
+  useEffect(() => {
+    const fetchPersonalData = async () => {
+      try {
+        const API_ENDPOINT = `${process.env.REACT_APP_API_PERSONAL}/myPersonalRnk`;
+      const res = await API.get(API_ENDPOINT, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+          }
+        });
+        setPersonalData(res.data);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    fetchPersonalData();
+  }, [isLoggedIn, walletAddress]);
+
   return (
     <IndividualListWrapper>
       {isListEmpty ? (
@@ -126,7 +146,18 @@ const IndividualList = () => {
               </tr>
             </TheadStyle>
             <tbody>
-              {personalListData.map((item, index) => (
+            <Space />
+              {
+                personalData && 
+                <UserStyledTr>
+                  <UserStyledTdStart>{personalData.rank}</UserStyledTdStart>
+                  <StyledTd>{personalData.userName}</StyledTd>
+                  <StyledTd>{convertNation(personalData.nationCode)}</StyledTd>
+                  <StyledTd>{personalData.level}</StyledTd>
+                  <UserStyledTdEnd>{personalData.point}</UserStyledTdEnd>
+                </UserStyledTr>
+              }
+            {personalListData.map((item, index) => (
                 <StyledTr key={index}>
                   <StyledTd>
                     {item.rank}
@@ -202,9 +233,8 @@ export default IndividualList;
 
 const IndividualListWrapper = styled.div`
   margin-top: 32px;
-
   background-color: ${theme.colors.bg.box};
-  padding: 16px 0 16px 0;
+  padding: 16px 32px 32px 32px;
   width: 1200px;
   border-radius: 16px;
   display: flex;
@@ -217,6 +247,7 @@ const IndividualListWrapper = styled.div`
 
 const TableStyle = styled.table`
   width: 100%;
+  border-collapse: collapse;
 `;
 const TheadStyle = styled.thead`
   font-size: 16px;
@@ -226,25 +257,34 @@ const TheadStyle = styled.thead`
 `;
 const StyledTr = styled.tr`
   height: 52px;
-  margin-top: 4px;
+`;
+
+const Space = styled.div`
+  // 테이블 간격
+  height: 4px;
 `;
 
 const StyledTd = styled.td`
   font-size: 16px;
   font-weight: 400;
   position: relative;
-  padding: 0px 32px;
+  padding: 16px 0px;
+  vertical-align: bottom;
+  text-align: center;
+  height: 20px;
 `;
 const StyledTdEnd = styled.td`
   font-size: 16px;
   font-weight: 400;
-  padding: 16px 64px 16px 0;
+  padding: 16px 64px 16px 0px;
   text-align: end;
+  vertical-align: bottom;
+  height: 20px;
 `;
 const StyledTh = styled.th`
   font-size: 16px;
   font-weight: 400;
-  padding: 8px 32px;
+  padding: 16px 32px;
 `;
 
 export const PaginationWrapper = styled.div`
@@ -283,6 +323,42 @@ export const RankImage = styled.img`
   height: 32px;
   position: absolute;
   left: 50%;
-  top: 25%;
-  transform: translate(-50%, -25%);
+  top: 50%;
+  transform: translate(-50%, -50%);
+`;
+
+const UserStyledTr = styled.tr`
+  height: 52px;
+  padding: 0px 32px;
+  gap: 68px;
+  border-radius: 10px;
+
+  background: linear-gradient(
+    90deg,
+    rgba(126, 229, 255, 0.1) 3.13%,
+    rgba(65, 169, 255, 0.1) 100%
+  );
+`;
+const UserStyledTdStart = styled.td`
+  font-size: 16px;
+  font-weight: 400;
+  text-align: end;
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+  padding: 16px 0px;
+  vertical-align: bottom;
+  text-align: center;
+  height: 20px;
+`;
+const UserStyledTdEnd = styled.td`
+  font-size: 16px;
+  font-weight: 400;
+  padding: 16px 64px 16px 0px;
+  width: 200px;
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  padding-right: 64px;
+  text-align: end;
+  vertical-align: bottom;
+  height: 20px;
 `;

@@ -146,28 +146,25 @@ const PartnerToken = (props: PartnerTokenProps) => {
 
     return (
         <CardWrapper>
+            {walletAddress !== null && isLogin ? (remainTime === 0 ? <RemainWrapper><text>Claim Available!</text></RemainWrapper> :
+                <RemainWrapper><RemainTime remainTime={remainTime}/></RemainWrapper>) : <text>Please Login</text>}
+            
             <TokenWrapper>
                 {tokenList.map((item, index) => (
                     <CardBox key={index}>
                         <CardBoxImg src={item.logoUrl} alt=""/>
                         <div>{item.symbol}</div>
-                        {/* {isLogin ?
-                            <CardAmountBox>{parseFloat(parseFloat(formatUnits(findBalance(item.symbol), item.decimals)).toFixed(2))}/{parseFloat(parseFloat(formatUnits(item.minAmount, item.decimals)).toFixed(2))}</CardAmountBox> : null
-                        } */}
                         {isLogin ?
-                            <CardTextBox $highBalance={checkBalance(index)}>
-                                <CardText $highBalance={checkBalance(index)}>
+                            <CardTextBox $highBalance={!checkBalance(index)}>
+                                <CardText $highBalance={!checkBalance(index)}>
                                 {parseFloat(parseFloat(formatUnits(findBalance(item.symbol), item.decimals)).toFixed(2))}/{parseFloat(parseFloat(formatUnits(item.minAmount, item.decimals)).toFixed(2))}
                                 </CardText>
                             </CardTextBox> : null
                         }
                     </CardBox>
                 ))}
-
             </TokenWrapper>
             <ButtonWrapper>
-                {walletAddress !== null && isLogin ? (remainTime === 0 ? <text>Claim Available!</text> :
-                    <RemainTime remainTime={remainTime}/>) : <text>Please Login</text>}
                 {!walletAddress ? (
                     <WalletContainer onClick={onWalletConnect}>
                         {isLoading ? <div><Spinner size={15}/>
@@ -175,14 +172,15 @@ const PartnerToken = (props: PartnerTokenProps) => {
                         </div> : 'Connect Wallet'}
                     </WalletContainer>
                 ) : (
-                    <WalletContainer onClick={isLogin ? (isClaimAvailable ? clickAirdrop : null) : clickLogin}
-                                    //  style={{
-                                    //      color: isLogin ? (isClaimAvailable ? '#fff' : '#3dbd3d') : '#fff',
-                                    //      border: isLogin ? (isClaimAvailable ? '1px solid #fff' : '1px solid #3dbd3d') : '1px solid #fff'
-                                    //  }}
-                                     >
-                        {isLogin ? (isClaimAvailable ? 'Claim' : 'Claimed!') : 'Login'}
-                    </WalletContainer>
+                    isLogin ? 
+                    <CardTextBox $highBalance={isClaimAvailable} onClick={isClaimAvailable ? clickAirdrop : null}>
+                        <CardText $highBalance={isClaimAvailable}>
+                        {isClaimAvailable ? 'Claim' : 'Claimed!'}
+                        </CardText>
+                    </CardTextBox> :
+                    <WalletContainer onClick={clickLogin}>
+                        Login
+                    </WalletContainer> 
                 )}
             </ButtonWrapper>
             {checkBalance ? null : <TokenAlertText>Deposit more coins above to claim</TokenAlertText>}
@@ -193,9 +191,14 @@ const PartnerToken = (props: PartnerTokenProps) => {
 export default PartnerToken;
 
 const CardWrapper = styled.div`
+  margin: 60px 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+const RemainWrapper = styled.div`
+  display: flex;
+  margin: 20px 2px;
 `;
 const ButtonWrapper = styled.div`
   margin: 60px 0px;
@@ -220,6 +223,7 @@ const WalletContainer = styled.button`
   background: #006ebe;
   backdrop-filter: blur(4px);
 `;
+
 const TokenWrapper = styled.div`
     display: flex;
     gap: 24px;
@@ -270,10 +274,12 @@ const CardText = styled.div<CardBoxProps>`
   align-items: center;
   color: ${(props) => (props.$highBalance ? "#999999" : "inherit")};
 `;
+
 const CardBoxImg = styled.img`
   width: 64px;
   margin-top: 40px;
 `;
+
 const TokenAlertText = styled.div`
     padding: 15px 0;
     width: 100%;

@@ -47,7 +47,6 @@ const LeaderBoard = () => {
 export default LeaderBoard;
 
 const LeaderBoardWrapper = styled.div`
-  margin: 160px 0px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -73,20 +72,18 @@ const SecondTitle = styled.div`
 `;
 
 const PageTitle = styled.div`
-  margin-top: 80px;
+  margin-top: 60px;
   display: flex;
   font-weight: 600;
   font-size: 20px;
   gap: 40px;
 `;
 
-// styled component에서 사용자의 custom attribute를 DOM에서 인식하지 못하는 경고문구로 인하여 바꾼 코드입니다.
-// button tag의 attribute 중 active가 없기때문에 style attribute를 통하여 css를 동적으로 변경하도록 코드 수정했습니다.
-// p.s : styled component에 attr이라는 메서드가 있지만, 해당 메서드는 기존에 존재하는 attribute에 한하여 사용이 가능하기 때문에 사용하지 않았습니다.
 const TabButton = styled.button`
-  background: none;
-  border: none;
+  color: #fff;
+  font-size: 20px;
   font-weight: 600;
+  line-height: 100%;
   padding-bottom: 12px;
   font-size: 20px;
   cursor: pointer;

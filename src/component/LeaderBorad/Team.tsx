@@ -24,6 +24,7 @@ import {
   nextHover,
 } from "../../assets/images";
 import RankingAlert from "./RankingAlert";
+import { useAuthStore } from "../../store/authStore";
 
 export const tableTitle = [
   { id: 0, title: "Rank" },
@@ -50,9 +51,12 @@ interface TeamResponseType {
 }
 
 const TeamList = () => {
+  const isLoggedIn = useAuthStore(state => state.isLoggedIn);
+  const walletAddress = useAuthStore(state => state.userAccount);
   const [totalPage, setTotalPage] = useState(0);
   const [visiblePages, setVisiblePages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [teamData, setTeamData] = useState<TeamListDataType>(null);
   const [teamListData, setTeamListData] = useState<Array<TeamListDataType>>([]);
   const handleChangePage = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -113,6 +117,22 @@ const TeamList = () => {
     };
     visiblePages();
   }, [currentPage, totalPage]);
+  useEffect(() => {
+    const fetchPersonalData = async () => {
+      try {
+        const API_ENDPOINT = `${process.env.REACT_APP_API_PERSONAL}/getMyTeamRank`;
+      const res = await API.get(API_ENDPOINT, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+          }
+        });
+        setTeamData(res.data);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    fetchPersonalData();
+  }, [isLoggedIn, walletAddress]);
   return (
     <TeamListWrapper>
       {isListEmpty ? (
@@ -128,6 +148,14 @@ const TeamList = () => {
               </tr>
             </TheadStyle>
             <tbody>
+              <Space />
+              {teamData && teamData.rank > 0 && <UserStyledTr>
+                <UserStyledTdStart>{teamData.rank}</UserStyledTdStart>
+                <StyledTd>{teamData.name}</StyledTd>
+                <StyledTd>{convertNation(teamData.nation)}</StyledTd>
+                <StyledTd>{teamData.booster}</StyledTd>
+                <UserStyledTdEnd>{teamData.totalpoints}</UserStyledTdEnd>
+              </UserStyledTr>}
               {teamListData.map((item, index) => (
                 <StyledTr key={index}>
                   <StyledTd>
@@ -194,11 +222,11 @@ const TeamList = () => {
 };
 
 export default TeamList;
+
 const TeamListWrapper = styled.div`
   margin-top: 32px;
-  margin-bottom: 32px;
   background-color: ${theme.colors.bg.box};
-  padding: 16px 0 16px 0;
+  padding: 16px 32px 32px 32px;
   width: 1200px;
   border-radius: 16px;
   display: flex;
@@ -223,29 +251,74 @@ const StyledTd = styled.td`
   font-size: 16px;
   font-weight: 400;
   position: relative;
-  padding: 16px 0px 16px 0px;
+  padding: 16px 0px;
+  vertical-align: bottom;
+  text-align: center;
+  height: 20px;
+  margin-top: 4px;
 `;
 const StyledTr = styled.tr`
   height: 52px;
 `;
 
+const Space = styled.div`
+  // 테이블 간격
+  height: 4px;
+`;
+
 const StyledTdEnd = styled.td`
   font-size: 16px;
   font-weight: 400;
-  padding: 16px 64px 16px 0;
+  padding: 16px 64px 16px 0px;
   text-align: end;
+  vertical-align: bottom;
+  height: 20px;
 `;
 const StyledTh = styled.th`
   font-size: 16px;
   font-weight: 400;
-  padding: 8px 32px;
+  padding: 16px 32px;
 `;
-
-const RankImage = styled.img`
+export const RankImage = styled.img`
   width: 32px;
   height: 32px;
   position: absolute;
   left: 50%;
-  top: 25%;
-  transform: translate(-50%, -25%);
+  top: 50%;
+  transform: translate(-50%, -50%);
+`;
+
+const UserStyledTr = styled.tr`
+  height: 52px;
+  padding: 0px 32px;
+  gap: 68px;
+  border-radius: 10px;
+  background: linear-gradient(
+    90deg,
+    rgba(126, 229, 255, 0.1) 3.13%,
+    rgba(65, 169, 255, 0.1) 100%
+  );
+`;
+const UserStyledTdStart = styled.td`
+  font-size: 16px;
+  font-weight: 400;
+  text-align: end;
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+  padding: 16px 0px;
+  vertical-align: bottom;
+  text-align: center;
+  height: 20px;
+`;
+const UserStyledTdEnd = styled.td`
+  font-size: 16px;
+  font-weight: 400;
+  padding: 16px 64px 16px 0px;
+  width: 200px;
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  padding-right: 64px;
+  text-align: end;
+  vertical-align: bottom;
+  height: 20px;
 `;

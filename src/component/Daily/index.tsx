@@ -178,7 +178,6 @@ const Daily = () => {
 export default Daily;
 
 const DailyWrapper = styled.div`
-  margin: 160px 0px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -204,11 +203,11 @@ const SubTitle = styled.div`
 
 const DayWrapper = styled.div`
   width: 1200px;
-  height: 310px;
+  height: 282px;
   background-color: ${theme.colors.bg.box};
   border-radius: 16px;
-  margin-top: 80px;
-  padding: 48px 90px 48px 48px;
+  margin-top: 60px;
+  padding: 48px 0px 48px 48px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -216,12 +215,10 @@ const DayWrapper = styled.div`
 `;
 
 const ContentWrapper = styled.section`
-  margin-top: 30px;
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: space-between;
-  //align-items: center;
 `;
 const ContentAlertText = styled.h2`
   margin-top: 20px;

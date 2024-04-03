@@ -170,42 +170,42 @@ const Points = (props: PointsProps) => {
                 claimableAmount={claimableAmount}
                 handleCloseDialog={handleCloseDialog}
             />
-            {/* {(!isLoggedIn || loginAttemptFailed) && (
-                <LoginButton onClick={clickLogin}>Login</LoginButton>
-            )} */}
         </PointsWrapper>
     );
 };
 export default Points;
 
 const PointsWrapper = styled.div`
+  width: 352px;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
 const TextWrapper = styled.div`
+  padding-top: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
   font-weight: 600;
   font-size: 18px;
 `;
 const PointText = styled.div`
-  font-size: 40px;
+  color: #fff;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 100%;
+  padding-top: 16px;
 `;
 
 const LoginButton = styled.button`
   margin-top: 36px;
-
   display: flex;
   width: 160px;
   height: 52px;
   padding: 10px 12px;
   justify-content: center;
   align-items: center;
-  gap: 10px;
   border-radius: 100px;
   background: #006ebe;
   backdrop-filter: blur(4px);
@@ -214,11 +214,11 @@ const LoginButton = styled.button`
 `;
 
 const ClaimButton = styled.button`
-    margin-top: 36px;
-    font-weight: 600;
-    width: 150px;
-    height: 56px;
-    border: 1px solid gray;
-    border-radius: 100px;
-    color: gray;
+  margin-top: 32px;
+  font-weight: 600;
+  width: 150px;
+  height: 56px;
+  border: 1px solid gray;
+  border-radius: 100px;
+  color: gray;
 `;

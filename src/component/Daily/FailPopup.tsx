@@ -1,26 +1,36 @@
 import styled from "styled-components";
 import { noneCheck, redCircle } from "../../assets/images";
+import { useEffect } from "react";
 
 const FailPopup = () => {
-  return (
-    <PopupWrapper>
-      <PopupContainer>
-        <TopContnet>
-          <ContentWrapper>
-            <img src={redCircle} alt="" width={72} height={72} />
-            <CheckImage src={noneCheck} alt="" />
-          </ContentWrapper>
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
 
-          <TopContentTitle>Transaction Fail</TopContentTitle>
+    return () => {
+      document.body.style.overflow = "visible";
+    };
+  }, []);
+
+  return (
+    <PopupOverlay>
+      <PopupWrapper>
+        <PopupContainer>
+          <TopContnet>
+            <ContentWrapper>
+              <img src={redCircle} alt="" width={72} height={72} />
+              <CheckImage src={noneCheck} alt="" />
+            </ContentWrapper>
+            <TopContentTitle>Transaction Fail</TopContentTitle>
+          </TopContnet>
           <ReceiveText>
             There seems to be some heavy traffic on BSC network.​​
-            <MiddleText>Plz try a few moments later.​</MiddleText>
           </ReceiveText>
-        </TopContnet>
+          <MiddleText>Plz try a few moments later.​</MiddleText>
 
-        <ActiveButton>OK</ActiveButton>
-      </PopupContainer>
-    </PopupWrapper>
+          <ActiveButton>OK</ActiveButton>
+        </PopupContainer>
+      </PopupWrapper>
+    </PopupOverlay>
   );
 };
 
@@ -37,6 +47,10 @@ const PopupOverlay = styled.div`
 `;
 
 const PopupWrapper = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: inline-flex;
   padding: 32px;
   flex-direction: column;
@@ -92,6 +106,7 @@ const TopContentTitle = styled.div`
   line-height: normal;
 `;
 const ReceiveText = styled.div`
+  padding-top: 16px;
   width: 300px;
   color: #fff;
   text-align: center;
