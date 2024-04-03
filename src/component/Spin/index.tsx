@@ -13,8 +13,8 @@ const Spin = () => {
             every day is limited.
           </SecondTitle>
           <SubTitle>Hurry up. Please make a bet. Good luck to you.</SubTitle>
+          <LearnButton>Learn more</LearnButton>
         </SubTitleContainer>
-        <LearnButton>Learn more</LearnButton>
       </TitleContainer>
       <Mission />
     </SpinWrapper>
@@ -24,7 +24,6 @@ const Spin = () => {
 export default Spin;
 
 const SpinWrapper = styled.div`
-  margin: 240px 0px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -50,7 +49,7 @@ const SecondTitle = styled.div`
 const SubTitleContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 40px;
   align-items: center;
 `;
 const SubTitle = styled.div`

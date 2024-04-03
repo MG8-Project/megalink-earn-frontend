@@ -81,16 +81,6 @@ const HeaderWrapper = styled.div`
   width: 100%;
   background-color: #000000;
   height: 80px;
-  li {
-    cursor: pointer;
-    height: 80px;
-    display: flex;
-    align-items: center;
-
-    &:hover {
-      border-bottom: 2px solid #d9d9d9;
-    }
-  }
 `;
 
 const HeaderLogo = styled.img`
@@ -104,8 +94,17 @@ const HeaderUl = styled.ul`
   width: 277px;
   font-size: 18px;
   justify-content: space-between;
-`;
+  li {
+    cursor: pointer;
+    height: 80px;
+    display: flex;
+    align-items: center;
 
+    &:hover {
+      box-shadow: inset 0 -2px 0 #d9d9d9;
+    }
+  }
+`;
 const WalletContainer = styled.button`
   display: flex;
   width: 148px;

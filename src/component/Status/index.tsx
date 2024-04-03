@@ -47,7 +47,7 @@ const Status = () => {
       case 7:
         return `${status.MG8Dropped} MG8`;
       case 8:
-        return `${status.BNBRewarded} BNB`;
+        return `${status.BNBRewarded} `;
       default:
         return "0";
     }
@@ -95,12 +95,12 @@ const Status = () => {
 export default Status;
 
 const StatusWrapper = styled.div`
+  padding-top: 200px;
   width: 100%;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  margin: 160px 0px;
 `;
 
 const StatusTitle = styled.h3`
@@ -111,30 +111,32 @@ const StatusTitle = styled.h3`
 const StatusListWrapper = styled.div`
   margin-top: 80px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 24px;
 `;
 const StatusListContainer = styled.div`
-  width: 588px;
-  height: 128px;
+  width: 282px;
+  height: 104px;
   border-radius: 16px;
   background-color: ${theme.colors.bg.box};
-  padding: 24px 32px 32px 24px;
+  padding: 24px 38px 24px 24px;
 `;
 
 const StatusListContentBox = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 12px;
 `;
 
 const ListTitle = styled.div`
   color: ${theme.colors.textGray};
-  font-weight: 400;
   font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
 `;
 const ListContent = styled.div`
-  display: flex;
+  text-align: left;
+  font-size: 24px;
   font-weight: 500;
-  font-size: 28px;
-  margin-top: 40px;
+  line-height: 100%;
 `;

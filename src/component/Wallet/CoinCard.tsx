@@ -67,6 +67,8 @@ const CardBox = styled.div`
   gap: 20px;
   align-items: center;
 `;
+
+//bordergradients
 const CardTextBox = styled.div<CardBoxProps>`
   background: linear-gradient(90deg, #82e8ff, #379fff);
   border-radius: 100px;
