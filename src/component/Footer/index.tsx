@@ -54,7 +54,7 @@ const FooterWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 120px;
+  margin-top: 160px;
 `;
 
 const FooterContainer = styled.div`

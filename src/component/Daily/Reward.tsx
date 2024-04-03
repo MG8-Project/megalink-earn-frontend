@@ -251,6 +251,7 @@ export default Reward;
 
 const RewardWrapper = styled.div`
   display: flex;
+  align-items: center;
   gap: 32px;
 `;
 
@@ -260,21 +261,25 @@ const RewardContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px;
-  border-radius: 10px;
 `;
 
 const RewardTitle = styled.div`
   font-weight: 500;
   font-size: 18px;
+  margin-top: 16px;
+  line-height: normal;
 `;
 const RewardPrice = styled.div`
+  width: 42px;
+  height: 17px;
   font-weight: 600;
   font-size: 14px;
+  line-height: normal;
 `;
 
 const RewardImage = styled.img`
-  width: 64px;
+  width: 60px;
+  height: 60px;
   margin-top: 24px;
   margin-bottom: 28px;
 `;

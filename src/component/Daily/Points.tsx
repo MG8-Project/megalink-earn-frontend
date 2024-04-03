@@ -220,20 +220,19 @@ const PointsWrapper = styled.div`
 `;
 
 const TextWrapper = styled.div`
-  padding-top: 10px;
+  padding-top: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-weight: 600;
   font-size: 18px;
-  line-height: normal;
 `;
 const PointText = styled.div`
   color: #fff;
   font-size: 32px;
   font-weight: 600;
   line-height: 100%;
-  padding-top: 12px;
+  padding-top: 16px;
 `;
 
 const LoginButton = styled.button`

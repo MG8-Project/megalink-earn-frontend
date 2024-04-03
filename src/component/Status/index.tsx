@@ -95,7 +95,7 @@ const Status = () => {
 export default Status;
 
 const StatusWrapper = styled.div`
-  padding-top: 200px;
+  padding-top: 240px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -109,7 +109,7 @@ const StatusTitle = styled.h3`
 `;
 
 const StatusListWrapper = styled.div`
-  margin-top: 80px;
+  margin-top: 60px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
