@@ -12,7 +12,7 @@ import {
   // loading,
 } from "../../assets/images";
 
-const Popup = () => {
+const TxPopup = () => {
   const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
@@ -99,7 +99,7 @@ const Popup = () => {
   );
 };
 
-export default Popup;
+export default TxPopup;
 
 const PopupOverlay = styled.div`
   position: fixed;
