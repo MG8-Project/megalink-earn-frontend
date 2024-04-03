@@ -1,9 +1,18 @@
 import styled from "styled-components";
 import { noneCheck, redCircle } from "../../assets/images";
+import { useEffect } from "react";
 
 const FailPopup = () => {
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "visible";
+    };
+  }, []);
+
   return (
-    <>
+    <PopupOverlay>
       <PopupWrapper>
         <PopupContainer>
           <TopContnet>
@@ -11,18 +20,17 @@ const FailPopup = () => {
               <img src={redCircle} alt="" width={72} height={72} />
               <CheckImage src={noneCheck} alt="" />
             </ContentWrapper>
-
             <TopContentTitle>Transaction Fail</TopContentTitle>
-            <ReceiveText>
-              There seems to be some heavy traffic on BSC network.​​
-              <MiddleText>Plz try a few moments later.​</MiddleText>
-            </ReceiveText>
           </TopContnet>
+          <ReceiveText>
+            There seems to be some heavy traffic on BSC network.​​
+          </ReceiveText>
+          <MiddleText>Plz try a few moments later.​</MiddleText>
 
           <ActiveButton>OK</ActiveButton>
         </PopupContainer>
       </PopupWrapper>
-    </>
+    </PopupOverlay>
   );
 };
 
@@ -39,6 +47,10 @@ const PopupOverlay = styled.div`
 `;
 
 const PopupWrapper = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: inline-flex;
   padding: 32px;
   flex-direction: column;
@@ -94,6 +106,7 @@ const TopContentTitle = styled.div`
   line-height: normal;
 `;
 const ReceiveText = styled.div`
+  padding-top: 16px;
   width: 300px;
   color: #fff;
   text-align: center;

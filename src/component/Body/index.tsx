@@ -17,6 +17,7 @@ interface Response {
 }
 
 const Body = () => {
+
     const [isAirDropPaused, setIsAirDropPaused] = useState(false);
     useEffect(() => {
         const fetchIsAirdropPaused = async () => {
@@ -46,4 +47,5 @@ const BodyWrapper = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 240px;
 `;

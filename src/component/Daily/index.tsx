@@ -4,10 +4,10 @@ import Reward from "./Reward";
 import Points from "./Points";
 import {useCallback, useEffect, useState} from "react";
 import API from "../../apis/Api";
+
 import {formatUnits} from "ethers";
 import ApiDaily from "../../apis/ApiDaily";
 import {useAuthStore} from "../../store/authStore";
-
 
 interface CurrentClaimResponse {
     status: number;
@@ -47,6 +47,7 @@ interface MyPointsResponse {
 }
 
 export const addCommas = (num: number) => {
+
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 const Daily = () => {
@@ -71,6 +72,7 @@ const Daily = () => {
         if (numData < 1) return addCommas(numData)
         return addCommas(Math.floor(numData))
     }
+
     const fetchCurrentClaim = async () => {
         try {
             const API_ENDPOINT = `${process.env.REACT_APP_API_URL}/infiniteSpin/mega8/claim/info`
@@ -178,7 +180,6 @@ const Daily = () => {
 export default Daily;
 
 const DailyWrapper = styled.div`
-  margin: 160px 0px;
   width: 100%;
   display: flex;
   align-items: center;

@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import {LEARN_URL} from "../../constants";
 
 const Spin = () => {
+
     return (
         <SpinWrapper>
             <TitleContainer>
@@ -26,7 +27,6 @@ const Spin = () => {
 export default Spin;
 
 const SpinWrapper = styled.div`
-  margin: 240px 0px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -52,7 +52,7 @@ const SecondTitle = styled.div`
 const SubTitleContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 40px;
   align-items: center;
 `;
 const SubTitle = styled.div`
