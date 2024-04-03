@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import ReceiptPopup from "./ReceiptPopup";
+import ReceiptPopup from "./SuccessPopup";
 import FailPopup from "./FailPopup";
 import { theme } from "../../styles/theme";
 import {

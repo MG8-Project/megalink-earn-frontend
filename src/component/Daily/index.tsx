@@ -5,6 +5,9 @@ import Points from "./Points";
 import { useEffect, useState } from "react";
 import API from "../../apis/Api";
 import { formatUnits } from "ethers";
+import Popup from "../Daily/Popup";
+import SuccessPopup from "./SuccessPopup";
+import FailPopup from "./FailPopup";
 
 interface CurrentClaimResponse {
   status: number;
@@ -36,6 +39,12 @@ interface IsClaimAvailableResponse {
     claimable: boolean;
   };
 }
+
+const AlertText = [
+  { text: "You can claim your points after the event ends." },
+  { text: "CLAIM NOTICE: You can claim up to 50,000 P at once." },
+  { text: "Insufficeient POINT to claim​" },
+];
 
 const Daily = () => {
   const [currentMG8, setCurrentMG8] = useState(0);
@@ -139,6 +148,9 @@ const Daily = () => {
       <ContentAlertText>
         You can claim your points after the events ends.
       </ContentAlertText>
+      {/* <Popup /> */}
+      {/* <SuccessPopup /> */}
+      {/* <FailPopup /> */}
     </DailyWrapper>
   );
 };
@@ -146,7 +158,6 @@ const Daily = () => {
 export default Daily;
 
 const DailyWrapper = styled.div`
-  margin: 160px 0px;
   width: 100%;
   display: flex;
   align-items: center;
