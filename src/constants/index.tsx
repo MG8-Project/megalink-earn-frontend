@@ -13,7 +13,7 @@ import { hexlify } from "ethers";
 //footer
 export const FooterList = [
   { title: "Megalink", content: "Website", link: "https://mega8.io/" },
-  { title: "Support", content: "Contact Us", link: "" },
+  { title: "Support", content: "Contact Us", link: "mailto:contact@mega8.io" },
 ];
 
 export const FooterSns = [
@@ -163,4 +163,4 @@ export const BNB_MAINNET = {
   blockExplorerUrls: ["https://bscscan.com/"],
 };
 
-export const LEARN_URL = 'https://docs.mega8.io/earn/infinite-spin'
+export const LEARN_URL = "https://docs.mega8.io/earn/infinite-spin";
