@@ -126,6 +126,14 @@ const IndividualList = () => {
               </tr>
             </TheadStyle>
             <tbody>
+              <Space />
+              <UserStyledTr>
+                <UserStyledTdStart>95,365</UserStyledTdStart>
+                <StyledTd>Youuuuuuuuuu</StyledTd>
+                <StyledTd>South Korea</StyledTd>
+                <StyledTd>99</StyledTd>
+                <UserStyledTdEnd>123,456,123,456</UserStyledTdEnd>
+              </UserStyledTr>
               {personalListData.map((item, index) => (
                 <StyledTr key={index}>
                   <StyledTd>
@@ -202,9 +210,8 @@ export default IndividualList;
 
 const IndividualListWrapper = styled.div`
   margin-top: 32px;
-
   background-color: ${theme.colors.bg.box};
-  padding: 16px 0 16px 0;
+  padding: 16px 32px 32px 32px;
   width: 1200px;
   border-radius: 16px;
   display: flex;
@@ -217,6 +224,7 @@ const IndividualListWrapper = styled.div`
 
 const TableStyle = styled.table`
   width: 100%;
+  border-collapse: collapse;
 `;
 const TheadStyle = styled.thead`
   font-size: 16px;
@@ -226,25 +234,34 @@ const TheadStyle = styled.thead`
 `;
 const StyledTr = styled.tr`
   height: 52px;
-  margin-top: 4px;
+`;
+
+const Space = styled.div`
+  // 테이블 간격
+  height: 4px;
 `;
 
 const StyledTd = styled.td`
   font-size: 16px;
   font-weight: 400;
   position: relative;
-  padding: 0px 32px;
+  padding: 16px 0px;
+  vertical-align: bottom;
+  text-align: center;
+  height: 20px;
 `;
 const StyledTdEnd = styled.td`
   font-size: 16px;
   font-weight: 400;
-  padding: 16px 64px 16px 0;
+  padding: 16px 64px 16px 0px;
   text-align: end;
+  vertical-align: bottom;
+  height: 20px;
 `;
 const StyledTh = styled.th`
   font-size: 16px;
   font-weight: 400;
-  padding: 8px 32px;
+  padding: 16px 32px;
 `;
 
 export const PaginationWrapper = styled.div`
@@ -283,6 +300,42 @@ export const RankImage = styled.img`
   height: 32px;
   position: absolute;
   left: 50%;
-  top: 25%;
-  transform: translate(-50%, -25%);
+  top: 50%;
+  transform: translate(-50%, -50%);
+`;
+
+const UserStyledTr = styled.tr`
+  height: 52px;
+  padding: 0px 32px;
+  gap: 68px;
+  border-radius: 10px;
+
+  background: linear-gradient(
+    90deg,
+    rgba(126, 229, 255, 0.1) 3.13%,
+    rgba(65, 169, 255, 0.1) 100%
+  );
+`;
+const UserStyledTdStart = styled.td`
+  font-size: 16px;
+  font-weight: 400;
+  text-align: end;
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+  padding: 16px 0px;
+  vertical-align: bottom;
+  text-align: center;
+  height: 20px;
+`;
+const UserStyledTdEnd = styled.td`
+  font-size: 16px;
+  font-weight: 400;
+  padding: 16px 64px 16px 0px;
+  width: 200px;
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  padding-right: 64px;
+  text-align: end;
+  vertical-align: bottom;
+  height: 20px;
 `;

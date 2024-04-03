@@ -72,18 +72,10 @@ const Wallet = () => {
 
     return (
         <WalletWrapper>
-            <WalletTitle>Get $MG8 if you have one of these coins</WalletTitle>
+            <WalletTitle>
+                Get ready for an exclusive airdrop event in 2 weeks!
+            </WalletTitle>
             <PartnerToken tokenList={tokenList} remainTime={remainTime} isClaimAvailable={isClaimAvailable} setIsClaimAvailable={setIsClaimAvailable} isLogin={isLogin}/>
-            {/* <WalletContainer 
-                onClick={isLogin ? (isClaimAvailable ? clickAirdrop : null) : clickLogin}
-                style={{
-                    color: isLogin ? (isClaimAvailable ? '#fff' : '#3dbd3d') : '#fff',
-                    border: isLogin ? (isClaimAvailable ? '1px solid #fff' : '1px solid #3dbd3d') : '1px solid #fff'
-                }}>
-                {isLogin ? (isClaimAvailable ? 'Claim' : 'Claimed!') : 'Login'}
-            </WalletContainer> */}
-            {/* <CoinCard tokenList={tokenList} isClaimAvailable={isClaimAvailable} setIsClaimAvailable={setIsClaimAvailable} /> */}
-            {/* <WalletContainer isClaimAvailable={isClaimAvailable} setIsClaimAvailable={setIsClaimAvailable} remainTime={remainTime} isLogin={false} /> */}
         </WalletWrapper>
     );
 };
@@ -91,7 +83,6 @@ const Wallet = () => {
 export default Wallet;
 
 const WalletWrapper = styled.div`
-  margin: 160px 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -99,5 +90,4 @@ const WalletWrapper = styled.div`
 
 const WalletTitle = styled.h3`
   font-size: 28px;
-  margin-bottom: 56px;
 `;
