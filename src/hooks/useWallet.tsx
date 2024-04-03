@@ -1,22 +1,21 @@
 import {useCallback, useEffect, useState} from "react";
 import {useAuthStore} from "../store/authStore";
 import {ethers, getAddress} from "ethers";
-import {OPBNB_TESTNET} from "../constants";
+import {OPBNB_CONFIG} from "../constants";
 
 export const useWallet = () => {
     const setWalletAddress = useAuthStore((state) => state.setUserAccount);
     const logout = useAuthStore((state) => state.logout);
     const login = useAuthStore((state) => state.login);
-    const [currentAccount, setCurrentAccount] = useState<string | null>(
-        null
-    );
+    const [currentAccount, setCurrentAccount] = useState<string | null>(null);
 
+    console.log(OPBNB_CONFIG.chainId)
     const connectWallet = useCallback(async () => {
         if (window.ethereum) {
             try {
                 await window.ethereum.request({
                     method: 'wallet_switchEthereumChain',
-                    params: [{chainId: OPBNB_TESTNET.chainId}],
+                    params: [{chainId: OPBNB_CONFIG.chainId}],
                 });
                 const provider = new ethers.BrowserProvider(window.ethereum);
                 const accounts = await provider.getSigner(0);
@@ -35,15 +34,15 @@ export const useWallet = () => {
                             method: 'wallet_addEthereumChain',
                             params: [
                                 {
-                                    chainId: OPBNB_TESTNET.chainId,
-                                    chainName: OPBNB_TESTNET.chainName,
+                                    chainId: OPBNB_CONFIG.chainId,
+                                    chainName: OPBNB_CONFIG.chainName,
                                     nativeCurrency: {
-                                        name: OPBNB_TESTNET.symbol,
-                                        symbol: OPBNB_TESTNET.symbol,
+                                        name: OPBNB_CONFIG.symbol,
+                                        symbol: OPBNB_CONFIG.symbol,
                                         decimals: 18
                                     },
-                                    rpcUrls: OPBNB_TESTNET.rpcUrls,
-                                    blockExplorerUrls: OPBNB_TESTNET.blockExplorerUrls
+                                    rpcUrls: OPBNB_CONFIG.rpcUrls,
+                                    blockExplorerUrls: OPBNB_CONFIG.blockExplorerUrls
                                 },
                             ],
                         });
@@ -64,15 +63,15 @@ export const useWallet = () => {
                                 method: 'wallet_addEthereumChain',
                                 params: [
                                     {
-                                        chainId: OPBNB_TESTNET.chainId,
-                                        chainName: OPBNB_TESTNET.chainName,
+                                        chainId: OPBNB_CONFIG.chainId,
+                                        chainName: OPBNB_CONFIG.chainName,
                                         nativeCurrency: {
-                                            name: OPBNB_TESTNET.symbol,
-                                            symbol: OPBNB_TESTNET.symbol,
+                                            name: OPBNB_CONFIG.symbol,
+                                            symbol: OPBNB_CONFIG.symbol,
                                             decimals: 18
                                         },
-                                        rpcUrls: OPBNB_TESTNET.rpcUrls,
-                                        blockExplorerUrls: OPBNB_TESTNET.blockExplorerUrls
+                                        rpcUrls: OPBNB_CONFIG.rpcUrls,
+                                        blockExplorerUrls: OPBNB_CONFIG.blockExplorerUrls
                                     },
                                 ],
                             });

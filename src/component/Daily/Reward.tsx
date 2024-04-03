@@ -5,7 +5,7 @@
 * */
 
 import styled from "styled-components";
-import {DailyRewardList, OPBNB_TESTNET} from "../../constants";
+import {DailyRewardList, OPBNB_CONFIG} from "../../constants";
 import {useAuthStore} from "../../store/authStore";
 import {BrowserProvider, Contract, ethers, getAddress} from "ethers";
 import {ForwarderAbi} from "../../typechain-types/contracts/Forwarder";
@@ -73,7 +73,7 @@ const Reward = () => {
                         try {
                             await window.ethereum.request({
                                 method: 'wallet_switchEthereumChain',
-                                params: [{chainId: OPBNB_TESTNET.chainId}],
+                                params: [{chainId: OPBNB_CONFIG.chainId}],
                             });
                         } catch (error: any) {
                             if (error.code === 4902) {
@@ -82,15 +82,15 @@ const Reward = () => {
                                         method: 'wallet_addEthereumChain',
                                         params: [
                                             {
-                                                chainId: OPBNB_TESTNET.chainId,
-                                                chainName: OPBNB_TESTNET.chainName,
+                                                chainId: OPBNB_CONFIG.chainId,
+                                                chainName: OPBNB_CONFIG.chainName,
                                                 nativeCurrency: {
-                                                    name: OPBNB_TESTNET.symbol,
-                                                    symbol: OPBNB_TESTNET.symbol,
+                                                    name: OPBNB_CONFIG.symbol,
+                                                    symbol: OPBNB_CONFIG.symbol,
                                                     decimals: 18
                                                 },
-                                                rpcUrls: OPBNB_TESTNET.rpcUrls,
-                                                blockExplorerUrls: OPBNB_TESTNET.blockExplorerUrls
+                                                rpcUrls: OPBNB_CONFIG.rpcUrls,
+                                                blockExplorerUrls: OPBNB_CONFIG.blockExplorerUrls
                                             },
                                         ],
                                     });
