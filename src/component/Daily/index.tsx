@@ -207,11 +207,11 @@ const SubTitle = styled.div`
 
 const DayWrapper = styled.div`
   width: 1200px;
-  height: 310px;
+  height: 282px;
   background-color: ${theme.colors.bg.box};
   border-radius: 16px;
   margin-top: 80px;
-  padding: 48px 90px 48px 48px;
+  padding: 48px 0px 48px 48px;
   display: flex;
   flex-direction: column;
   justify-content: center;
