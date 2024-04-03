@@ -1,11 +1,5 @@
-/* FIXME:
-1. 출석체크시 오늘 체크 가능 여부
-2. 지갑 잠그고 로그인 => alert 문구 변경
-3. 지갑 바꾸고 로그인
-* */
-
 import styled from "styled-components";
-import {DailyRewardList, OPBNB_TESTNET} from "../../constants";
+import {API_RESULT_CODE_SUCCESS, DailyRewardList, OPBNB_TESTNET} from "../../constants";
 import {useAuthStore} from "../../store/authStore";
 import {BrowserProvider, Contract, ethers, getAddress} from "ethers";
 import {ForwarderAbi} from "../../typechain-types/contracts/Forwarder";
@@ -162,7 +156,7 @@ const Reward = () => {
                         "Authorization": "application/json",
                     }
                 });
-                if (res && res.data.resultCode === '1') {
+                if (res && res.data.resultCode === API_RESULT_CODE_SUCCESS) {
                     setIsFetch(true);
                 } else {
                     throw new Error(res && res.data.msg);
