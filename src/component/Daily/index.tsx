@@ -145,9 +145,9 @@ const Daily = () => {
           )
         ) : null}
       </DayWrapper>
-      <ContentAlertText>
+      {/* <ContentAlertText>
         You can claim your points after the events ends.
-      </ContentAlertText>
+      </ContentAlertText> */}
       {/* <Popup /> */}
       {/* <SuccessPopup /> */}
       {/* <FailPopup /> */}
