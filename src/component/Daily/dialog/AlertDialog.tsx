@@ -6,21 +6,21 @@ import {theme} from "../../../styles/theme";
 import {Link} from "react-router-dom";
 
 interface AlertDialogProps {
-    receivedMG8: number;
+    claimableAmount: bigint;
     hash: string;
     handleCloseDialog: (refCategory: string) => void;
     isTransactionComplete: boolean;
 }
 
 const AlertDialog = forwardRef((props: AlertDialogProps, ref: any) => {
-    const {isTransactionComplete, hash, receivedMG8, handleCloseDialog} = props;
+    const {isTransactionComplete, hash, claimableAmount, handleCloseDialog} = props;
     const renderComponent = () => {
         if (isTransactionComplete) {
             return (
                 <DialogContentWrapper>
                     <div>Transaction Receipt</div>
                     <StyledImg src={check}/>
-                    <div>You will receive {receivedMG8} MG8</div>
+                    <div>{`You will receive ${claimableAmount} MG8`}</div>
                     <div style={{fontSize: '1.4rem'}}>*If not, plz check your transaction request status through the
                         link below
                     </div>

@@ -7,7 +7,7 @@
 import styled from "styled-components";
 import {DailyRewardList, OPBNB_TESTNET} from "../../constants";
 import {useAuthStore} from "../../store/authStore";
-import {BrowserProvider, Contract, ethers} from "ethers";
+import {BrowserProvider, Contract, ethers, getAddress} from "ethers";
 import {ForwarderAbi} from "../../typechain-types/contracts/Forwarder";
 import {DailyAttendanceAbi} from "../../typechain-types/contracts/DailyAttendance";
 import API from "../../apis/Api";
@@ -44,6 +44,9 @@ const Reward = () => {
             todayIndex: 0,
             attendedList: [0, 0, 0, 0, 0, 0, 0]
         });
+        const isReward = (index: number) => {
+            return isLoggedIn && receivedStatus.attendedList !== undefined && receivedStatus.attendedList[index] !== 0
+        }
         const isTodayCheckAvailable = (index: number) => {
             return index === receivedStatus.todayIndex
         }
@@ -115,7 +118,7 @@ const Reward = () => {
                 }
 
                 const message = {
-                    from: walletAddress,
+                    from: getAddress(walletAddress),
                     to: process.env.REACT_APP_CONTRACT_DAILY_ATTENDANCE,
                     value: "0",
                     gas: "50000",
@@ -146,10 +149,10 @@ const Reward = () => {
                     }
                 })
                 const method = "eth_signTypedData_v4";
-                const params = [walletAddress, typedData]
+                const params = [getAddress(walletAddress), typedData]
                 const signature = await window.ethereum.request({method, params});
                 const param = {
-                    userAccount: walletAddress,
+                    userAccount: getAddress(walletAddress),
                     signature,
                     ...message,
                 }
@@ -189,10 +192,6 @@ const Reward = () => {
             };
         }, [isLoggedIn, walletAddress, isFetch]);
 
-        // FIXME: attendedList undefined ㅎㅕ상 수정하기
-        const test = (index: number) => {
-            return isLoggedIn && receivedStatus.attendedList !== undefined && receivedStatus.attendedList[index] !== 0
-        }
 
         return (
             <RewardWrapper>
@@ -206,7 +205,7 @@ const Reward = () => {
                         }}>
                         <RewardTitle>{item.title}</RewardTitle>
                         <RewardImage
-                            src={test(index) ? mega8 : mg8gray}
+                            src={isReward(index) ? mega8 : mg8gray}
                             alt=""/>
                         <RewardPrice>{item.point}</RewardPrice>
                         {/* <RewardRequest onClick={signTypedData}>Get</RewardRequest> */}
