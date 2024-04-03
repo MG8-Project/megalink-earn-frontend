@@ -44,7 +44,6 @@ const Wallet = () => {
 export default Wallet;
 
 const WalletWrapper = styled.div`
-  padding-bottom: 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
