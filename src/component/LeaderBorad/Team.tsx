@@ -24,6 +24,7 @@ import {
   nextHover,
 } from "../../assets/images";
 import RankingAlert from "./RankingAlert";
+import { useAuthStore } from "../../store/authStore";
 
 export const tableTitle = [
   { id: 0, title: "Rank" },
@@ -50,9 +51,12 @@ interface TeamResponseType {
 }
 
 const TeamList = () => {
+  const isLoggedIn = useAuthStore(state => state.isLoggedIn);
+  const walletAddress = useAuthStore(state => state.userAccount);
   const [totalPage, setTotalPage] = useState(0);
   const [visiblePages, setVisiblePages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [teamData, setTeamData] = useState<TeamListDataType>(null);
   const [teamListData, setTeamListData] = useState<Array<TeamListDataType>>([]);
   const handleChangePage = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -113,6 +117,22 @@ const TeamList = () => {
     };
     visiblePages();
   }, [currentPage, totalPage]);
+  useEffect(() => {
+    const fetchPersonalData = async () => {
+      try {
+        const API_ENDPOINT = `${process.env.REACT_APP_API_PERSONAL}/getMyTeamRank`;
+      const res = await API.get(API_ENDPOINT, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+          }
+        });
+        setTeamData(res.data);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    fetchPersonalData();
+  }, [isLoggedIn, walletAddress]);
   return (
     <TeamListWrapper>
       {isListEmpty ? (
@@ -129,13 +149,13 @@ const TeamList = () => {
             </TheadStyle>
             <tbody>
               <Space />
-              <UserStyledTr>
-                <UserStyledTdStart>95,365</UserStyledTdStart>
-                <StyledTd>Youuuuuuuuuu</StyledTd>
-                <StyledTd>South Korea</StyledTd>
-                <StyledTd>99</StyledTd>
-                <UserStyledTdEnd>123,456,123,456</UserStyledTdEnd>
-              </UserStyledTr>
+              {teamData && teamData.rank > 0 && <UserStyledTr>
+                <UserStyledTdStart>{teamData.rank}</UserStyledTdStart>
+                <StyledTd>{teamData.name}</StyledTd>
+                <StyledTd>{convertNation(teamData.nation)}</StyledTd>
+                <StyledTd>{teamData.booster}</StyledTd>
+                <UserStyledTdEnd>{teamData.totalpoints}</UserStyledTdEnd>
+              </UserStyledTr>}
               {teamListData.map((item, index) => (
                 <StyledTr key={index}>
                   <StyledTd>

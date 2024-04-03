@@ -18,6 +18,7 @@ import {
   nextHover,
 } from "../../assets/images";
 import RankingAlert from "./RankingAlert";
+import { useAuthStore } from "../../store/authStore";
 
 export const tableTitle = [
   { id: 0, title: "Rank" },
@@ -34,7 +35,6 @@ interface PersonalListDataType {
   point: number;
   level: number;
 }
-
 interface IndividualResponseType {
   status: number;
   data: {
@@ -44,9 +44,12 @@ interface IndividualResponseType {
 }
 
 const IndividualList = () => {
+  const isLoggedIn = useAuthStore(state => state.isLoggedIn);
+  const walletAddress = useAuthStore(state => state.userAccount);
   const [totalPage, setTotalPage] = useState(0);
   const [visiblePages, setVisiblePages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [personalData, setPersonalData] = useState<PersonalListDataType>(null);
   const [personalListData, setPersonalListData] = useState<
     Array<PersonalListDataType>
   >([]);
@@ -111,6 +114,23 @@ const IndividualList = () => {
     };
     visiblePages();
   }, [currentPage, totalPage]);
+  useEffect(() => {
+    const fetchPersonalData = async () => {
+      try {
+        const API_ENDPOINT = `${process.env.REACT_APP_API_PERSONAL}/myPersonalRnk`;
+      const res = await API.get(API_ENDPOINT, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+          }
+        });
+        setPersonalData(res.data);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    fetchPersonalData();
+  }, [isLoggedIn, walletAddress]);
+
   return (
     <IndividualListWrapper>
       {isListEmpty ? (
@@ -126,15 +146,18 @@ const IndividualList = () => {
               </tr>
             </TheadStyle>
             <tbody>
-              <Space />
-              <UserStyledTr>
-                <UserStyledTdStart>95,365</UserStyledTdStart>
-                <StyledTd>Youuuuuuuuuu</StyledTd>
-                <StyledTd>South Korea</StyledTd>
-                <StyledTd>99</StyledTd>
-                <UserStyledTdEnd>123,456,123,456</UserStyledTdEnd>
-              </UserStyledTr>
-              {personalListData.map((item, index) => (
+            <Space />
+              {
+                personalData && 
+                <UserStyledTr>
+                  <UserStyledTdStart>{personalData.rank}</UserStyledTdStart>
+                  <StyledTd>{personalData.userName}</StyledTd>
+                  <StyledTd>{convertNation(personalData.nationCode)}</StyledTd>
+                  <StyledTd>{personalData.level}</StyledTd>
+                  <UserStyledTdEnd>{personalData.point}</UserStyledTdEnd>
+                </UserStyledTr>
+              }
+            {personalListData.map((item, index) => (
                 <StyledTr key={index}>
                   <StyledTd>
                     {item.rank}
