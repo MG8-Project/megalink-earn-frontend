@@ -26,7 +26,9 @@ const Wallet = () => {
 
   return (
     <WalletWrapper>
-      <WalletTitle>Coming Back in 2 Weeks to Participate</WalletTitle>
+      <WalletTitle>
+        Get ready for an exclusive airdrop event in 2 weeks!
+      </WalletTitle>
       <CoinCard />
       {!walletAddress ? (
         <WalletContainer onClick={onWalletConnect}>
