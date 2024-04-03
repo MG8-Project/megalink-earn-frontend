@@ -121,7 +121,6 @@ const Daily = () => {
                         Authorization: `Bearer ${localStorage.getItem('accessToken')}`
                     }
                 })
-                console.log(isClaimable, "전")
                 setIsClaimable(res.data.claimable)
             } catch (err) {
                 console.error(err);

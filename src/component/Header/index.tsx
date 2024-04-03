@@ -15,15 +15,11 @@ const Header = () => {
             alert(METAMASK_LOCKED_OR_UNINSTALL);
             return;
         }
-        // 아래 alert와 비슷한 역할을 하는것 같은데 우선 console.log로 작성되어있어 따로 alert로 변경하진 않았습니다.
         useAuthStore.getState().setUserAccount(address);
     };
 
     const onWalletDisconnect = () => {
-        //  Disconnect 시 logout
         useAuthStore.getState().logout();
-        // useAuthStore.getState().setUserAccount(null);
-        // 같은 메서드인데 다른 컴포넌트에서는 alert여서 일단 alert로 통일 시켜놓았습니다.
         window.location.reload();
         alert(DISCONNECTED);
     };

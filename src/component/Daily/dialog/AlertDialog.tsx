@@ -4,6 +4,7 @@ import styled from "styled-components";
 import {check, failed} from "../../../assets/images";
 import {theme} from "../../../styles/theme";
 import {Link} from "react-router-dom";
+import {ALL} from "../../../constants";
 
 interface AlertDialogProps {
     claimableAmount: bigint;
@@ -36,7 +37,6 @@ const AlertDialog = forwardRef((props: AlertDialogProps, ref: any) => {
             <DialogContentWrapper>
                 <div>Transaction Failed</div>
                 <StyledImg src={failed}/>
-                {/*FIXME: 문구 바꾸기*/}
                 <div style={{fontSize: '1.7rem', marginTop: '20px'}}>There seems to be some heavy traffic on Polygon
                     network.
                 </div>
@@ -51,7 +51,7 @@ const AlertDialog = forwardRef((props: AlertDialogProps, ref: any) => {
                     {renderComponent()}
                 </DialogContentWrapper>
                 <DialogButtonWrapper>
-                    <DialogButton onClick={() => handleCloseDialog('all')}>OK</DialogButton>
+                    <DialogButton onClick={() => handleCloseDialog(ALL)}>OK</DialogButton>
                 </DialogButtonWrapper>
             </DialogContent>
         </DialogWrapper>

@@ -69,7 +69,6 @@ const Points = (props: PointsProps) => {
                 setClaimableAmount(maxClaimableAmount)
                 setExchangeRatioContract(Number(convertPointToMG8Ratio))
                 setMyPointContract(parseFloat(formatEther(currentPointRes)));
-                // setReceivedMG8(maxAmount <= res._mg8Amount ? maxAmount : res._mg8Amount)
             }
 
             setIsNetworkChange(true)

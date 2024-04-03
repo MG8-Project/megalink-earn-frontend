@@ -4,8 +4,6 @@ import {theme} from "../../styles/theme";
 import ApiStatus from "../../apis/ApiStatus";
 import {useEffect, useState} from "react";
 
-// StatusState 를 response 데이터의 타입에 활용하기 위해 좀 더 명시적으로 타입을 정의
-// 만약 이렇게 상세하게 명시해주지 않고 포괄적인 타입을 사용하고자 한다면 해당 interface 에 정의되어 있던 [key: string] : string 을 Record<string, string>으로 축약하여 사용 가능
 interface StatusState {
     totalTransactions: string,
     totalWallets: string,
@@ -29,7 +27,6 @@ const Status = () => {
         BNBRewarded: '0'
     });
 
-    // 여러 depth 의 삼항연산자로 된 jsx 렌더링 부분을 따로 함수로 빼서 switch 문으로 변경
     const renderListContent = (id: number, status: StatusState) => {
         switch (id) {
             case 1:
@@ -55,7 +52,6 @@ const Status = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            // ApiStatus 요청실패에 따른 에러처리는 해당 훅의 메서드들이 수행해주기 때문에 여기 코드에서 필요없는 try catch 구문 제거
             const response = await ApiStatus.status();
             setStatus({
                 totalTransactions: response.totalTransactions,
