@@ -1,9 +1,3 @@
-/* FIXME:
-1. 출석체크시 오늘 체크 가능 여부
-2. 지갑 잠그고 로그인 => alert 문구 변경
-3. 지갑 바꾸고 로그인
-* */
-
 import styled from "styled-components";
 import {DailyRewardList, OPBNB_CONFIG} from "../../constants";
 import {useAuthStore} from "../../store/authStore";
@@ -219,36 +213,31 @@ const Reward = () => {
 export default Reward;
 
 const RewardWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 32px;
+    display: flex;
+    gap: 32px;
 `;
 
 const RewardContainer = styled.div`
-  width: 80px;
-  height: 180px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    width: 80px;
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
 `;
 
 const RewardTitle = styled.div`
-  font-weight: 500;
-  font-size: 18px;
-  margin-top: 16px;
-  line-height: normal;
+    font-weight: 700;
+    font-size: 18px;
 `;
 const RewardPrice = styled.div`
-  width: 42px;
-  height: 17px;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: normal;
+    font-weight: 600;
+    font-size: 14px;
 `;
 
 const RewardImage = styled.img`
-  width: 60px;
-  height: 60px;
-  margin-top: 24px;
-  margin-bottom: 28px;
+    width: 64px;
+    margin-top: 24px;
+    margin-bottom: 28px;
 `;

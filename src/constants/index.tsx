@@ -1,4 +1,4 @@
-import {ace, binance, discord, mega8, mg8gray, telegram, wemix, x, gitbook} from "../assets/images";
+import {discord, gitbook, mega8, mg8gray, telegram, x} from "../assets/images";
 import {hexlify} from "ethers";
 //footer
 export const FooterList = [
@@ -8,62 +8,32 @@ export const FooterList = [
 
 export const FooterSns = [
     {
-      id: 1,
-      linkUrl: "https://discord.gg/fEsTxNUYth",
-      imgSrc: discord,
-      text: "Discord",
+        id: 1,
+        linkUrl: "https://discord.gg/fEsTxNUYth",
+        imgSrc: discord,
+        text: "Discord",
     },
     {
-      id: 2,
-      linkUrl: "https://twitter.com/MegalinkMG8",
-      imgSrc: x,
-      text: "Twitter",
+        id: 2,
+        linkUrl: "https://twitter.com/MegalinkMG8",
+        imgSrc: x,
+        text: "Twitter",
     },
     {
-      id: 3,
-      linkUrl: "https://t.me/MegalinkMG8",
-      imgSrc: telegram,
-      text: "Telegram",
+        id: 3,
+        linkUrl: "https://t.me/MegalinkMG8",
+        imgSrc: telegram,
+        text: "Telegram",
     },
     {
-      id: 4,
-      linkUrl: "https://docs.mega8.io/",
-      imgSrc: gitbook,
-      text: "Gitbook",
+        id: 4,
+        linkUrl: "https://docs.mega8.io/",
+        imgSrc: gitbook,
+        text: "Gitbook",
     },
-  ];
-  
+];
 
-  export const coinList = [
-    {
-      id: 1,
-      image: binance,
-      amount: 1,
-      url: "https://bsc-dataseed.binance.org/",
-      chainId: 56,
-      balance: "0",
-      title: "BNB",
-    },
-    {
-      id: 2,
-      image: ace,
-      amount: 30,
-      url: "https://rpc-endurance.fusionist.io",
-      chainId: 648,
-      balance: "0",
-      title: "ACE",
-    },
-    {
-      id: 3,
-      image: wemix,
-      amount: 150,
-      url: "https://api.wemix.com/",
-      chainId: 1111,
-      balance: "0",
-      title: "WEMIX",
-    },
-  ];
-  
+
 export const statusList = [
     {id: 1, title: "Total Transcations", content: "12,345,678,901,234"},
     {id: 2, title: "Total Wallets", content: "12,345,678,901,234"},
@@ -104,14 +74,22 @@ export const nationList = [
     {nation: "Others", code: 14},
 ];
 
+export const OTHER_NATION = 'Others'
+
 // API CODE
 export const API_SUCCESS_CODE = 200;
+export const API_RESULT_CODE_FAIL = '40'
+export const API_RESULT_CODE_SUCCESS = '1'
 
 // variables
 export const UNKNOWN = 'Unknown'
+export const ACCESS_TOKEN = 'accessToken'
 
 export const INDIVIDUAL = 'Individual'
 export const TEAM = 'Team'
+export const CLAIM = 'claim'
+export const ALERT = 'alert'
+export const ALL = 'all'
 
 // Alert Message
 export const METAMASK_LOCKED_OR_UNINSTALL = "Please install Metamask. If you already installed, please unlock it.";

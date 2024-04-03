@@ -148,7 +148,7 @@ const PartnerToken = (props: PartnerTokenProps) => {
         <CardWrapper>
             {walletAddress !== null && isLogin ? (remainTime === 0 ? <RemainWrapper><text>Claim Available!</text></RemainWrapper> :
                 <RemainWrapper><RemainTime remainTime={remainTime}/></RemainWrapper>) : <text>Please Login</text>}
-            
+
             <TokenWrapper>
                 {tokenList.map((item, index) => (
                     <CardBox key={index}>
@@ -163,8 +163,11 @@ const PartnerToken = (props: PartnerTokenProps) => {
                         }
                     </CardBox>
                 ))}
+
             </TokenWrapper>
             <ButtonWrapper>
+                {walletAddress !== null && isLogin ? (remainTime === 0 ? <text>Claim Available!</text> :
+                    <RemainTime remainTime={remainTime}/>) : <text>Please Login</text>}
                 {!walletAddress ? (
                     <WalletContainer onClick={onWalletConnect}>
                         {isLoading ? <div><Spinner size={15}/>
@@ -172,7 +175,7 @@ const PartnerToken = (props: PartnerTokenProps) => {
                         </div> : 'Connect Wallet'}
                     </WalletContainer>
                 ) : (
-                    isLogin ? 
+                    isLogin ?
                     <CardTextBox $highBalance={isClaimAvailable} onClick={isClaimAvailable ? clickAirdrop : null}>
                         <CardText $highBalance={isClaimAvailable}>
                         {isClaimAvailable ? 'Claim' : 'Claimed!'}
@@ -180,7 +183,7 @@ const PartnerToken = (props: PartnerTokenProps) => {
                     </CardTextBox> :
                     <WalletContainer onClick={clickLogin}>
                         Login
-                    </WalletContainer> 
+                    </WalletContainer>
                 )}
             </ButtonWrapper>
             {checkBalance ? null : <TokenAlertText>Deposit more coins above to claim</TokenAlertText>}
@@ -212,7 +215,6 @@ const WalletContainer = styled.button`
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
-  display: flex;
   width: 180px;
   height: 52px;
   padding: 10px 12px;

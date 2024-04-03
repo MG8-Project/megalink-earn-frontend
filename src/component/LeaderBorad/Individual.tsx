@@ -64,7 +64,6 @@ const IndividualList = () => {
     setCurrentPage(pageNumber);
   };
   const convertNation = (nationCode: number) => {
-    // 국가 코드가 지정된 배열에 없는 경우 처리
     if (nationCode === undefined || nationCode === 0) return "Others";
     const findObjectList = nationList.filter(
       (data) => data.code === nationCode
@@ -148,7 +147,7 @@ const IndividualList = () => {
             <tbody>
             <Space />
               {
-                personalData && 
+                personalData &&
                 <UserStyledTr>
                   <UserStyledTdStart>{personalData.rank}</UserStyledTdStart>
                   <StyledTd>{personalData.userName}</StyledTd>
