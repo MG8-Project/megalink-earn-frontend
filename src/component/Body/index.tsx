@@ -32,11 +32,11 @@ const Body = () => {
   }, []);
   return (
     <BodyWrapper>
+      <Status />
       <Spin />
       <Daily />
       <LeaderBoard />
       {isAirDropPaused ? null : <Wallet />}
-      <Status />
     </BodyWrapper>
   );
 };
@@ -46,4 +46,5 @@ const BodyWrapper = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 240px;
 `;
