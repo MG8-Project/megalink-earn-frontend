@@ -31,7 +31,9 @@ const Header = () => {
   const clickMenu = (id: string) => {
     const destinationSection = document.getElementById(id);
     if (destinationSection) {
-      destinationSection.scrollIntoView({ behavior: "smooth" });
+      const headerHeight = 120;
+      const destinationOffset = destinationSection.offsetTop - headerHeight;
+      window.scrollTo({ top: destinationOffset, behavior: "smooth" });
     }
   };
   const scrollToTop = () => {
