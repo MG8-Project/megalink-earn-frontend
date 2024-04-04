@@ -50,6 +50,7 @@ const Popup: React.FC<PopupProps> = (props) => {
       Cookie();
     }
     setIsOpen(false);
+    document.body.style.overflow = "visible";
   };
 
   // 쿠키를 불러오는 함수
@@ -65,7 +66,7 @@ const Popup: React.FC<PopupProps> = (props) => {
         <PopupOverlay>
           <PopupWrapper>
             <CloseBtnContainer>
-              <img
+              <CloseBtn
                 src={closeBtn}
                 alt=""
                 width={24}
@@ -158,8 +159,8 @@ const TopContent = styled.div`
 
 const TitleImage = styled.img``;
 
-const BackTitleImage = styled.img`
-  position: relative;
+const CloseBtn = styled.img`
+  cursor: pointer;
 `;
 
 const Subtitle = styled.div`
@@ -250,6 +251,7 @@ const PopupButton = styled.div`
   align-items: center;
   border-radius: 100px;
   background: #006ebe;
+  cursor: pointer;
 `;
 
 const Checkbox = styled.input`
