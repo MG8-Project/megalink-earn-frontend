@@ -16,16 +16,20 @@ interface PopupProps {
 }
 
 const Popup: React.FC<PopupProps> = (props) => {
+  const [checked, IsChecked] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(props.isOpen);
+
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "visible";
+    }
 
     return () => {
       document.body.style.overflow = "visible";
     };
-  }, []);
-
-  const [checked, IsChecked] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = useState<boolean>(props.isOpen);
+  }, [isOpen]);
 
   const today = new Date();
   let todayDate = today.getDate();
