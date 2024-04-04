@@ -10,6 +10,7 @@ import {
   USDT3,
   inputCheck,
 } from "../../assets/images";
+import { ZEALY_URL } from "../../constants";
 
 interface PopupProps {
   isOpen: boolean;
@@ -94,7 +95,10 @@ const Popup: React.FC<PopupProps> = (props) => {
             </BackgroundMiddleContent>
 
             <BottomContent>
-              <PopupButton>Go to Zealy</PopupButton>
+              <a href={ZEALY_URL} target="_blank">
+                <PopupButton>Go</PopupButton>
+              </a>
+
               <CheckLabel>
                 <Checkbox
                   type="checkbox"
@@ -252,7 +256,12 @@ const PopupButton = styled.div`
   align-items: center;
   border-radius: 100px;
   background: #006ebe;
+  color: #fff;
+
+  text-align: center;
   font-size: 16px;
+  font-weight: 500;
+  line-height: normal;
   cursor: pointer;
 `;
 

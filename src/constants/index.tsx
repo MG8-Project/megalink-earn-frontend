@@ -167,3 +167,5 @@ export const LEARN_URL =
   "https://medium.com/@MegalinkMG8/infinite-spin-coming-soon-ab6b2ea0489b";
 
 export const BRAND_SITE_URL = "https://mega8.io/";
+
+export const ZEALY_URL = "https://zealy.io/cw/megalink/questboard";
