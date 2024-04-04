@@ -232,14 +232,14 @@ const Reward = () => {
               isLoggedIn && isTodayCheckAvailable(index)
                 ? "pointer"
                 : "default",
-            border:
-              isLoggedIn && isTodayCheckAvailable(index)
-                ? "2px solid white"
-                : "2px solid transparent",
           }}
         >
           <RewardTitle>{item.title}</RewardTitle>
-          <RewardImage src={isReward(index) ? mega8 : mg8gray} alt="" />
+          {/* <RewardImage src={isReward(index) ? mega8 : mg8gray} alt="" /> */}
+          <RewardImage
+            src={isTodayCheckAvailable(index) ? mega8 : mg8gray}
+            alt=""
+          />
           <RewardPrice>{item.point}</RewardPrice>
           {/* <RewardRequest onClick={signTypedData}>Get</RewardRequest> */}
         </RewardContainer>
