@@ -4,6 +4,7 @@ import { headerLogo } from "../../assets/images";
 import { useWallet } from "../../hooks/useWallet";
 import { useAuthStore } from "../../store/authStore";
 import { DISCONNECTED, METAMASK_LOCKED_OR_UNINSTALL } from "../../constants";
+import { BRAND_SITE_URL } from "../../constants";
 
 const Header = () => {
   const { connectWallet } = useWallet();
@@ -54,8 +55,11 @@ const Header = () => {
             style={{ cursor: "pointer" }}
             onClick={() => clickMenu("leaderboard")}
           >
-            LeaderBoard
+            Leaderboard
           </li>
+          <a href={BRAND_SITE_URL} target="_blank">
+            <li>Brandsite</li>
+          </a>
         </HeaderUl>
       </div>
       {!walletAddress ? (
@@ -92,7 +96,7 @@ const HeaderLogo = styled.img`
 
 const HeaderUl = styled.ul`
   display: flex;
-  width: 277px;
+  gap: 120px;
   font-size: 18px;
   justify-content: space-between;
   li {
