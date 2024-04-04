@@ -6,20 +6,28 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.6.7",
+    "ethers": "^6.11.1",
+    "http-proxy-middleware": "^2.0.6",
+    "moment": "^2.30.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "6.20.1",
-    "react-scripts": "5.0.1",
+    "react-hook-form": "^7.51.1",
+    "react-router-dom": "^6.22.3",
+    "react-scripts": "^5.0.1",
+    "react-use": "^17.5.0",
     "styled-components": "^6.1.8",
     "styled-reset": "^4.5.2",
-    "typescript": "^5.4.2",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "web3": "^4.6.0",
+    "zustand": "^4.5.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev": "nodemon"
   },
   "eslintConfig": {
     "extends": [
@@ -40,6 +48,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "typescript": "^4.9.4"
   }
 }

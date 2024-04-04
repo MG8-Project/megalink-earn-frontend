@@ -1,23 +1,24 @@
 import styled from "styled-components";
-import { theme } from "../../styles/theme";
-import { spinFrame } from "../../assets/images";
 import MissionCard from "./MissionCard";
 import TicketCard from "./TicketCard";
 import PoolCard from "./PoolCard";
-
 const Mission = () => {
-  return (
-    <MissionWrapper>
-      <CardWrapper>
-        <MissionCard />
-        <TicketCard />
-        <PoolCard />
-      </CardWrapper>
-      <SpinContainer>
-        <SpinContainerImage src={spinFrame} alt="" />
-      </SpinContainer>
-    </MissionWrapper>
-  );
+    return (
+        <MissionWrapper>
+            <CardWrapper>
+                <MissionCard/>
+                <TicketCard/>
+                <PoolCard/>
+            </CardWrapper>
+            <SpinContainer>
+                {
+                <SpinContainerImage
+                    src="game"
+                />
+                }
+            </SpinContainer>
+        </MissionWrapper>
+    );
 };
 
 export default Mission;
@@ -29,19 +30,18 @@ const CardWrapper = styled.div`
 `;
 
 const MissionWrapper = styled.div`
-  margin-top: 80px;
+  margin-top: 60px;
   width: 1200px;
-
   display: flex;
   gap: 24px;
 `;
 
 const SpinContainer = styled.div`
   /* width: 588px;
-  height: 1112px;
-  border-radius: 16px; */
+    height: 1112px;
+    border-radius: 16px; */
 `;
-const SpinContainerImage = styled.img`
+const SpinContainerImage = styled.iframe`
   width: 588px;
   height: 1112px;
   border-radius: 16px;
