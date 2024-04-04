@@ -127,4 +127,4 @@ export const BNB_CONFIG = process.env.REACT_APP_ENVIRONMENT === 'production' ? {
 }
 
 // url
-export const LEARN_URL = 'https://docs.mega8.io/earn/infinite-spin'
+export const LEARN_URL = 'https://medium.com/@MegalinkMG8/infinite-spin-coming-soon-ab6b2ea0489b'
