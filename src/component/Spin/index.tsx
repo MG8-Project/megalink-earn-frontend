@@ -6,7 +6,7 @@ import { LEARN_URL } from "../../constants";
 
 const Spin = () => {
   return (
-    <SpinWrapper>
+    <SpinWrapper id={"1"}>
       <TitleContainer>
         <MainTitle>$MG8 Spin</MainTitle>
         <Subtitle>Play Slots to Win 10 BNB & $MG8 Airdrop! </Subtitle>

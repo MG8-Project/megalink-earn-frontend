@@ -10,6 +10,14 @@ import {
   gitbook,
 } from "../assets/images";
 import { hexlify } from "ethers";
+
+// header
+export const menuItems = [
+  { title: "Home", id: "0" },
+  { title: "Leaderboard", id: "3" },
+  { title: "Brandsite", id: "" },
+];
+
 //footer
 export const FooterList = [
   { title: "Megalink", content: "Website", link: "https://mega8.io/" },

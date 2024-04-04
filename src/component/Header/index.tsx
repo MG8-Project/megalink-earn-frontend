@@ -3,7 +3,11 @@ import styled from "styled-components";
 import { headerLogo } from "../../assets/images";
 import { useWallet } from "../../hooks/useWallet";
 import { useAuthStore } from "../../store/authStore";
-import { DISCONNECTED, METAMASK_LOCKED_OR_UNINSTALL } from "../../constants";
+import {
+  DISCONNECTED,
+  METAMASK_LOCKED_OR_UNINSTALL,
+  menuItems,
+} from "../../constants";
 import { BRAND_SITE_URL } from "../../constants";
 
 const Header = () => {
@@ -37,29 +41,27 @@ const Header = () => {
       window.scrollTo({ top: destinationOffset, behavior: "smooth" });
     }
   };
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
+
   return (
     <HeaderWrapper>
-      <HeaderLogo src={headerLogo} alt="" onClick={scrollToTop} />
+      <HeaderLogo src={headerLogo} alt="" onClick={() => clickMenu("0")} />
       <div>
         <HeaderUl>
-          <li style={{ cursor: "pointer" }} onClick={scrollToTop}>
-            <Link to={"/"}>Home</Link>
-          </li>
-          <li
-            style={{ cursor: "pointer" }}
-            onClick={() => clickMenu("leaderboard")}
-          >
-            Leaderboard
-          </li>
-          <a href={BRAND_SITE_URL} target="_blank">
-            <li>Brandsite</li>
-          </a>
+          {menuItems.map((item, index) => (
+            <li
+              key={index}
+              style={{ cursor: "pointer" }}
+              onClick={() => clickMenu(item.id)}
+            >
+              {item.title === "Brandsite" ? (
+                <a href={BRAND_SITE_URL} target="_blank">
+                  {item.title}
+                </a>
+              ) : (
+                <Link to={"/"}>{item.title}</Link>
+              )}
+            </li>
+          ))}
         </HeaderUl>
       </div>
       {!walletAddress ? (

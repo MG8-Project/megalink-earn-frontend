@@ -77,7 +77,7 @@ const Status: React.FC = () => {
   }, []);
 
   return (
-    <StatusWrapper>
+    <StatusWrapper id={"0"}>
       <StatusTitle>Status</StatusTitle>
       <StatusListWrapper>
         {statusList.map((item) => (

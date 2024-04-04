@@ -138,7 +138,7 @@ const Daily = () => {
   }, [walletAddress, fetchMyPoints, isLoggedIn]);
 
   return (
-    <DailyWrapper>
+    <DailyWrapper id={"2"}>
       <TitleContainer>
         <MainTitle>Daily dose of $MG8</MainTitle>
         <SubTitle>Login 7 days in a row, and your rewards will grow.</SubTitle>
