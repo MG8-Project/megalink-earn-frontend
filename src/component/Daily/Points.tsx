@@ -144,17 +144,18 @@ const Points = (props: PointsProps) => {
       buttonContent = (
         <ClaimButton
           onClick={null}
-          style={{ color: theme.colors.bg.icon, fontSize: "20px" }}
+          style={{
+            color: theme.colors.textGray,
+            background: theme.colors.bg.nonBtn,
+            border: `1px solid ${theme.colors.bg.icon}`,
+          }}
         >
           Disabled
         </ClaimButton>
       );
     } else if (myPointsAPI / exChangeRatioAPI < minAmount) {
       buttonContent = (
-        <ClaimButton
-          onClick={null}
-          style={{ color: theme.colors.bg.icon, fontSize: "18px" }}
-        >
+        <ClaimButton onClick={null} style={{ color: theme.colors.bg.icon }}>
           No MG8 Point
         </ClaimButton>
       );
@@ -162,7 +163,7 @@ const Points = (props: PointsProps) => {
       buttonContent = (
         <ClaimButton
           onClick={() => handleOpenDialog("claim")}
-          style={{ color: "#fff", fontSize: "20px" }}
+          style={{ color: "#fff" }}
         >
           Claim All
         </ClaimButton>
@@ -171,7 +172,7 @@ const Points = (props: PointsProps) => {
       buttonContent = (
         <ClaimButton
           onClick={() => setIsButtonActive(true)}
-          style={{ color: "#fff", fontSize: "17px" }}
+          style={{ color: "#fff" }}
         >
           Activate Claim
         </ClaimButton>
@@ -253,10 +254,10 @@ const LoginButton = styled.button`
 
 const ClaimButton = styled.button`
   margin-top: 32px;
-  font-weight: 600;
+  font-weight: 500;
   width: 160px;
   height: 52px;
-  border: 1px solid gray;
   border-radius: 100px;
-  color: gray;
+  font-size: 18px;
+  border: 1px solid;
 `;

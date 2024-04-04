@@ -12,6 +12,7 @@ const colors = {
     footer: "#000",
     box: "#1B1B1B",
     icon: "#333",
+    nonBtn: "#222",
     iconHover: "#4B4B4B",
     dotsActive: "#379FFF",
   },
