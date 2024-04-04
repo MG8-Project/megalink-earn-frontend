@@ -2,7 +2,8 @@ import styled from "styled-components";
 import { statusList } from "../../constants";
 import { theme } from "../../styles/theme";
 import ApiStatus from "../../apis/ApiStatus";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import Popup from "../Popup";
 
 // StatusState 를 response 데이터의 타입에 활용하기 위해 좀 더 명시적으로 타입을 정의
 // 만약 이렇게 상세하게 명시해주지 않고 포괄적인 타입을 사용하고자 한다면 해당 interface 에 정의되어 있던 [key: string] : string 을 Record<string, string>으로 축약하여 사용 가능
@@ -17,7 +18,7 @@ interface StatusState {
   BNBRewarded: string;
 }
 
-const Status = () => {
+const Status: React.FC = () => {
   const [status, setStatus] = useState<StatusState>({
     totalTransactions: "0",
     totalWallets: "0",

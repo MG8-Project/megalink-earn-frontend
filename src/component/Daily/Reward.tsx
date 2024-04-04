@@ -266,7 +266,7 @@ const RewardContainer = styled.div`
 const RewardTitle = styled.div`
   font-weight: 500;
   font-size: 18px;
-  margin-top: 16px;
+  margin-top: 11px;
   line-height: normal;
 `;
 const RewardPrice = styled.div`
