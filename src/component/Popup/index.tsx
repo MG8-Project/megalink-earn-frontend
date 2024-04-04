@@ -252,6 +252,7 @@ const PopupButton = styled.div`
   align-items: center;
   border-radius: 100px;
   background: #006ebe;
+  font-size: 16px;
   cursor: pointer;
 `;
 
