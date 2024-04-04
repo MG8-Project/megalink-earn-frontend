@@ -5,7 +5,6 @@ import {
   closeBtn,
   bg,
   title,
-  backtitle,
   USDT1,
   USDT2,
   USDT3,
@@ -76,19 +75,22 @@ const Popup: React.FC<PopupProps> = (props) => {
             </CloseBtnContainer>
             <TopContent>
               <img src={zealy} alt="zealy" width={40} height={40} />
-              <BackTitleImage src={backtitle} alt="" width={343} height={32} />
-              <TitleImage src={title} alt="" width={343} height={32} />
+
+              <TitleImage src={title} alt="" width={343} height={40} />
               <Subtitle>Infinite Spin</Subtitle>
             </TopContent>
-            <MiddleContent>
-              <CoinImage1 src={USDT1} alt="" width={120} height={110} />
-              <CoinImage2 src={USDT2} alt="" width={64} height={59} />
-              <CoinImage3 src={USDT3} alt="" width={44} height={48} />
-              <MiddleTextContent>
-                <div>Reward pool</div>
-                <p>500 USDT</p>
-              </MiddleTextContent>
-            </MiddleContent>
+            <BackgroundMiddleContent>
+              <MiddleContent>
+                <CoinImage1 src={USDT1} alt="" width={120} height={110} />
+                <CoinImage2 src={USDT2} alt="" width={64} height={59} />
+                <CoinImage3 src={USDT3} alt="" width={60} height={60} />
+                <MiddleTextContent>
+                  <div>Reward pool</div>
+                  <p>500 USDT</p>
+                </MiddleTextContent>
+              </MiddleContent>
+            </BackgroundMiddleContent>
+
             <BottomContent>
               <PopupButton>Go to Zealy</PopupButton>
               <CheckLabel>
@@ -119,13 +121,14 @@ const PopupOverlay = styled.div`
 `;
 
 const PopupWrapper = styled.div`
+  width: 520px;
+  height: 571px;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: inline-flex;
-  width: 520px;
-  height: 571px;
+
   border-radius: 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   background: #101111;
@@ -153,10 +156,7 @@ const TopContent = styled.div`
   gap: 20px;
 `;
 
-const TitleImage = styled.img`
-  position: absolute;
-  top: 60px;
-`;
+const TitleImage = styled.img``;
 
 const BackTitleImage = styled.img`
   position: relative;
@@ -171,19 +171,35 @@ const Subtitle = styled.div`
   line-height: normal;
 `;
 
-const MiddleContent = styled.div`
+const BackgroundMiddleContent = styled.div`
   margin-top: 40px;
+  width: 442px;
+  height: 162px;
+  border-radius: 20px;
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.05),
+    rgb(255, 255, 255)
+  );
+  position: relative;
+`;
+
+const MiddleContent = styled.div`
+  /* margin-top: 40px; */
   width: 440px;
   height: 160px;
   flex-shrink: 0;
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.05);
-  background: rgba(255, 255, 255, 0.05);
+  background: #1c1d1d;
   backdrop-filter: blur(10px);
   padding: 42px 0px;
   display: flex;
   justify-content: center;
+  position: absolute;
   position: relative;
+  top: 1px;
+  left: 1px;
 `;
 
 const MiddleTextContent = styled.div`
@@ -214,8 +230,8 @@ const CoinImage2 = styled.img`
 `;
 const CoinImage3 = styled.img`
   position: absolute;
-  top: 78px;
-  right: -15px;
+  top: 80px;
+  right: -30px;
 `;
 
 const BottomContent = styled.div`
@@ -240,7 +256,7 @@ const Checkbox = styled.input`
   width: 14px;
   height: 14px;
   background-color: transparent;
-  border: 2px solid #ffffff;
+  border: 1.5px solid #ffffff;
   border-radius: 4px;
   margin-right: 8px;
   position: relative;
