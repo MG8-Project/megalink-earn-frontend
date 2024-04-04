@@ -173,8 +173,8 @@ const Subtitle = styled.div`
 
 const BackgroundMiddleContent = styled.div`
   margin-top: 40px;
-  width: 442px;
-  height: 162px;
+  width: 440px;
+  height: 160px;
   border-radius: 20px;
   background-image: linear-gradient(
     to right,
@@ -186,8 +186,8 @@ const BackgroundMiddleContent = styled.div`
 
 const MiddleContent = styled.div`
   /* margin-top: 40px; */
-  width: 440px;
-  height: 160px;
+  width: 438px;
+  height: 158px;
   flex-shrink: 0;
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.05);
