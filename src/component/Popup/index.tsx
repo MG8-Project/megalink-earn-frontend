@@ -49,8 +49,8 @@ const Popup: React.FC<PopupProps> = (props) => {
     if (checked) {
       Cookie();
     }
-    setIsOpen(false);
     document.body.style.overflow = "visible";
+    setIsOpen(false);
   };
 
   // 쿠키를 불러오는 함수
