@@ -59,8 +59,7 @@ export { default as loading } from "./Loading.png";
 // Popup
 export { default as zealy } from "./zealy.png";
 export { default as bg } from "./bg.png";
-export { default as title } from "./PopupTitle.png";
-export { default as backtitle } from "./backTitle.png";
+export { default as title } from "./title.png";
 export { default as USDT1 } from "./USDT_1.png";
 export { default as USDT2 } from "./USDT_2.png";
 export { default as USDT3 } from "./USDT_3.png";
