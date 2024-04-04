@@ -78,7 +78,6 @@ const Status: React.FC = () => {
 
   return (
     <StatusWrapper>
-      <Popup isOpen={true} />
       <StatusTitle>Status</StatusTitle>
       <StatusListWrapper>
         {statusList.map((item) => (
