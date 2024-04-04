@@ -213,31 +213,36 @@ const Reward = () => {
 export default Reward;
 
 const RewardWrapper = styled.div`
-    display: flex;
-    gap: 32px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
 `;
 
 const RewardContainer = styled.div`
-    width: 80px;
-    height: 180px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-    border-radius: 10px;
+  width: 80px;
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const RewardTitle = styled.div`
-    font-weight: 700;
-    font-size: 18px;
+  font-weight: 500;
+  font-size: 18px;
+  margin-top: 11px;
+  line-height: normal;
 `;
 const RewardPrice = styled.div`
-    font-weight: 600;
-    font-size: 14px;
+  width: 42px;
+  height: 17px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: normal;
 `;
 
 const RewardImage = styled.img`
-    width: 64px;
-    margin-top: 24px;
-    margin-bottom: 28px;
+  width: 60px;
+  height: 60px;
+  margin-top: 24px;
+  margin-bottom: 28px;
 `;

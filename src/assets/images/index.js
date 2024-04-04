@@ -44,7 +44,7 @@ export { default as close } from "./closeWhite.png";
 //check
 export { default as check } from "./check.png";
 export { default as failed } from "./failed.png";
-// Popup
+// TxPopup
 export { default as closeBtn } from "./close.png";
 export { default as line } from "./line.svg";
 export { default as active } from "./active.svg";
@@ -55,3 +55,12 @@ export { default as link } from "./link.svg";
 export { default as noneCheck } from "./plus-front-clay.svg";
 export { default as redCircle } from "./redCircle.png";
 export { default as loading } from "./Loading.png";
+
+// Popup
+export { default as zealy } from "./zealy.png";
+export { default as bg } from "./bg.png";
+export { default as title } from "./title.png";
+export { default as USDT1 } from "./USDT_1.png";
+export { default as USDT2 } from "./USDT_2.png";
+export { default as USDT3 } from "./USDT_3.png";
+export { default as inputCheck } from "./inputCheck.png";
