@@ -70,7 +70,7 @@ const Wallet = () => {
   }, [isLogin, isClaimAvailable]);
 
   return (
-    <WalletWrapper>
+    <WalletWrapper id={"4"}>
       <WalletTitle>
         Get ready for an exclusive airdrop event in 2 weeks!
       </WalletTitle>
