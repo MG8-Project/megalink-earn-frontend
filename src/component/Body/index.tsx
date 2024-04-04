@@ -6,6 +6,7 @@ import Daily from "../Daily";
 import Spin from "../Spin";
 import LeaderBoard from "../LeaderBorad";
 import API from "../../apis/Api";
+import Popup from "../Popup";
 
 interface Response {
     status: string;
@@ -32,6 +33,7 @@ const Body = () => {
     }, []);
     return (
         <BodyWrapper>
+            <Popup isOpen={true} />
             <Status/>
             <Spin/>
             <Daily/>
@@ -46,5 +48,5 @@ const BodyWrapper = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
-gap: 200px;
+  gap: 200px;
 `;

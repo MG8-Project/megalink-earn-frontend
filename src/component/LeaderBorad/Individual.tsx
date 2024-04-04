@@ -21,11 +21,11 @@ import RankingAlert from "./RankingAlert";
 import { useAuthStore } from "../../store/authStore";
 
 export const tableTitle = [
-  { id: 0, title: "Rank" },
-  { id: 1, title: "Name" },
-  { id: 2, title: "Nation" },
-  { id: 3, title: "Level" },
-  { id: 4, title: "Total Points" },
+  { id: 0, title: "Rank", width: "120px" },
+  { id: 1, title: "Name", width: "180px" },
+  { id: 2, title: "Nation", width: "180px" },
+  { id: 3, title: "Level", width: "120px" },
+  { id: 4, title: "Total Points", width: "200px" },
 ];
 
 interface PersonalListDataType {
@@ -140,7 +140,7 @@ const IndividualList = () => {
             <TheadStyle>
               <tr>
                 {tableTitle.map((column) => (
-                  <StyledTh key={column.id}>{column.title}</StyledTh>
+                  <StyledTh key={column.id} style={{ width: column.width }}>{column.title}</StyledTh>
                 ))}
               </tr>
             </TheadStyle>

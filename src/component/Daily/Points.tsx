@@ -188,6 +188,7 @@ const TextWrapper = styled.div`
   align-items: center;
   font-weight: 600;
   font-size: 18px;
+  line-height: normal;
 `;
 const PointText = styled.div`
   color: #fff;
@@ -198,7 +199,7 @@ const PointText = styled.div`
 `;
 
 const LoginButton = styled.button`
-  margin-top: 36px;
+  margin-top: 32px;
   display: flex;
   width: 160px;
   height: 52px;
@@ -215,8 +216,8 @@ const LoginButton = styled.button`
 const ClaimButton = styled.button`
   margin-top: 32px;
   font-weight: 600;
-  width: 150px;
-  height: 56px;
+  width: 160px;
+  height: 52px;
   border: 1px solid gray;
   border-radius: 100px;
   color: gray;
