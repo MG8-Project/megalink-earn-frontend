@@ -24,7 +24,7 @@ interface MyTotalLoginsResponse {
 }
 
 export const DOMAIN_SEPARATOR: Domain = {
-    chainId: 5611,
+    chainId: Number(OPBNB_CONFIG.chainId),
     name: "Forwarder",
     verifyingContract: process.env.REACT_APP_CONTRACT_FORWARDER,
     version: "1"

@@ -9,7 +9,6 @@ export const useWallet = () => {
     const login = useAuthStore((state) => state.login);
     const [currentAccount, setCurrentAccount] = useState<string | null>(null);
 
-    console.log(OPBNB_CONFIG.chainId)
     const connectWallet = useCallback(async () => {
         if (window.ethereum) {
             try {
@@ -29,31 +28,31 @@ export const useWallet = () => {
             } catch (error: any) {
                 try {
                     switch (error.code) {
-                    case 4902:
-                        await window.ethereum.request({
-                            method: 'wallet_addEthereumChain',
-                            params: [
-                                {
-                                    chainId: OPBNB_CONFIG.chainId,
-                                    chainName: OPBNB_CONFIG.chainName,
-                                    nativeCurrency: {
-                                        name: OPBNB_CONFIG.symbol,
-                                        symbol: OPBNB_CONFIG.symbol,
-                                        decimals: 18
+                        case 4902:
+                            await window.ethereum.request({
+                                method: 'wallet_addEthereumChain',
+                                params: [
+                                    {
+                                        chainId: OPBNB_CONFIG.chainId,
+                                        chainName: OPBNB_CONFIG.chainName,
+                                        nativeCurrency: {
+                                            name: OPBNB_CONFIG.symbol,
+                                            symbol: OPBNB_CONFIG.symbol,
+                                            decimals: 18
+                                        },
+                                        rpcUrls: OPBNB_CONFIG.rpcUrls,
+                                        blockExplorerUrls: OPBNB_CONFIG.blockExplorerUrls
                                     },
-                                    rpcUrls: OPBNB_CONFIG.rpcUrls,
-                                    blockExplorerUrls: OPBNB_CONFIG.blockExplorerUrls
-                                },
-                            ],
-                        });
-                        return;
-                    case 4001:
-                        alert('User refused to connect.');
-                        return;
-                    default:
-                        alert('An error occurred while connecting.');
-                        console.error(error);
-                        return;
+                                ],
+                            });
+                            return;
+                        case 4001:
+                            alert('User refused to connect.');
+                            return;
+                        default:
+                            alert('An error occurred while connecting.');
+                            console.error(error);
+                            return;
                     }
 
                 } catch (addError: any) {
@@ -78,7 +77,7 @@ export const useWallet = () => {
                         } catch (addError: any) {
                             if (addError.code === 4001) {
                                 alert('User refused to connect.');
-                                return ;
+                                return;
                             }
 
                             alert('Refused to add network.');
