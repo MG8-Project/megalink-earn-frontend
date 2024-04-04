@@ -1,47 +1,84 @@
-import React from "react";
+import {Link} from "react-router-dom";
 import styled from "styled-components";
-import { headerLogo } from "../../assets/images";
+import {headerLogo} from "../../assets/images";
+import {useWallet} from "../../hooks/useWallet";
+import {useAuthStore} from "../../store/authStore";
+import {DISCONNECTED, METAMASK_LOCKED_OR_UNINSTALL} from "../../constants";
 
-interface HeaderProps {
-  scrollToMain: () => void;
-  scrollToLeaderBoard: () => void;
-}
+const Header = () => {
+    const {connectWallet} = useWallet();
+    const walletAddress = useAuthStore((state) => state.userAccount);
 
-const Header: React.FC<HeaderProps> = ({
-  scrollToMain,
-  scrollToLeaderBoard,
-}) => {
-  return (
-    <HeaderWrapper>
-      <HeaderLogo src={headerLogo} alt="" />
-      <div>
-        <HeaderUl>
-          <li onClick={scrollToMain}>Home</li>
-          <li onClick={scrollToLeaderBoard}>Leaderboard</li>
-        </HeaderUl>
-      </div>
+    const onWalletConnect = async () => {
+        const address = await connectWallet();
+        if (address === null) {
+            alert(METAMASK_LOCKED_OR_UNINSTALL);
+            return;
+        }
+        useAuthStore.getState().setUserAccount(address);
+    };
 
-      <WalletContainer>Connect Wallet</WalletContainer>
-    </HeaderWrapper>
-  );
+    const onWalletDisconnect = () => {
+        useAuthStore.getState().logout();
+        window.location.reload();
+        alert(DISCONNECTED);
+    };
+
+    const clickMenu = (id: string) => {
+        const destinationSection = document.getElementById(id);
+        if (destinationSection) {
+          const headerHeight = 200;
+          const destinationOffset = destinationSection.offsetTop - headerHeight;
+          window.scrollTo({ top: destinationOffset, behavior: "smooth" });
+        }
+      };
+      const scrollToTop = () => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      };
+    return (
+        <HeaderWrapper>
+            <HeaderLogo src={headerLogo} alt="" onClick={scrollToTop} />
+            <div>
+                <HeaderUl>
+                <li style={{ cursor: "pointer" }} onClick={scrollToTop}>
+                  <Link to={"/"}>Home</Link>
+                </li>
+                <li style={{cursor: "pointer"}} onClick={() => clickMenu('leaderboard')}>LeaderBoard</li>
+              </HeaderUl>
+            </div>
+            {!walletAddress ? (
+                <WalletContainer onClick={onWalletConnect}>
+                    Connect Wallet
+                </WalletContainer>
+            ) : (
+                <WalletContainer onClick={onWalletDisconnect}>
+                    Connected
+                </WalletContainer>
+            )}
+        </HeaderWrapper>
+    );
 };
 
 export default Header;
 
 const HeaderWrapper = styled.div`
-  position: fixed;
+  z-index: 999;
   display: flex;
+  position: fixed;
   justify-content: space-around;
   align-items: center;
   width: 100%;
   background-color: #000000;
   height: 80px;
-  z-index: 99;
 `;
 
 const HeaderLogo = styled.img`
   width: 210px;
   height: 48px;
+  cursor: pointer;
 `;
 
 const HeaderUl = styled.ul`
@@ -49,22 +86,35 @@ const HeaderUl = styled.ul`
   width: 277px;
   font-size: 18px;
   justify-content: space-between;
-  > li {
+  li {
     cursor: pointer;
-    font-weight: 600;
-    font-size: 18px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      box-shadow: inset 0 -2px 0 #d9d9d9;
+    }
   }
 `;
-
 const WalletContainer = styled.button`
   display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-weight: 400;
-  width: 140px;
+  width: 148px;
   height: 40px;
-  border: 1px solid #ffffff;
+  padding: 12px 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   border-radius: 100px;
+  background: #006ebe;
   font-size: 16px;
+  font-weight: 500;
+  line-height: 100%;
+  color: #fff;
+
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 100%;
 `;

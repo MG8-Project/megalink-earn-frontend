@@ -1,43 +1,47 @@
-import React, { useState } from "react";
+import {useState} from "react";
 import styled from "styled-components";
-import { theme } from "../../styles/theme";
+import {theme} from "../../styles/theme";
 import IndividualList from "./Individual";
 import TeamList from "./Team";
+import {INDIVIDUAL, TEAM} from "../../constants";
 
-interface TabButtonProps {
-  active: boolean;
-}
 
 const LeaderBoard = () => {
-  const [activeTab, setActiveTab] = useState("Individual");
+    const [activeTab, setActiveTab] = useState(INDIVIDUAL);
+    const isTabIndividual = activeTab === INDIVIDUAL;
+    return (
+        <LeaderBoardWrapper id='leaderboard'>
+            <TitleContainer>
+                <MainTitle>MG8 24h Leaderboard</MainTitle>
 
-  return (
-    <LeaderBoardWrapper>
-      <TitleContainer>
-        <MainTitle>MG8 24h Leaderboard</MainTitle>
-
-        <SecondTitle>
-          Check the scores you have earned and compare them with the
-          participants. The ranking changes every 24 hours.
-        </SecondTitle>
-      </TitleContainer>
-      <PageTitle>
-        <TabButton
-          onClick={() => setActiveTab("Individual")}
-          active={activeTab === "Individual"}
-        >
-          Individual
-        </TabButton>
-        <TabButton
-          onClick={() => setActiveTab("Team")}
-          active={activeTab === "Team"}
-        >
-          Team
-        </TabButton>
-      </PageTitle>
-      {activeTab === "Individual" ? <IndividualList /> : <TeamList />}
-    </LeaderBoardWrapper>
-  );
+                <SecondTitle>
+                    Check the scores you have earned and compare them with the
+                    participants. The ranking changes every 24 hours.
+                </SecondTitle>
+            </TitleContainer>
+            <PageTitle>
+                <TabButton
+                    onClick={() => setActiveTab(INDIVIDUAL)}
+                    style={{
+                        borderBottom: isTabIndividual ? "2px solid white" : "none",
+                        color: isTabIndividual ? "#FFFFFF" : theme.colors.textGray,
+                    }}
+                >
+                    Individual
+                </TabButton>
+                <TabButton
+                    onClick={() => setActiveTab(TEAM)}
+                    style={{
+                        borderBottom: !isTabIndividual ? "2px solid white" : "none",
+                        color: !isTabIndividual ? "#FFFFFF" : theme.colors.textGray,
+                    }}
+                >
+                    Team
+                </TabButton>
+            </PageTitle>
+            {isTabIndividual ? <IndividualList/> : <TeamList/>}
+        </LeaderBoardWrapper>
+    );
 };
 
 export default LeaderBoard;
@@ -48,7 +52,6 @@ const LeaderBoardWrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding-bottom: 160px;
 `;
 
 const TitleContainer = styled.div`
@@ -69,20 +72,19 @@ const SecondTitle = styled.div`
 `;
 
 const PageTitle = styled.div`
-  margin-top: 80px;
+  margin-top: 60px;
   display: flex;
   font-weight: 600;
   font-size: 20px;
   gap: 40px;
 `;
 
-const TabButton = styled.button<TabButtonProps>`
-  background: none;
-  border: none;
+const TabButton = styled.button`
+  color: #fff;
+  font-size: 20px;
   font-weight: 600;
+  line-height: 100%;
   padding-bottom: 12px;
   font-size: 20px;
-  color: ${(props) => (props.active ? "#FFFFFF" : theme.colors.textGray)};
-  border-bottom: ${(props) => (props.active ? "2px solid white" : "none")};
   cursor: pointer;
 `;

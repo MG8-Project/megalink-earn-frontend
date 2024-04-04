@@ -1,18 +1,24 @@
-import React, { useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/theme";
-import mockData from "../../mock";
-import Pagination from "./Pagination";
-import { first, second, third } from "../../assets/images";
+import { useEffect, useState } from "react";
+import API from "../../apis/Api";
+import { API_SUCCESS_CODE, nationList, UNKNOWN } from "../../constants";
 
-export interface MockDataType {
-  index: number;
-  rank: number;
-  name: string;
-  nation: string;
-  level: string;
-  totalpoints: string;
-}
+import {
+  nextarrow,
+  prearrow,
+  next,
+  pre,
+  gold,
+  silver,
+  bronze,
+  preArrowHover,
+  preHover,
+  nextArrowHover,
+  nextHover,
+} from "../../assets/images";
+import RankingAlert from "./RankingAlert";
+import { useAuthStore } from "../../store/authStore";
 
 export const tableTitle = [
   { id: 0, title: "Rank" },
@@ -22,85 +28,201 @@ export const tableTitle = [
   { id: 4, title: "Total Points" },
 ];
 
-const getRankImage = (rank: number): string => {
-  if (rank === 1) {
-    return first;
-  } else if (rank === 2) {
-    return second;
-  } else if (rank === 3) {
-    return third;
-  } else {
-    return "";
-  }
-};
+interface PersonalListDataType {
+  userName: string;
+  rank: number;
+  nationCode: number;
+  point: number;
+  level: number;
+}
+interface IndividualResponseType {
+  status: number;
+  data: {
+    totalSize: number;
+    personalRnkLst: Array<PersonalListDataType>;
+  };
+}
 
-const ITEMS_PER_PAGE = 20;
+const IndividualList = () => {
+  const isLoggedIn = useAuthStore(state => state.isLoggedIn);
+  const walletAddress = useAuthStore(state => state.userAccount);
+  const [totalPage, setTotalPage] = useState(0);
+  const [visiblePages, setVisiblePages] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [personalData, setPersonalData] = useState<PersonalListDataType>(null);
+  const [personalListData, setPersonalListData] = useState<
+    Array<PersonalListDataType>
+  >([]);
 
-const IndividualList: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const isPreArrowClickable = currentPage !== 1;
+  const isPreClickable = currentPage > 1;
+  const isNextArrowClickable = currentPage !== totalPage;
+  const isNextClickable = totalPage > currentPage;
 
-  const startIndex: number = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex: number = currentPage * ITEMS_PER_PAGE;
-  const paginatedData: MockDataType[] = mockData.slice(startIndex, endIndex);
+  const handleChangePage = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+  const convertNation = (nationCode: number) => {
+    if (nationCode === undefined || nationCode === 0) return "Others";
+    const findObjectList = nationList.filter(
+      (data) => data.code === nationCode
+    );
+    if (findObjectList.length === 0) return UNKNOWN;
+    return findObjectList[0].nation;
+  };
 
-  const totalPages = Math.ceil(mockData.length / ITEMS_PER_PAGE);
-  const maxPages = 5;
+  const isListEmpty = personalListData.length === 0;
 
-  let startPage = Math.max(1, currentPage - Math.floor(maxPages / 2));
-  let endPage = Math.min(startPage + maxPages - 1, totalPages);
+  const fetchIndividualList = async (currentPage: number) => {
+    try {
+      const endPoint = `${process.env.REACT_APP_API_PERSONAL}/personalRnk?size=20&&page=${currentPage}`;
+      const res: IndividualResponseType = await API.get(endPoint);
+      if (res.status !== API_SUCCESS_CODE) throw new Error(String(res.status));
+      setPersonalListData(res.data.personalRnkLst);
+      setTotalPage(Math.ceil(res.data.totalSize / 20));
+    } catch (err) {
+      switch (err) {
+        default:
+      }
+    }
+  };
+  useEffect(() => {
+    void fetchIndividualList(currentPage);
+  }, [currentPage]);
 
-  if (totalPages <= maxPages) {
-    startPage = 1;
-    endPage = totalPages;
-  } else if (endPage === totalPages) {
-    startPage = totalPages - maxPages + 1;
-  }
+  useEffect(() => {
+    const visiblePages = () => {
+      const visiblePageCount = 5;
+      const totalVisiblePageCount = Math.min(visiblePageCount, totalPage);
+      const offset = Math.floor(totalVisiblePageCount / 2);
+      let startPage = currentPage - offset;
+      let endPage = currentPage + offset;
+      if (startPage <= 0) {
+        startPage = 1;
+        endPage = Math.min(totalPage, visiblePageCount);
+      } else if (endPage > totalPage) {
+        endPage = totalPage;
+        startPage = Math.max(1, endPage - visiblePageCount + 1);
+      }
+      const pages: number[] = [];
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+      setVisiblePages(pages);
+    };
+    visiblePages();
+  }, [currentPage, totalPage]);
+  useEffect(() => {
+    const fetchPersonalData = async () => {
+      try {
+        const API_ENDPOINT = `${process.env.REACT_APP_API_PERSONAL}/myPersonalRnk`;
+      const res = await API.get(API_ENDPOINT, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+          }
+        });
+        setPersonalData(res.data);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    fetchPersonalData();
+  }, [isLoggedIn, walletAddress]);
 
   return (
     <IndividualListWrapper>
-      <TableStyle>
-        <TheadStyle>
-          <tr>
-            {tableTitle.map((column) => (
-              <StyledTh key={column.id}>{column.title}</StyledTh>
+      {isListEmpty ? (
+        <RankingAlert text={"There is No Ranking Data Yet"} />
+      ) : (
+        <>
+          <TableStyle>
+            <TheadStyle>
+              <tr>
+                {tableTitle.map((column) => (
+                  <StyledTh key={column.id}>{column.title}</StyledTh>
+                ))}
+              </tr>
+            </TheadStyle>
+            <tbody>
+            <Space />
+              {
+                personalData &&
+                <UserStyledTr>
+                  <UserStyledTdStart>{personalData.rank}</UserStyledTdStart>
+                  <StyledTd>{personalData.userName}</StyledTd>
+                  <StyledTd>{convertNation(personalData.nationCode)}</StyledTd>
+                  <StyledTd>{personalData.level}</StyledTd>
+                  <UserStyledTdEnd>{personalData.point}</UserStyledTdEnd>
+                </UserStyledTr>
+              }
+            {personalListData.map((item, index) => (
+                <StyledTr key={index}>
+                  <StyledTd>
+                    {item.rank}
+                    {item.rank === 1 && <RankImage src={gold} alt="" />}
+                    {item.rank === 2 && <RankImage src={silver} alt="" />}
+                    {item.rank === 3 && <RankImage src={bronze} alt="" />}
+                  </StyledTd>
+                  <StyledTd>{item.userName}</StyledTd>
+                  <StyledTd
+                    style={{
+                      color:
+                        convertNation(item.nationCode) === UNKNOWN
+                          ? "#eba4a4"
+                          : "#fff",
+                    }}
+                  >
+                    {convertNation(item.nationCode)}
+                  </StyledTd>
+                  <StyledTd>{item.level}</StyledTd>
+                  <StyledTdEnd>{item.point}</StyledTdEnd>
+                </StyledTr>
+              ))}
+            </tbody>
+          </TableStyle>
+          <PaginationWrapper>
+            <ArrowButton onClick={() => setCurrentPage(1)}>
+              <ButtonImg src={isPreArrowClickable ? preArrowHover : prearrow} />
+            </ArrowButton>
+            <ArrowButton
+              onClick={() =>
+                setCurrentPage((prevPage) => Math.max(prevPage - 1, 1))
+              }
+            >
+              <ButtonImg src={isPreClickable ? preHover : pre} />
+            </ArrowButton>
+            {visiblePages.map((data, index) => (
+              <PageButton
+                key={index}
+                onClick={() => handleChangePage(data)}
+                style={{
+                  color:
+                    data === currentPage
+                      ? theme.colors.text
+                      : theme.colors.textGray,
+                }}
+              >
+                {data}
+              </PageButton>
             ))}
-          </tr>
-        </TheadStyle>
-        <tbody>
-          <UserStyledTr>
-            <UserStyledLeftTd>95,365</UserStyledLeftTd>
-            <td>Youuuuuuuuuu</td>
-            <td>South Korea</td>
-            <td>99</td>
-            <UserStyledRightTd>123,456,123,456</UserStyledRightTd>
-          </UserStyledTr>
-
-          {paginatedData.map((item) => (
-            <tr key={item.index}>
-              <StyledTd>
-                <RankContainer>
-                  {getRankImage(item.rank) && (
-                    <RankImg
-                      src={getRankImage(item.rank)}
-                      alt={`Rank ${item.rank}`}
-                    />
-                  )}
-                  <Rank>{item.rank}</Rank>
-                </RankContainer>
-              </StyledTd>
-              <StyledTd>{item.name}</StyledTd>
-              <StyledTd>{item.nation}</StyledTd>
-              <StyledTd>{item.level}</StyledTd>
-              <StyledEnd>{item.totalpoints}</StyledEnd>
-            </tr>
-          ))}
-        </tbody>
-      </TableStyle>
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        setCurrentPage={setCurrentPage}
-      />
+            {visiblePages.length < totalPage && (
+              <PageButton disabled>...</PageButton>
+            )}
+            <ArrowButton
+              onClick={() =>
+                setCurrentPage((nextPage) => Math.min(nextPage + 1, totalPage))
+              }
+            >
+              <ButtonImg src={isNextClickable ? nextHover : next} />
+            </ArrowButton>
+            <ArrowButton onClick={() => setCurrentPage(totalPage)}>
+              <ButtonImg
+                src={isNextArrowClickable ? nextArrowHover : nextarrow}
+              />
+            </ArrowButton>
+          </PaginationWrapper>
+        </>
+      )}
     </IndividualListWrapper>
   );
 };
@@ -114,15 +236,16 @@ const IndividualListWrapper = styled.div`
   width: 1200px;
   border-radius: 16px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
   gap: 24px;
   text-align: center;
 `;
 
 const TableStyle = styled.table`
   width: 100%;
+  border-collapse: collapse;
 `;
 const TheadStyle = styled.thead`
   font-size: 16px;
@@ -130,60 +253,110 @@ const TheadStyle = styled.thead`
   color: ${theme.colors.textGray};
   line-height: 20px;
 `;
+const StyledTr = styled.tr`
+  height: 52px;
+`;
+
+const Space = styled.div`
+  // 테이블 간격
+  height: 4px;
+`;
 
 const StyledTd = styled.td`
   font-size: 16px;
   font-weight: 400;
-  height: 28px;
-  padding: 16px 0px 16px 0px;
+  position: relative;
+  padding: 16px 0px;
+  vertical-align: bottom;
+  text-align: center;
+  height: 20px;
 `;
-const StyledEnd = styled.td`
+const StyledTdEnd = styled.td`
   font-size: 16px;
   font-weight: 400;
-  height: 28px;
-  padding: 16px 32px 16px 0px;
+  padding: 16px 64px 16px 0px;
   text-align: end;
+  vertical-align: bottom;
+  height: 20px;
 `;
 const StyledTh = styled.th`
   font-size: 16px;
-  font-weight: 600;
-  padding: 8px 32px;
+  font-weight: 400;
+  padding: 16px 32px;
+`;
+
+export const PaginationWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
+export const PageButton = styled.button`
+  font-size: 1.7rem;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin: 0 5px;
+  border-radius: 5px;
+`;
+
+export const ArrowButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin: 0 5px;
+  border-radius: 5px;
+`;
+export const ButtonImg = styled.img`
+  width: 20px;
+`;
+
+export const RankImage = styled.img`
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const UserStyledTr = styled.tr`
-  background-image: linear-gradient(
+  height: 52px;
+  padding: 0px 32px;
+  gap: 68px;
+  border-radius: 10px;
+
+  background: linear-gradient(
     90deg,
-    rgba(126, 229, 255, 0.1),
-    rgba(65, 169, 255, 0.1)
+    rgba(126, 229, 255, 0.1) 3.13%,
+    rgba(65, 169, 255, 0.1) 100%
   );
+`;
+const UserStyledTdStart = styled.td`
   font-size: 16px;
   font-weight: 400;
-  height: 28px;
-  padding: 16px 0px 16px 0px;
-`;
-
-const UserStyledLeftTd = styled.td`
-  padding: 16px 0px 16px 0px;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-`;
-const UserStyledRightTd = styled.td`
-  padding: 16px 32px 16px 0px;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
   text-align: end;
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+  padding: 16px 0px;
+  vertical-align: bottom;
+  text-align: center;
+  height: 20px;
 `;
-
-const RankContainer = styled.div`
-  position: relative;
+const UserStyledTdEnd = styled.td`
+  font-size: 16px;
+  font-weight: 400;
+  padding: 16px 64px 16px 0px;
+  width: 200px;
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  padding-right: 64px;
+  text-align: end;
+  vertical-align: bottom;
+  height: 20px;
 `;
-
-const RankImg = styled.img`
-  position: absolute;
-  width: 28px;
-  height: 28px;
-  top: 70%;
-  left: 50%;
-  transform: translate(-50%, -70%);
-`;
-const Rank = styled.div``;

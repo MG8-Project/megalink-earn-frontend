@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+
+
+@font-face {
+    font-family: '강원교육튼튼';
+    src: url('../fonts/강원교육튼튼.woff2') format('woff2'),
+         url('../fonts/강원교육튼튼.woff') format('woff'),
+         url('../fonts/강원교육튼튼.ttf') format('truetype');
+}

@@ -1,0 +1,94 @@
+{
+  "taskDefinitionArn": "arn:aws:ecs:ap-northeast-3:338862796095:task-definition/infinite-spin-frontend:1",
+  "containerDefinitions": [
+    {
+      "name": "infinite-spin-frontend",
+      "image": "338862796095.dkr.ecr.ap-northeast-3.amazonaws.com/infinite-spin-frontend",
+      "cpu": 0,
+      "portMappings": [
+        {
+          "name": "infinite-spin-frontend-3000-tcp",
+          "containerPort": 3000,
+          "hostPort": 3000,
+          "protocol": "tcp",
+          "appProtocol": "http"
+        }
+      ],
+      "essential": true,
+      "environment": [],
+      "environmentFiles": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "ulimits": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-create-group": "true",
+          "awslogs-group": "/ecs/infinite-spin-frontend",
+          "awslogs-region": "ap-northeast-3",
+          "awslogs-stream-prefix": "ecs"
+        },
+        "secretOptions": []
+      },
+      "systemControls": []
+    }
+  ],
+  "family": "infinite-spin-frontend",
+  "taskRoleArn": "arn:aws:iam::338862796095:role/ecsTaskExecutionRole",
+  "executionRoleArn": "arn:aws:iam::338862796095:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc",
+  "revision": 1,
+  "volumes": [],
+  "status": "ACTIVE",
+  "requiresAttributes": [
+    {
+      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+    },
+    {
+      "name": "ecs.capability.execution-role-awslogs"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.ecr-auth"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.task-iam-role"
+    },
+    {
+      "name": "ecs.capability.execution-role-ecr-pull"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+    },
+    {
+      "name": "ecs.capability.task-eni"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+    }
+  ],
+  "placementConstraints": [],
+  "compatibilities": [
+    "EC2",
+    "FARGATE"
+  ],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "1024",
+  "memory": "3072",
+  "runtimePlatform": {
+    "cpuArchitecture": "ARM64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "registeredAt": "2024-03-29T14:34:33.916Z",
+  "registeredBy": "arn:aws:iam::338862796095:user/team.devspace@gmail.com",
+  "tags": [
+    {
+      "key": "Name",
+      "value": "infinite-spin-frontend"
+    }
+  ]
+}
