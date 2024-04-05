@@ -74,14 +74,14 @@ const Wallet = () => {
       <WalletTitle>
         Get ready for an exclusive airdrop event in 2 weeks!
       </WalletTitle>
-      <CoinCard />
-      {/* <PartnerToken
+      {/* <CoinCard /> */}
+      <PartnerToken
         tokenList={tokenList}
         remainTime={remainTime}
         isClaimAvailable={isClaimAvailable}
         setIsClaimAvailable={setIsClaimAvailable}
         isLogin={isLogin}
-      /> */}
+      />
     </WalletWrapper>
   );
 };
