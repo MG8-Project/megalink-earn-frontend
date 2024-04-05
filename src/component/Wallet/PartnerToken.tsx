@@ -294,8 +294,7 @@ const CardBox = styled.div`
 `;
 const CardTextBox = styled.div<CardBoxProps>`
   display: flex;
-  height: 52px;
-  padding: 10px 12px;
+  height: auto;
   justify-content: center;
   align-items: center;
   gap: 10px;
@@ -321,7 +320,7 @@ const CardTextBox = styled.div<CardBoxProps>`
 `;
 const CardText = styled.div<CardBoxProps>`
   z-index: 100;
-  height: 40px;
+  height: auto;
   border-radius: 20px;
   background-color: black;
   display: flex;
