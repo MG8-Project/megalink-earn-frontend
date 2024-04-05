@@ -204,10 +204,10 @@ const PartnerToken = (props: PartnerTokenProps) => {
         {!walletAddress ? (
           <WalletContainer onClick={onWalletConnect}>
             {isLoading ? (
-              <div>
+              <DefaultButton>
                 <Spinner size={15} />
-                <div style={{ marginLeft: "10px" }}>Checking...</div>
-              </div>
+                <div style={{ marginLeft: "10px" }}>Claiming</div>
+              </DefaultButton>
             ) : (
               "Connect Wallet"
             )}
@@ -218,27 +218,18 @@ const PartnerToken = (props: PartnerTokenProps) => {
               $highBalance={isClaimAvailable}
               onClick={isClaimAvailable ? clickAirdrop : null}
             >
-              <CardText $highBalance={isClaimAvailable}>
+              <div>
+                {/* 보유수량 충족 */}
                 {isClaimAvailable ? (
                   "Claim"
                 ) : (
-                  <>
-                    <ClaimedText>Claimed!</ClaimedText>
-                  </>
+                  <DefaultButton>
+                    {/* 보유수량 부족 */}
+                    <div>Claim</div>
+                  </DefaultButton>
                 )}
-              </CardText>
+              </div>
             </ClaimedButtonContainer>
-            {isClaimAvailable ? (
-              ""
-            ) : (
-              <img
-                src={share}
-                alt=""
-                width={52}
-                height={52}
-                style={{ marginLeft: "16px" }}
-              />
-            )}
           </ClaimeButtonWrapper>
         ) : (
           <WalletContainer onClick={clickLogin}>Login</WalletContainer>
@@ -278,7 +269,7 @@ const WalletContainer = styled.button`
   display: flex;
   width: 180px;
   height: 52px;
-  padding: 10px 12px;
+  padding: 10px 0px;
   justify-content: center;
   align-items: center;
   gap: 10px;
@@ -363,29 +354,10 @@ const ClaimedButtonContainer = styled.div<CardBoxProps>`
   display: flex;
   width: 180px;
   height: 52px;
-  padding: 10px 12px;
   justify-content: center;
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
-  background: linear-gradient(90deg, #82e8ff, #379fff);
-  border-radius: 100px;
-  border: 1px solid transparent;
-  background-image: linear-gradient(#000000, #000000),
-    linear-gradient(90deg, #82e8ff, #379fff);
-  background-origin: border-box;
-  background-clip: padding-box,
-    border-box
-      ${(props) =>
-        props.$highBalance &&
-        css`
-          border: 1px solid transparent;
-          background-image: linear-gradient(#000000, #000000),
-            linear-gradient(90deg, #333333, #333333);
-
-          background-origin: border-box;
-          background-clip: padding-box, border-box;
-        `};
 `;
 
 const ClaimedText = styled.div`
@@ -402,6 +374,29 @@ const ClaimedText = styled.div`
 
 const ClaimeButtonWrapper = styled.div`
   display: flex;
+  position: relative;
 `;
 
-const DefaultButton = styled.div``;
+const DefaultButton = styled.div`
+  display: flex;
+  width: 180px;
+  height: 52px;
+  padding: 10px 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 100px;
+  border: 1px solid #333;
+  background: #222;
+  color: #999;
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 100%;
+`;
+
+const ShareButton = styled.img`
+  position: absolute;
+  right: -6px;
+`;
