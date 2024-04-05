@@ -12,7 +12,7 @@ export { default as footerLogo } from "./Megalink_CI.png";
 export { default as binance } from "./binance.png";
 export { default as wemix } from "./wemix.png";
 export { default as ace } from "./ace.png";
-
+export { default as share } from "./Share.png";
 // Daily
 export { default as mega8 } from "./mg8.png";
 export { default as mg8gray } from "./mg8gray.png";
