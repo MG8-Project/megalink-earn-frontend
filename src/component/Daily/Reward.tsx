@@ -47,13 +47,17 @@ const Reward = () => {
     todayIndex: 0,
     attendedList: [0, 0, 0, 0, 0, 0, 0],
   });
+
   const isReward = (index: number) => {
+    console.log("isLoggedIn:", isLoggedIn);
+
     return (
       isLoggedIn &&
       receivedStatus.attendedList !== undefined &&
       receivedStatus.attendedList[index] !== 0
     );
   };
+
   const isTodayCheckAvailable = (index: number) => {
     return index === receivedStatus.todayIndex;
   };
@@ -235,11 +239,8 @@ const Reward = () => {
           }}
         >
           <RewardTitle>{item.title}</RewardTitle>
-          {/* <RewardImage src={isReward(index) ? mega8 : mg8gray} alt="" /> */}
-          <RewardImage
-            src={isTodayCheckAvailable(index) ? mega8 : mg8gray}
-            alt=""
-          />
+          <RewardImage src={isReward(index) ? mega8 : mg8gray} alt="" />
+
           <RewardPrice>{item.point}</RewardPrice>
           {/* <RewardRequest onClick={signTypedData}>Get</RewardRequest> */}
         </RewardContainer>
