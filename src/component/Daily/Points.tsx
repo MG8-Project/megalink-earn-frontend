@@ -163,7 +163,7 @@ const Points = (props: PointsProps) => {
       buttonContent = (
         <ClaimButton
           onClick={() => handleOpenDialog("claim")}
-          style={{ color: "#fff" }}
+          style={{ color: "#fff", background: "#006EBE" }}
         >
           Claim All
         </ClaimButton>
