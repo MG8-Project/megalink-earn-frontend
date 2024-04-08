@@ -163,11 +163,12 @@ const Daily = () => {
             </ContentAlertText>
           ) : (
             <ContentAlertText>
-              *CLAIM NOTICE : You can claim up to&nbsp;
+              <strong style={{ fontWeight: "bold" }}>*CLAIM NOTICE : </strong>
+              You can claim up to&nbsp;
               <strong style={{ fontWeight: "bold" }}>
-                {convertNumber(formatUnits(maxAmount, decimal))}
+                {convertNumber(formatUnits(maxAmount, decimal))} P
               </strong>
-              MG8 at once.
+              at once.
             </ContentAlertText>
           )
         ) : null}
@@ -228,5 +229,5 @@ const ContentAlertText = styled.h2`
   margin-top: 20px;
   padding: 10px;
   font-weight: 400;
-  font-size: 20px;
+  font-size: 18px;
 `;
