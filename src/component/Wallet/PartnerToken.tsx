@@ -255,7 +255,6 @@ const RemainWrapper = styled.div`
   margin: 20px 2px;
 `;
 const ButtonWrapper = styled.div`
-  margin: 60px 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -350,6 +349,7 @@ const TokenAlertText = styled.div`
 `;
 
 const ClaimedButtonContainer = styled.div<CardBoxProps>`
+  margin-top: 40px;
   display: flex;
   width: 180px;
   height: 52px;
