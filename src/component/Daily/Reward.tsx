@@ -236,13 +236,23 @@ const Reward = () => {
               isLoggedIn && isTodayCheckAvailable(index)
                 ? "pointer"
                 : "default",
+            // border:
+            //   isLoggedIn && isTodayCheckAvailable(index)
+            //     ? "2px solid white"
+            //     : "none",
           }}
         >
           <RewardTitle>{item.title}</RewardTitle>
-          <RewardImage src={isReward(index) ? mega8 : mg8gray} alt="" />
+          {/* <RewardImage src={isReward(index) ? mega8 : mg8gray} alt="" /> */}
+          <RewardImage
+            src={
+              isTodayCheckAvailable(index) && isReward(index) ? mega8 : mg8gray
+            }
+            alt=""
+          />
 
           <RewardPrice>{item.point}</RewardPrice>
-          {/* <RewardRequest onClick={signTypedData}>Get</RewardRequest> */}
+          {/* <RewardRequesㅅ onClick={signTypedData}>Get</RewardRequesㅅ> */}
         </RewardContainer>
       ))}
     </RewardWrapper>
