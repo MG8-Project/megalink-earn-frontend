@@ -90,6 +90,7 @@ const PartnerToken = (props: PartnerTokenProps) => {
       return 0;
     }
   };
+  console.log("tokenList", tokenList);
   const checkBalance = (i: number) => {
     const num =
       Number(findBalance(tokenList[i].symbol)) /
@@ -200,6 +201,7 @@ const PartnerToken = (props: PartnerTokenProps) => {
           </CardBox>
         ))}
       </TokenWrapper>
+
       <ButtonWrapper>
         {!walletAddress ? (
           <WalletContainer onClick={onWalletConnect}>
@@ -214,6 +216,9 @@ const PartnerToken = (props: PartnerTokenProps) => {
           </WalletContainer>
         ) : isLogin ? (
           <ClaimeButtonWrapper>
+            {isClaimAvailable ? null : (
+              <TokenAlertText>Deposit more coins above to claim</TokenAlertText>
+            )}
             <ClaimedButtonContainer
               $highBalance={isClaimAvailable}
               onClick={isClaimAvailable ? clickAirdrop : null}
@@ -235,9 +240,6 @@ const PartnerToken = (props: PartnerTokenProps) => {
           <WalletContainer onClick={clickLogin}>Login</WalletContainer>
         )}
       </ButtonWrapper>
-      {checkBalance ? null : (
-        <TokenAlertText>Deposit more coins above to claim</TokenAlertText>
-      )}
     </CardWrapper>
   );
 };
@@ -255,7 +257,6 @@ const RemainWrapper = styled.div`
   margin: 20px 2px;
 `;
 const ButtonWrapper = styled.div`
-  margin: 60px 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -291,6 +292,7 @@ const CardBox = styled.div`
   flex-direction: column;
   gap: 20px;
   align-items: center;
+  margin-bottom: 20px;
 `;
 const CardTextBox = styled.div<CardBoxProps>`
   display: flex;
@@ -332,6 +334,7 @@ const CardText = styled.div<CardBoxProps>`
   gap: 20px;
   justify-content: center;
   align-items: center;
+  font-size: 20px;
   color: ${(props) => (props.$highBalance ? "#999999" : "inherit")};
 `;
 
@@ -341,15 +344,16 @@ const CardBoxImg = styled.img`
 `;
 
 const TokenAlertText = styled.div`
-  padding: 15px 0;
-  width: 100%;
-  color: #fa3434;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding-top: 12px;
+  color: #ee4646;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
 `;
 
 const ClaimedButtonContainer = styled.div<CardBoxProps>`
+  margin-top: 20px;
   display: flex;
   width: 180px;
   height: 52px;
@@ -374,6 +378,8 @@ const ClaimedText = styled.div`
 const ClaimeButtonWrapper = styled.div`
   display: flex;
   position: relative;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const DefaultButton = styled.div`

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import ReceiptPopup from "./SuccessPopup";
+import SuccessPopup from "./SuccessPopup";
 import FailPopup from "./FailPopup";
 import { theme } from "../../styles/theme";
 import {
@@ -13,7 +13,9 @@ import {
 } from "../../assets/images";
 
 const TxPopup = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isActive, setIsActive] = useState<boolean>(false);
+  const [isClaime, setIsClaime] = useState<boolean>(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -68,16 +70,22 @@ const TxPopup = () => {
               </GasText>
               <ProgressContainer>
                 <ProgressBox>
-                  {/* <ProgressImage>
-                    <img src={active} alt="" width={20} height={20} />
-                    <img src={line} alt="" />
-                    <img src={claim} alt="" width={20} height={20} />
-                  </ProgressImage> */}
                   <ProgressImage>
-                    <img src={noneActive} alt="" width={20} height={20} />
+                    <img
+                      src={setIsActive ? active : noneActive}
+                      alt=""
+                      width={20}
+                      height={20}
+                    />
                     <img src={line} alt="" />
-                    <img src={active} alt="" width={20} height={20} />
+                    <img
+                      src={setIsClaime ? claim : active}
+                      alt=""
+                      width={20}
+                      height={20}
+                    />
                   </ProgressImage>
+
                   <ProgressText>
                     <span>Activate</span>
                     <span>Claim</span>
@@ -91,8 +99,8 @@ const TxPopup = () => {
               </PendingButton> */}
             </PopupContainer>
           </PopupWrapper>
-          {/* <ReceiptPopup />
-          <FailPopup /> */}
+          {/* <SuccessPopup /> */}
+          {/* <FailPopup /> */}
         </PopupOverlay>
       )}
     </>

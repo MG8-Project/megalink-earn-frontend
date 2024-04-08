@@ -1,52 +1,55 @@
 import styled from "styled-components";
 import { check, circle, link } from "../../assets/images";
-import { useEffect } from "react";
-const SuccessPopup = () => {
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
+import { useEffect, useState } from "react";
 
-    return () => {
-      document.body.style.overflow = "visible";
-    };
-  }, []);
+const SuccessPopup = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(true);
+
+  const handleClosePopup = () => {
+    setIsOpen(false);
+  };
 
   return (
-    <PopupOverlay>
-      <PopupWrapper>
-        <PopupContainer>
-          <TopContnet>
-            <Circle>
-              <ContentWrapper>
-                <img src={circle} alt="" width={72} height={72} />
-                <CheckImage src={check} alt="" width={36} height={36} />
-              </ContentWrapper>
-            </Circle>
+    <>
+      {isOpen && (
+        <PopupOverlay>
+          <PopupWrapper>
+            <PopupContainer>
+              <TopContnet>
+                <Circle>
+                  <ContentWrapper>
+                    <img src={circle} alt="" width={72} height={72} />
+                    <CheckImage src={check} alt="" width={36} height={36} />
+                  </ContentWrapper>
+                </Circle>
 
-            <TopContentTitle>Transaction Receipt</TopContentTitle>
-            <ReceiveText>
-              You will receive xx,xxx,xxx <span>MG8</span>
-            </ReceiveText>
-          </TopContnet>
+                <TopContentTitle>Transaction Receipt</TopContentTitle>
+                <ReceiveText>
+                  You will receive xx,xxx,xxx <span>MG8</span>
+                </ReceiveText>
+              </TopContnet>
 
-          <MiddleContnet>
-            <MiddleText>
-              *If not, plz check your transaction request status ​through the
-              link below​
-            </MiddleText>
-            <ViewText>
-              <span>View on Bscscan:</span>
-              <span>
-                0xfe9aef...
-                <span>
-                  <img src={link} alt="" width={20} height={20} />
-                </span>
-              </span>
-            </ViewText>
-          </MiddleContnet>
-          <ActiveButton>OK</ActiveButton>
-        </PopupContainer>
-      </PopupWrapper>
-    </PopupOverlay>
+              <MiddleContnet>
+                <MiddleText>
+                  *If not, plz check your transaction request status ​through
+                  the link below​
+                </MiddleText>
+                <ViewText>
+                  <span>View on Bscscan:</span>
+                  <span>
+                    0xfe9aef...
+                    <span>
+                      <img src={link} alt="" width={20} height={20} />
+                    </span>
+                  </span>
+                </ViewText>
+              </MiddleContnet>
+              <ActiveButton onClick={handleClosePopup}>OK</ActiveButton>
+            </PopupContainer>
+          </PopupWrapper>
+        </PopupOverlay>
+      )}
+    </>
   );
 };
 
