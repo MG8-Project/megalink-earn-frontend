@@ -69,11 +69,11 @@ const RemainWrapper = styled.div`
   justify-content: center;
   align-items: center;
   color: #fff;
-  gap: 20px;
+  gap: 16px;
+  padding-bottom: 56px;
 `;
 const StyledTitle = styled.div``;
 const TimeWrapper = styled.div`
-  padding: 10px;
   font-size: 3rem;
   font-weight: bold;
 `;

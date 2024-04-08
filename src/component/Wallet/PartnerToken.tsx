@@ -90,11 +90,11 @@ const PartnerToken = (props: PartnerTokenProps) => {
       return 0;
     }
   };
-  console.log("tokenList", tokenList);
   const checkBalance = (i: number) => {
     const num =
       Number(findBalance(tokenList[i].symbol)) /
       convertNumber(formatUnits(tokenList[i].minAmount, tokenList[i].decimals));
+
     if (num < 1) {
       return false;
     } else {
@@ -161,19 +161,13 @@ const PartnerToken = (props: PartnerTokenProps) => {
 
   return (
     <CardWrapper>
-      {/* 피그마의 디자인 부분에는 이 부분이 없어서 일단 주석처리! */}
+      {/* air drop 신청 완료시*/}
       {/* {walletAddress !== null && isLogin ? (
-        remainTime === 0 ? (
-          <RemainWrapper>
-            <text>Claim Available!</text>
-          </RemainWrapper>
-        ) : (
-          <RemainWrapper>
-            <RemainTime remainTime={remainTime} />
-          </RemainWrapper>
-        )
+        <RemainWrapper>
+          <RemainTime remainTime={remainTime} />
+        </RemainWrapper>
       ) : (
-        <text>Please Login</text>
+        ""
       )} */}
 
       <TokenWrapper>
@@ -204,16 +198,16 @@ const PartnerToken = (props: PartnerTokenProps) => {
 
       <ButtonWrapper>
         {!walletAddress ? (
-          <WalletContainer onClick={onWalletConnect}>
+          <div onClick={onWalletConnect}>
             {isLoading ? (
               <DefaultButton>
                 <Spinner size={15} />
                 <div style={{ marginLeft: "10px" }}>Claiming</div>
               </DefaultButton>
             ) : (
-              "Connect Wallet"
+              <WalletContainer>Connect Wallet</WalletContainer>
             )}
-          </WalletContainer>
+          </div>
         ) : isLogin ? (
           <ClaimeButtonWrapper>
             {isClaimAvailable ? null : (
@@ -226,7 +220,7 @@ const PartnerToken = (props: PartnerTokenProps) => {
               <div>
                 {/* 보유수량 충족 */}
                 {isClaimAvailable ? (
-                  "Claim"
+                  <WalletContainer>Claim</WalletContainer>
                 ) : (
                   <DefaultButton>
                     {/* 보유수량 부족 */}
@@ -262,7 +256,7 @@ const ButtonWrapper = styled.div`
   align-items: center;
 `;
 const WalletContainer = styled.button`
-  margin-top: 40px;
+  margin-top: 30px;
   display: flex;
   font-size: 18px;
   font-style: normal;
@@ -383,6 +377,7 @@ const ClaimeButtonWrapper = styled.div`
 `;
 
 const DefaultButton = styled.div`
+  margin-top: 30px;
   display: flex;
   width: 180px;
   height: 52px;
