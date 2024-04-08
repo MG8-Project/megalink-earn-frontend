@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import { noneCheck, redCircle } from "../../assets/images";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const FailPopup = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(true);
+
   useEffect(() => {
     document.body.style.overflow = "hidden";
 
@@ -11,26 +13,34 @@ const FailPopup = () => {
     };
   }, []);
 
-  return (
-    <PopupOverlay>
-      <PopupWrapper>
-        <PopupContainer>
-          <TopContnet>
-            <ContentWrapper>
-              <img src={redCircle} alt="" width={72} height={72} />
-              <CheckImage src={noneCheck} alt="" />
-            </ContentWrapper>
-            <TopContentTitle>Transaction Fail</TopContentTitle>
-          </TopContnet>
-          <ReceiveText>
-            There seems to be some heavy traffic on BSC network.​​
-          </ReceiveText>
-          <MiddleText>Plz try a few moments later.​</MiddleText>
+  const handleClosePopup = () => {
+    setIsOpen(false);
+  };
 
-          <ActiveButton>OK</ActiveButton>
-        </PopupContainer>
-      </PopupWrapper>
-    </PopupOverlay>
+  return (
+    <>
+      {isOpen && (
+        <PopupOverlay>
+          <PopupWrapper>
+            <PopupContainer>
+              <TopContnet>
+                <ContentWrapper>
+                  <img src={redCircle} alt="" width={72} height={72} />
+                  <CheckImage src={noneCheck} alt="" />
+                </ContentWrapper>
+                <TopContentTitle>Transaction Fail</TopContentTitle>
+              </TopContnet>
+              <ReceiveText>
+                There seems to be some heavy traffic on BSC network.​​
+              </ReceiveText>
+              <MiddleText>Plz try a few moments later.​</MiddleText>
+
+              <ActiveButton onClick={handleClosePopup}>OK</ActiveButton>
+            </PopupContainer>
+          </PopupWrapper>
+        </PopupOverlay>
+      )}
+    </>
   );
 };
 
